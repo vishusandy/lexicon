@@ -1,12 +1,29 @@
-import { type Word, type WordList, defaultSortBy, defaultSortOrder, SortBy, SortOrder } from './types';
+import { type Word, type WordCache, type WordList, defaultSortBy, defaultSortOrder, SortBy, SortOrder } from './types';
 import { browser } from '$app/environment';
 
-// const defaultWords: Array<Word> = ['Malapropism', 'Eggcorn', 'Malaphor', 'Promulgate', 'Complect', 'Sluice', 'Excoriate', 'Autoantonym', 'Subsume', 'Moribund', 'Alacrity', 'Folderol', 'Rapt', 'Tacit', 'Licentious', 'Priori', 'Posteriori'].sort().map((word, i) => ({
-//     word: word,
-//     id: i,
-//     def: undefined,
-// }));
-const defaultWords: Word[] = [];
+const defaultWords: Array<Word> = ['Malapropism', 'Eggcorn', 'Malaphor', 'Promulgate', 'Complect', 'Sluice', 'Excoriate', 'Autoantonym', 'Subsume', 'Moribund', 'Alacrity', 'Folderol', 'Rapt', 'Tacit', 'Licentious', 'Priori', 'Posteriori'].sort().map((word, i) => (word_cache({
+    word: word,
+    id: i,
+    def: undefined,
+    favorite: false,
+    tags: undefined,
+    dict_def: undefined,
+})));
+// const defaultWords: Word[] = [];
+
+function new_word_cache(word: Word): WordCache {
+    return {
+        word: word.word.toLowerCase(),
+        def: word.def?.toLocaleLowerCase(),
+        dict_def: word.dict_def?.toLocaleLowerCase(),
+        tags: word.tags?.map(t => t.toLowerCase()),
+    };
+}
+
+export function word_cache(word: Word) {
+    word.cache = new_word_cache(word);
+    return word;
+}
 
 export function list_blank(key: string): WordList {
     const list = {
@@ -21,15 +38,20 @@ export function list_blank(key: string): WordList {
 }
 
 export function list_init(key: string): WordList {
+    // if (browser) {
+    //     localStorage.removeItem(key);
+    // }
     const stored = (browser) ? localStorage.getItem(key) : null;
     const list: WordList = (stored) ? JSON.parse(stored) : list_blank(key);
     return list;
 }
 
-export function list_add(list: WordList, word: string, def?: string): number {
-    const w: Word = { word, id: list.next_id, def };
+export function list_add(list: WordList, word: Word): number {
+    // let w: Word = { word, id: list.next_id, def, favorite: false, tags: undefined, cache: undefined };
+    word_cache(word);
+    word.id = list.next_id;
     list.next_id += 1;
-    return list.words.push(w) - 1;
+    return list.words.push(word) - 1;
 }
 
 export function list_update(list: WordList, id: number, word?: string, def?: string): boolean {
@@ -44,9 +66,11 @@ export function list_update(list: WordList, id: number, word?: string, def?: str
         list.words[i].word = word;
     }
 
-    if (def) {
+    if (def !== undefined) {
         list.words[i].def = def;
     }
+
+    word_cache(list.words[i]);
 
     return true;
 }
@@ -70,10 +94,6 @@ export function list_save(list: WordList) {
     }
 }
 
-export function get_word(list: WordList, id: number): Word | undefined {
-    return list.words.find(w => w.id == id);
-}
-
 function sort_fn(sort_by: SortBy, sort_order: SortOrder): (a: Word, b: Word) => number {
     let sort;
 
@@ -93,12 +113,12 @@ function sort_fn(sort_by: SortBy, sort_order: SortOrder): (a: Word, b: Word) => 
             break;
         case SortBy.Word:
             if (sort_order == SortOrder.Desc) {
-                // console.log('Alpha asc');
+                // console.log('Word asc');
                 sort = (a: Word, b: Word) => {
                     return b.word.localeCompare(a.word);
                 }
             } else {
-                // console.log('Alpha desc');
+                // console.log('Word desc');
                 sort = (a: Word, b: Word) => {
                     return a.word.localeCompare(b.word);
                 };
@@ -111,13 +131,29 @@ function sort_fn(sort_by: SortBy, sort_order: SortOrder): (a: Word, b: Word) => 
 // returns true if the word should be shown
 export function filter_word(phrases: string[], word: Word): boolean {
     for (let i = 0; i < phrases.length; i++) {
-        let phrase = phrases[i];
-        if (phrase != '' && !word.word.toLowerCase().includes(phrase) && (!word.def || !word.def.toLowerCase().includes(phrase))) {
+        if (!match_word_phrase(word, phrases[i].toLowerCase())) {
             return false;
         }
     }
     return true;
 }
+
+function match_word_phrase(word: Word, phrase: string): boolean {
+
+    return phrase == '' || word.cache === undefined
+        || word.cache.word.includes(phrase)
+        || (word.cache.def !== undefined && word.cache.def.includes(phrase))
+        || (word.cache.dict_def !== undefined && word.cache.dict_def.includes(phrase))
+        || (word.cache.tags !== undefined && word.cache.tags.some(t => t == phrase));
+
+    // if (!word.cache) { return false; }
+    // return phrase != '' && !word.cache.word.includes(phrase)
+    //     && (!word.cache.def || !word.cache.def.includes(phrase))
+    //     && (!word.cache.dict_def || !word.cache.dict_def.includes(phrase))
+    //     && (!word.cache.tags || !word.cache.tags.some(t => t == phrase))
+    //     ;
+}
+
 
 function isVisible(domElement: HTMLElement) {
     return new Promise(resolve => {
@@ -133,17 +169,13 @@ export async function scrollToWord(key: string, id: number) {
     console.log('checking scroll');
     let word = document.getElementById(key + "-" + id);
     if (word) {
-        console.log('word found');
         const vis = await isVisible(word);
+        word.classList.add('highlight');
+        setTimeout(() => {
+            word?.classList.remove('highlight');
+        }, 3000);
         if (!vis) {
-            console.log('scrolling word into view');
-            word.classList.add('highlight');
             word.scrollIntoView({ behavior: "smooth", block: "center" });
-            setTimeout(() => {
-                word?.classList.remove('highlight');
-            }, 3000);
-        } else {
-            console.log('word is still visible');
         }
     }
 }

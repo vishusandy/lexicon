@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { enterPressed } from '../utils';
     import { createEventDispatcher } from 'svelte';
+    import { browser } from '$app/environment';
     import type { Word } from '../types';
 
     const dispatch = createEventDispatcher();
@@ -20,21 +22,11 @@
     }
 
     function deleteWord(word: Word) {
+        if (!browser) return;
         if (!window.confirm('Delete word?')) {
             return;
         }
         dispatch('deleteWord', { word, key });
-    }
-
-    function enterPressed(e: KeyboardEvent) {
-        if (e.code == 'Enter' || e.code == 'NumpadEnter' || e.code == 'Escape') {
-            if (e.target) {
-                let t = <HTMLElement>e.target;
-                t.blur();
-            }
-            e.preventDefault();
-            return;
-        }
     }
 
     function li_focus_definition(target: HTMLElement) {
@@ -91,9 +83,13 @@
 {/if}
 
 <style>
+    .highlight {
+        background: yellow;
+    }
+
     li {
         list-style-type: none;
-        /* margin-bottom: 5rem; */
+        transition: background-color 1.5s ease-in-out;
     }
 
     .remove-word-btn {
@@ -101,13 +97,13 @@
         border: 0px;
     }
 
-    .spacer .word:after {
+    .spacer .word-definition::before {
         content: '-';
-        margin-left: 0.5rem;
+        margin-right: 0.3rem;
     }
 
     .word-definition {
-        margin-left: 0.5rem;
+        margin-left: 0.3rem;
         display: inline;
     }
 </style>

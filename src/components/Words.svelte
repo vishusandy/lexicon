@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { browser } from '$app/environment';
+    import { tick } from 'svelte';
     import Sort from './Sort.svelte';
     import Word from './Word.svelte';
     import Search from './Search.svelte';
@@ -12,23 +14,25 @@
         filter_word,
         scrollToWord
     } from '../words';
+    import { invalid_attribute_name_character } from 'svelte/internal';
 
     export let key: string = 'words';
     let list: WordList = list_init(key);
     let search: string = '';
     $: phrases = search.split(' ');
 
-    const scrollTo: string | null = new URLSearchParams(window.location.search).get('word');
+    let scrollTo: string | null;
+    if (browser) scrollTo = new URLSearchParams(window.location.search).get('word');
+    else scrollTo = null;
 
     if (scrollTo) {
         scroll(parseInt(scrollTo), key);
     }
 
-    function scroll(id: number, key: string) {
+    async function scroll(id: number, key: string) {
         if (!Number.isNaN(id)) {
-            setTimeout(() => {
-                scrollToWord(key, id);
-            }, 700);
+            await tick();
+            scrollToWord(key, id);
         }
     }
 
@@ -41,7 +45,7 @@
             scroll(e.word.id, key);
         } else {
             console.log('word update failed');
-        }
+        }invalid_attribute_name_character
     }
 
     function updateDefinition(e: WordEvent) {
