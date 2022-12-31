@@ -14,7 +14,13 @@
     }
 
     function remove(e: Event) {
+        console.log('dispatching remove event');
         dispatch('removeTag', { index });
+    }
+    function removeKeydown(e: KeyboardEvent) {
+        if (e.code == 'Enter' || e.code == 'NumpadEnter') {
+            remove(e);
+        }
     }
 </script>
 
@@ -28,7 +34,7 @@
     >
         {tag}
     </div>
-    <div class="x-tag"><i class="fa-solid fa-xmark" /></div>
+    <div class="x-tag"><i on:click={remove} class="fa-solid fa-xmark" /></div>
 </div>
 
 <style lang="scss">
