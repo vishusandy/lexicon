@@ -34,20 +34,24 @@
     >
         {tag}
     </div>
-    <div class="x-tag"><i on:click={remove} class="fa-solid fa-xmark" /></div>
+    <button class="x-tag">
+        <i on:click={remove} on:keydown={removeKeydown} class="fa-solid fa-xmark" />
+    </button>
 </div>
 
 <style lang="scss">
     @use '../mixins.scss';
 
     .x-tag {
+        background-color: transparent;
+        border: 0px;
         display: inline-block;
         font-family: 'Font Awesome 6 Free';
         font-weight: 600;
         color: #a8303c;
         font-size: 0.8rem;
-        margin-left: -0.3rem;
-        margin-right: -0.1rem;
+        margin-left: -0.5rem;
+        margin-right: -0.2rem;
         position: relative;
         top: -0.3rem;
     }
@@ -63,12 +67,8 @@
     }
 
     .tag-btn {
-        background-color: #e2e3e5;
-        border: 1px solid #ced4da;
-        border-radius: 0.375rem;
-        margin: 0.1rem 0.16rem;
+        @include mixins.tag;
         padding: 0.1rem 0.6rem 0.1rem 0.1rem;
-        display: inline-block;
     }
 
     .tag-btn:hover:not(:focus) {

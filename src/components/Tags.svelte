@@ -49,12 +49,7 @@
     }
 
     .tag-input {
-        flex: 0 0 auto;
-        background-color: #e2e3e5;
-        border: 1px solid #d3d6d8;
-        border-radius: 0.375rem;
-        display: inline-block;
-        margin: 0.1rem 0.16rem;
+        @include mixins.tag;
         padding: 0.1rem 0.6rem;
         text-align: center;
     }

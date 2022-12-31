@@ -2,6 +2,15 @@
     content: '#';
     font-style: italic;
     margin-right: 0.25rem;
-    margin-left: -0.25rem;
+    margin-left: -0.1rem;
     color: #646669;
+}
+
+@mixin tag {
+    display: inline-block;
+    background-color: #e2e3e5;
+    border: 1px solid #d3d6d8;
+    border-radius: 0.375rem;
+    margin: 0.1rem 0.16rem;
+    padding: 0.1rem 0.6rem;
 }

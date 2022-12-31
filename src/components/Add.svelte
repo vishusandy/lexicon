@@ -4,15 +4,15 @@
     import { list_add, list_init, list_save, list_sort, word_cache } from '../words';
     import type { WordList, Word as WordType } from '../types';
     import { enterPressed } from '../utils';
+    import { tick } from 'svelte';
 
     export let key: string;
     let list: WordList = list_init(key);
 
     let word: string = '';
     let def: string = '';
-    let tag_str: string = '';
     let tags: string[] = [];
-    // $: tags = tag_str.split(' ').map((t) => t.trim());
+    let added: WordType | undefined = undefined;
     let dict_def: string = '';
     let favorite: boolean = false;
 
@@ -100,10 +100,29 @@
         d.focus();
     }
 
+    async function addedAlert(w: WordType) {
+        added = w;
+        await tick();
+        setTimeout(() => {
+            const a = document.getElementById(key + '-added-alert');
+            if (a) {
+                a.style.opacity = '0';
+            }
+        }, 8000);
+        setTimeout(() => {
+            const a = document.getElementById(key + '-added-alert');
+            if (a) {
+                a.remove();
+            }
+        }, 12000);
+    }
+
     function addWord(e: Event) {
         if (trimDuplicateWord()) return false;
 
         const w = getWord();
+
+        addedAlert(w);
 
         list_add(list, w);
         list_sort(list);
@@ -151,29 +170,47 @@
         <Tags {key} bind:tags />
     </div>
 
-    {#if dup}
-        <div class="duplicate-alert alert alert-danger">
-            <p>
-                Word <a href="/list/?word={dup.id}"><dfn class="word">{word.trim()}</dfn></a> exists
-            </p>
-            <!-- <Word {key} readonly={true} item={dup} /> -->
-        </div>
-    {/if}
+    <div class="alert-box">
+        {#if dup}
+            <div class="duplicate-alert alert alert-danger">
+                <p>
+                    Word <a href="/list/?word={dup.id}"><dfn class="word">{word.trim()}</dfn></a> exists
+                </p>
+            </div>
+        {:else if added}
+            <div id="{key}-added-alert" class="added-alert alert alert-success">
+                Added word <a href="/list?word={added.id}">{added.word}</a>
+            </div>
+        {/if}
+    </div>
 
-    <div class="add-container">
+    <div id="{key}-add-container" class="add-container">
         <button type="submit" class="add btn btn-primary">Add Word </button><br />
     </div>
 </form>
 
 <style>
+    .alert-box {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        height: 2rem;
+    }
+
     .duplicate-alert {
         padding: 0.7rem 1rem;
         margin: 1rem 0px;
+        transition: all 3s ease-in-out;
         /* text-align: center; */
     }
 
     .duplicate-alert p {
         margin: 0px;
+    }
+
+    .added-alert {
+        padding: 0.7rem 1rem;
+        margin: 1rem 0px;
+        transition: all 4s ease-in;
     }
 
     .tag-container {
