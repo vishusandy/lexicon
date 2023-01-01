@@ -137,7 +137,7 @@
         /* align-content: stretch; */
         align-items: center;
         border: 0px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         padding: 1rem 0rem 0.9rem 0rem;
         position: sticky;
         /* text-align: center; */
