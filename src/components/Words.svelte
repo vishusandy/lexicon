@@ -40,6 +40,7 @@
 
     function updateWord(e: WordEvent) {
         if (e.key != key) return;
+        console.log('checking word update');
         if (list_update(list, e.word.id, e.word.word)) {
             list_sort(list);
             list_save(list);

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { enterPressed } from '../utils';
     import { createEventDispatcher } from 'svelte';
-    import { afterUpdate } from 'svelte';
+    import { afterUpdate, onMount } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
     import { removeMarks } from '../utils';
@@ -17,26 +17,26 @@
     let spacer: string;
     $: spacer = !item.def || item.def == '<br>' ? '' : 'has-definition';
 
-    afterUpdate(() => {
-        addMarks(key + '-def-' + item.id);
+    onMount(() => {
+        const t = document.getElementById(key + '-word-' + item.id);
+        if (!t) return;
+        updateTitle(t);
     });
 
-    function addMarks(id: string) {
-        const d = document.getElementById(id);
-        if (!d || !highlight || highlight.length === 0) return;
-        console.log('updating');
-        // d.innerHTML = `<mark>${d.innerHTML}</mark>`;
-        for (let i = 0; i < highlight.length; i++) {
-            const s = highlight[i];
-            if (s == '') continue;
-            const re = new RegExp(`(${s})`, 'gi');
-            console.log(`replacing '${s}'`);
-            d.innerHTML = d.innerHTML.replace(re, '<mark>$1</mark>');
-        }
-    }
+    afterUpdate(() => {
+        addHighlights(key + '-def-' + item.id);
+    });
 
     function updateWord(word: Word) {
-        dispatch('updateWord', { word, key });
+        const t = document.getElementById(key + '-word-' + item.id);
+        if (t) {
+            if (t.title != word.word) {
+                updateTitle(t);
+                dispatch('updateWord', { word, key });
+            }
+        } else {
+            dispatch('updateWord', { word, key });
+        }
     }
 
     function updateDefinition(word: Word) {
@@ -49,6 +49,24 @@
             return;
         }
         dispatch('deleteWord', { word, key });
+    }
+
+    function updateTitle(dfn: HTMLElement) {
+        dfn.title = item.word;
+    }
+
+    function addHighlights(id: string) {
+        const t = document.getElementById(id);
+        if (!t || !highlight || highlight.length === 0) return;
+        console.log('updating');
+        // d.innerHTML = `<mark>${d.innerHTML}</mark>`;
+        for (let i = 0; i < highlight.length; i++) {
+            const s = highlight[i];
+            if (s == '') continue;
+            const re = new RegExp(`(${s})`, 'gi');
+            console.log(`replacing '${s}'`);
+            t.innerHTML = t.innerHTML.replace(re, '<mark>$1</mark>');
+        }
     }
 
     function removeHighlights(id: string) {
@@ -90,6 +108,7 @@
     </button>
 
     <dfn
+        id="{key}-word-{item.id}"
         class="word"
         contenteditable="true"
         on:blur={() => updateWord(item)}
@@ -104,11 +123,11 @@
         on:keydown={enterPressed}
         on:blur={() => {
             updateDefinition(item);
-            addMarks(key + '-def-' + item.id);
+            addHighlights(key + '-def-' + item.id);
         }}
         on:focus={() => removeHighlights(key + '-def-' + item.id)}
     >
-        {item.def}
+        {#if item.def}{item.def}{/if}
     </div>
 </li>
 
