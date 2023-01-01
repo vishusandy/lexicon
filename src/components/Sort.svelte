@@ -87,19 +87,21 @@
         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
     } */
 
+    /* descending */
     .sort-checkbox[type='checkbox']:checked + .sort-checkbox-label::after {
-        /* down */
-        /* content: '\f884'; */
-        /* content: '\f160'; */
-        content: '\f175';
-        font-weight: 600;
-    }
-
-    .sort-checkbox + .sort-checkbox-label::after {
-        /* up */
+        /* up arrow */
         /* content: '\f885'; */
         /* content: '\f161'; */
         content: '\f176';
+        font-weight: 600;
+    }
+
+    /* ascending */
+    .sort-checkbox + .sort-checkbox-label::after {
+        /* down arrow */
+        /* content: '\f884'; */
+        /* content: '\f160'; */
+        content: '\f175';
         font-weight: 600;
     }
 
