@@ -19,3 +19,7 @@ export function enterSpacePressed(e: KeyboardEvent) {
         return;
     }
 }
+
+export function removeMarks(s: string): string {
+    return s.replace(/<\/?mark>/, '');
+}

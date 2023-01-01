@@ -14,7 +14,7 @@
         filter_word,
         scrollToWord
     } from '../words';
-    import { invalid_attribute_name_character } from 'svelte/internal';
+    import { removeMarks } from '../utils';
 
     export let key: string = 'words';
     let list: WordList = list_init(key);
@@ -48,12 +48,11 @@
         } else {
             console.log('word update failed');
         }
-        invalid_attribute_name_character;
     }
 
     function updateDefinition(e: WordEvent) {
         if (e.key != key || !e.word.def) return;
-        let def = e.word.def.trim();
+        let def = removeMarks(e.word.def.trim());
         if (list_update(list, e.word.id, undefined, def)) {
             list_save(list);
         } else {
@@ -102,11 +101,11 @@
     </div>
 
     <ul class="word-group list-group {full_defs}">
-        <!-- <li class="sort-bar list-group-item" /> -->
         {#each list.words.filter((w) => filter_word(phrases, w)) as word}
             <Word
                 {key}
                 item={word}
+                highlight={phrases}
                 on:updateWord={(e) => updateWord(e.detail)}
                 on:updateDefinition={(e) => updateDefinition(e.detail)}
                 on:deleteWord={(e) => deleteWord(e.detail)}

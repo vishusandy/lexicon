@@ -1,16 +1,39 @@
 <script lang="ts">
     import { enterPressed } from '../utils';
     import { createEventDispatcher } from 'svelte';
+    import { afterUpdate } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
+    import { removeMarks } from '../utils';
 
     const dispatch = createEventDispatcher();
 
     export let key: string;
     export let item: Word;
+    export let highlight: string[] | undefined = undefined;
+    // let def: string;
+    // $: def = !item.def ? '': (highlight)? '<mark>' +  + '<mark>': item.def;
 
     let spacer: string;
     $: spacer = !item.def || item.def == '<br>' ? '' : 'has-definition';
+
+    afterUpdate(() => {
+        addMarks(key + '-def-' + item.id);
+    });
+
+    function addMarks(id: string) {
+        const d = document.getElementById(id);
+        if (!d || !highlight || highlight.length === 0) return;
+        console.log('updating');
+        // d.innerHTML = `<mark>${d.innerHTML}</mark>`;
+        for (let i = 0; i < highlight.length; i++) {
+            const s = highlight[i];
+            if (s == '') continue;
+            const re = new RegExp(`(${s})`, 'gi');
+            console.log(`replacing '${s}'`);
+            d.innerHTML = d.innerHTML.replace(re, '<mark>$1</mark>');
+        }
+    }
 
     function updateWord(word: Word) {
         dispatch('updateWord', { word, key });
@@ -26,6 +49,12 @@
             return;
         }
         dispatch('deleteWord', { word, key });
+    }
+
+    function removeHighlights(id: string) {
+        const t = document.getElementById(id);
+        if (!t) return;
+        t.innerHTML = removeMarks(t.innerHTML);
     }
 
     function li_focus_definition(target: HTMLElement) {
@@ -68,11 +97,16 @@
         bind:innerHTML={item.word}>{item.word}</dfn
     >
     <div
+        id="{key}-def-{item.id}"
         class="word-definition"
         contenteditable="true"
         bind:innerHTML={item.def}
         on:keydown={enterPressed}
-        on:blur={() => updateDefinition(item)}
+        on:blur={() => {
+            updateDefinition(item);
+            addMarks(key + '-def-' + item.id);
+        }}
+        on:focus={() => removeHighlights(key + '-def-' + item.id)}
     >
         {item.def}
     </div>
@@ -80,10 +114,11 @@
 
 <style>
     .word-item {
-        /* display: flex; */
         width: 100%;
         margin: 0rem auto;
-        /* padding-top: 1rem; */
+        overflow: hidden;
+        transition: height 1s ease-in-out;
+        height: 2.5rem;
     }
 
     .highlight {
@@ -117,12 +152,15 @@
     }
 
     .word-definition {
-        /* display: inline; */
-        display: inline-block;
-        height: 1.5rem;
+        display: inline;
         margin: 0px 0px 0px 0.2rem;
         color: #41474d;
         /* overflow: hidden; */
+    }
+
+    .word-item:focus-within {
+        overflow: auto;
+        height: unset;
     }
 
     .full-defs .word-definition {
