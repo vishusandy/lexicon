@@ -19,7 +19,9 @@
     export let key: string = 'words';
     let list: WordList = list_init(key);
     let search: string = '';
+    let full_defs: string = '';
     $: phrases = search.split(' ');
+    $: full_defs = search === '' ? '' : 'full-defs';
 
     let scrollTo: string | null;
     if (browser) scrollTo = new URLSearchParams(window.location.search).get('word');
@@ -45,7 +47,8 @@
             scroll(e.word.id, key);
         } else {
             console.log('word update failed');
-        }invalid_attribute_name_character
+        }
+        invalid_attribute_name_character;
     }
 
     function updateDefinition(e: WordEvent) {
@@ -82,15 +85,24 @@
     }
 </script>
 
-<Search
-    {key}
-    on:updateFilter={(e) => {
-        updateFilter(e.detail);
-    }}
-/>
-
 {#if list.words}
-    <ul>
+    <div class="sticky-search-bar list-group-item">
+        <Search
+            {key}
+            on:updateFilter={(e) => {
+                updateFilter(e.detail);
+            }}
+        />
+        <Sort
+            {key}
+            sort_by={list.sort_by}
+            sort_order={list.sort_order}
+            on:updateSort={(e) => updateSort(e.detail)}
+        />
+    </div>
+
+    <ul class="word-group list-group {full_defs}">
+        <!-- <li class="sort-bar list-group-item" /> -->
         {#each list.words.filter((w) => filter_word(phrases, w)) as word}
             <Word
                 {key}
@@ -107,9 +119,30 @@
     <p>No words have been added yet</p>
 {/if}
 
-<Sort
-    {key}
-    sort_by={list.sort_by}
-    sort_order={list.sort_order}
-    on:updateSort={(e) => updateSort(e.detail)}
-/>
+<style>
+    .word-group {
+        margin: 0rem;
+        width: 100%;
+        height: 100%;
+        border-radius: 0px;
+        /* overflow: scroll; */
+    }
+
+    .sort-bar {
+        /* text-align: right; */
+    }
+
+    .sticky-search-bar {
+        background: white;
+        display: flex;
+        /* align-content: stretch; */
+        align-items: center;
+        border: 0px;
+        border-bottom: 1px solid #ccc;
+        padding: 1rem 0rem 0.9rem 0rem;
+        position: sticky;
+        /* text-align: center; */
+        top: 0px;
+        z-index: 99;
+    }
+</style>

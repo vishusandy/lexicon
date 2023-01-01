@@ -8,10 +8,9 @@
 
     export let key: string;
     export let item: Word;
-    export let readonly: boolean = false;
 
     let spacer: string;
-    $: spacer = !item.def || item.def == '<br>' ? '' : 'spacer';
+    $: spacer = !item.def || item.def == '<br>' ? '' : 'has-definition';
 
     function updateWord(word: Word) {
         dispatch('updateWord', { word, key });
@@ -51,59 +50,82 @@
     }
 </script>
 
-{#if !readonly}
-    <li id="{key}-{item.id}" on:click|self={li_clicked} on:keydown|self={li_enter} class={spacer}>
-        <button class="remove-word-btn" on:click={() => deleteWord(item)}
-            ><i class="fa-solid fa-xmark" /></button
-        >
+<li
+    id="{key}-{item.id}"
+    on:click|self={li_clicked}
+    on:keydown|self={li_enter}
+    class="{spacer} list-group-item word-item"
+>
+    <button class="remove-word-btn" on:click={() => deleteWord(item)}>
+        <i class="fa-solid fa-xmark" />
+    </button>
 
-        <dfn
-            class="word"
-            contenteditable="true"
-            on:blur={() => updateWord(item)}
-            on:keydown={enterPressed}
-            bind:innerHTML={item.word}>{item.word}</dfn
-        >
-        <p
-            class="word-definition"
-            contenteditable="true"
-            bind:innerHTML={item.def}
-            on:blur={() => updateDefinition(item)}
-        >
-            {#if item.def}{item.def}{/if}
-        </p>
-    </li>
-{:else}
-    <div class={spacer}>
-        <a href="/list/?word={item.id}"><dfn class="word">{item.word}</dfn></a>
-        <p class="word-definition">
-            {#if item.def}{item.def}{/if}
-        </p>
+    <dfn
+        class="word"
+        contenteditable="true"
+        on:blur={() => updateWord(item)}
+        on:keydown={enterPressed}
+        bind:innerHTML={item.word}>{item.word}</dfn
+    >
+    <div
+        class="word-definition"
+        contenteditable="true"
+        bind:innerHTML={item.def}
+        on:keydown={enterPressed}
+        on:blur={() => updateDefinition(item)}
+    >
+        {item.def}
     </div>
-{/if}
+</li>
 
 <style>
+    .word-item {
+        /* display: flex; */
+        width: 100%;
+        margin: 0rem auto;
+        /* padding-top: 1rem; */
+    }
+
     .highlight {
         background: yellow;
     }
 
+    li:first-of-type {
+        border-top-width: 0px;
+    }
+
     li {
+        margin-bottom: 4rem;
         list-style-type: none;
         transition: background-color 1.5s ease-in-out;
     }
 
     .remove-word-btn {
+        color: rgb(156, 160, 165);
         background: transparent;
         border: 0px;
     }
 
-    .spacer .word-definition::before {
+    .has-definition .word-definition::before {
         content: '-';
+        color: #6c757d;
         margin-right: 0.3rem;
     }
 
+    li:not(.has-definition) .word::after {
+        content: '       \200C';
+    }
+
     .word-definition {
-        margin-left: 0.3rem;
-        display: inline;
+        /* display: inline; */
+        display: inline-block;
+        height: 1.5rem;
+        margin: 0px 0px 0px 0.2rem;
+        color: #41474d;
+        /* overflow: hidden; */
+    }
+
+    .full-defs .word-definition {
+        overflow: auto;
     }
 </style>
