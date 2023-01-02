@@ -14,13 +14,17 @@ h1 {
 
 nav {
     text-align: center;
-    // margin-top: 1rem;
     padding-top: 1rem;
     margin-bottom: 2.5rem;
 }
 
 .add-vocab {
     max-width: 400px;
+    margin: 0px auto;
+}
+
+.list-vocab-container {
+    max-width: 650px;
     margin: 0px auto;
 }
 
