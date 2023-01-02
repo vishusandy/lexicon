@@ -31,16 +31,13 @@
 
     .search-bar {
         background: white;
-        display: flex;
-        position: sticky;
-        padding: 0px;
-        top: 0px;
-        z-index: 999;
     }
 
     .search-input {
         border-top-right-radius: 0px;
         border-bottom-right-radius: 0px;
+        padding-top: calc(0.375rem + 0.5px);
+        padding-bottom: calc(0.375rem + 0.5px);
     }
 
     form {
