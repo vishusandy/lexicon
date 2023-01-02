@@ -3,7 +3,7 @@
 </script>
 
 <div class="add-vocab">
-    <h1>Add Vocab</h1>
+    <h1>Add Word</h1>
     <nav>
         <a href="../list/">List words</a>
     </nav>

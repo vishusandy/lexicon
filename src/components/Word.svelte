@@ -51,6 +51,16 @@
         }
     }
     function updateWord(word: Word) {
+        if (word.word == '') {
+            if (!deleteWord(word)) {
+                const t = document.getElementById(key + '-word-' + item.id);
+                if (t) {
+                    item.word = t.title;
+                }
+            }
+            return;
+        }
+
         const t = document.getElementById(key + '-word-' + item.id);
         if (t) {
             if (t.title != word.word) {
@@ -66,12 +76,13 @@
         dispatch('updateDefinition', { word, key });
     }
 
-    function deleteWord(word: Word) {
-        if (!browser) return;
+    function deleteWord(word: Word): boolean | undefined {
+        if (!browser) return undefined;
         if (!window.confirm('Delete word?')) {
-            return;
+            return false;
         }
         dispatch('deleteWord', { word, key });
+        return true;
     }
 
     function updateTitle(dfn: HTMLElement) {
@@ -185,7 +196,7 @@
     }
 
     .remove-word-btn {
-        color: rgb(156, 160, 165);
+        color: rgb(210, 141, 141);
         background: transparent;
         border: 0px;
     }
