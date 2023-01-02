@@ -1,10 +1,19 @@
 <script lang="ts">
+    import { tick } from 'svelte';
     import Tag from './Tag.svelte';
     import { enterSpacePressed } from '../events';
     import type { RemoveTagEvent } from '../types';
 
     export let key: string;
     export let tags: string[] = [];
+
+    async function focusNewTag() {
+        await tick();
+        const t = document.getElementById(`${key}-tags`);
+        if (t) {
+            t.focus();
+        }
+    }
 
     function processTags(e: Event) {
         const target = <HTMLElement>e.target;
@@ -17,6 +26,7 @@
             tags.push(...ts);
             tags = [...new Set(tags)];
             target.innerText = '';
+            focusNewTag();
         }
         console.log(tags);
     }
