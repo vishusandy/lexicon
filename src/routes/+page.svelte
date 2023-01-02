@@ -1,16 +1,10 @@
 <script lang="ts">
-    import Add from '../components/Add.svelte';
+    import { browser } from '$app/environment';
+    if (browser) {
+        window.location.assign('./add');
+    }
 </script>
 
-<div class="add-vocab">
-    <h1>Add Vocab</h1>
-    <a href="./list/">List words</a>
-
-    <Add key="words" />
-</div>
-
-<style>
-    h1 {
-        text-align: center;
-    }
-</style>
+<!-- <svelte:head>
+    <meta http-equiv="Refresh" content="0; URL=./add" />
+</svelte:head> -->

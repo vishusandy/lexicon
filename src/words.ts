@@ -9,7 +9,6 @@ const defaultWords: Array<Word> = ['Malapropism', 'Eggcorn', 'Malaphor', 'Promul
     tags: undefined,
     dict_def: undefined,
 })));
-// const defaultWords: Word[] = [];
 
 function new_word_cache(word: Word): WordCache {
     return {
@@ -154,28 +153,3 @@ function match_word_phrase(word: Word, phrase: string): boolean {
     //     ;
 }
 
-
-function isVisible(domElement: HTMLElement) {
-    return new Promise(resolve => {
-        const o = new IntersectionObserver(([entry]) => {
-            resolve(entry.intersectionRatio === 1);
-            o.disconnect();
-        });
-        o.observe(domElement);
-    });
-}
-
-export async function scrollToWord(key: string, id: number) {
-    console.log('checking scroll');
-    let word = document.getElementById(key + "-" + id);
-    if (word) {
-        const vis = await isVisible(word);
-        word.classList.add('highlight');
-        setTimeout(() => {
-            word?.classList.remove('highlight');
-        }, 3000);
-        if (!vis) {
-            word.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-    }
-}

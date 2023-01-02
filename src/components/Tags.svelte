@@ -1,6 +1,6 @@
 <script lang="ts">
     import Tag from './Tag.svelte';
-    import { enterSpacePressed } from '../utils';
+    import { enterSpacePressed } from '../events';
     import type { RemoveTagEvent } from '../types';
 
     export let key: string;

@@ -106,7 +106,6 @@
     }
 
     .sort-group {
-        /* margin-top: 0.4rem; */
         display: flex;
         align-items: center;
         justify-content: center;

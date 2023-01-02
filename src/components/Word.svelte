@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { enterPressed } from '../utils';
+    import { enterPressed } from '../events';
     import { createEventDispatcher } from 'svelte';
     import { afterUpdate, onMount } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
-    import { removeMarks } from '../utils';
+    import { removeMarks } from '../events';
 
     const dispatch = createEventDispatcher();
 
@@ -58,8 +58,6 @@
     function addHighlights(id: string) {
         const t = document.getElementById(id);
         if (!t || !highlight || highlight.length === 0) return;
-        console.log('updating');
-        // d.innerHTML = `<mark>${d.innerHTML}</mark>`;
         for (let i = 0; i < highlight.length; i++) {
             const s = highlight[i];
             if (s == '') continue;
@@ -138,6 +136,8 @@
         overflow: hidden;
         transition: height 1s ease-in-out;
         height: 2.5rem;
+        border-left: 0px;
+        border-right: 0px;
     }
 
     .highlight {

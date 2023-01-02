@@ -4,13 +4,9 @@
 
 <div class="add-vocab">
     <h1>Add Vocab</h1>
-    <a href="../list/">List words</a>
+    <nav>
+        <a href="../list/">List words</a>
+    </nav>
 
     <Add key="words" />
 </div>
-
-<style>
-    h1 {
-        text-align: center;
-    }
-</style>

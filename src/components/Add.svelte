@@ -1,9 +1,10 @@
 <script lang="ts">
-    import Word from './Word.svelte';
+    import { APIProviders } from '../dictionary';
     import Tags from './Tags.svelte';
     import { list_add, list_init, list_save, list_sort, word_cache } from '../words';
     import type { WordList, Word as WordType } from '../types';
-    import { enterPressed } from '../utils';
+    import { enterPressed } from '../events';
+    import { toTitleCase, maybeString } from '../utils';
     import { tick } from 'svelte';
 
     export let key: string;
@@ -62,20 +63,18 @@
         return false;
     }
 
-    function maybeString(s: string): string | undefined {
-        const trimmed: string = s.trim();
-        return trimmed != '' ? trimmed : undefined;
-    }
-
     function getWord(): WordType {
         const definition = maybeString(def);
         const dict_definition = maybeString(dict_def);
 
         const tags_trimmed = tags.length === 0 ? undefined : tags.map((t) => t.trim());
 
+        const trimmed = word.trim();
+        const capped = word.trim();
+
         let w: WordType = {
             id: 0,
-            word: word.trim(),
+            word: toTitleCase(word.trim()),
             favorite,
             def: definition,
             dict_def: dict_definition,
@@ -128,6 +127,14 @@
         list_sort(list);
         list_save(list);
 
+        APIProviders.free_dict.lookup(w.word).then((data) => {
+            if (!data) {
+                console.log('could not fetch word');
+            } else {
+                console.log(data);
+            }
+        });
+
         const word_input = <HTMLInputElement | null | undefined>(
             document.getElementById(key + '-add-form')?.querySelector('input.word')
         );
@@ -174,12 +181,12 @@
         {#if dup}
             <div class="duplicate-alert alert alert-danger">
                 <p>
-                    Word <a href="/list/?word={dup.id}"><dfn class="word">{word.trim()}</dfn></a> exists
+                    Word <a href="../list/?word={dup.id}"><dfn class="word">{word.trim()}</dfn></a> exists
                 </p>
             </div>
         {:else if added}
             <div id="{key}-added-alert" class="added-alert alert alert-success">
-                Added word <a href="/list?word={added.id}">{added.word}</a>
+                Added word <a href="../list?word={added.id}">{added.word}</a>
             </div>
         {/if}
     </div>

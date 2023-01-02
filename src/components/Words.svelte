@@ -11,10 +11,10 @@
         list_save,
         list_sort,
         list_update,
-        filter_word,
-        scrollToWord
+        filter_word
     } from '../words';
-    import { removeMarks } from '../utils';
+    import { removeMarks } from '../events';
+    import { scrollToWord } from '../utils';
 
     export let key: string = 'words';
     let list: WordList = list_init(key);
@@ -121,27 +121,24 @@
 
 <style>
     .word-group {
-        margin: 0rem;
+        margin: 0rem 0rem 0rem 0rem;
         width: 100%;
-        height: 100%;
+        padding: 0.5rem 0.5rem;
+        height: fit-height;
         border-radius: 0px;
-        /* overflow: scroll; */
-    }
-
-    .sort-bar {
-        /* text-align: right; */
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-top: 0px;
     }
 
     .sticky-search-bar {
         background: white;
         display: flex;
-        /* align-content: stretch; */
         align-items: center;
         border: 0px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         padding: 1rem 0rem 0.9rem 0rem;
+        padding-bottom: 2rem;
         position: sticky;
-        /* text-align: center; */
         top: 0px;
         z-index: 99;
     }

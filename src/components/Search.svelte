@@ -13,7 +13,12 @@
 <div class="search-container">
     <div class="search-bar">
         <form on:submit|preventDefault={updateFilter}>
-            <input bind:value={search} on:input={updateFilter} class="search-input form-control" />
+            <input
+                bind:value={search}
+                placeholder="filter"
+                on:input={updateFilter}
+                class="search-input form-control"
+            />
         </form>
     </div>
 </div>

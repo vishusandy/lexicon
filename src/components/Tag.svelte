@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { enterSpacePressed } from '../utils';
+    import { enterSpacePressed } from '../events';
     import { createEventDispatcher } from 'svelte';
 
     export let tag: string;
