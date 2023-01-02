@@ -30,13 +30,11 @@
     });
 
     function removeMore(e: Event) {
-        console.log('removeMore');
         const t = <HTMLElement>document.getElementById(`${key}-${item.id}`);
         if (!t) return;
         t.classList.remove('full-defs');
     }
     function addMore(e: Event) {
-        console.log('addMore');
         const t = <HTMLElement>document.getElementById(`${key}-${item.id}`);
         if (!t) return;
         t.classList.add('full-defs');
@@ -109,12 +107,14 @@
 
     function li_focus_definition(target: HTMLElement) {
         const has_def = target.classList.contains('has-definition');
+        const full = target.classList.contains('full-defs');
         let def = <HTMLElement | null>target.querySelector('.word-definition');
-        if (def && (!has_def || target.scrollHeight - 3 <= target.clientHeight)) {
+        if (def && (!has_def || (target.scrollHeight - 3 <= target.clientHeight && !full))) {
             def.focus();
+            console.log('def focus');
             // target.classList.remove('full-defs');
         } else {
-            // target.classList.toggle('full-defs');
+            target.classList.add('full-defs');
         }
     }
 
