@@ -21,12 +21,35 @@
         const t = document.getElementById(key + '-word-' + item.id);
         if (!t) return;
         updateTitle(t);
+        updateMore();
     });
 
     afterUpdate(() => {
         addHighlights(key + '-def-' + item.id);
+        updateMore();
     });
 
+    function removeMore(e: Event) {
+        console.log('removeMore');
+        const t = <HTMLElement>document.getElementById(`${key}-${item.id}`);
+        if (!t) return;
+        t.classList.remove('full-defs');
+    }
+    function addMore(e: Event) {
+        console.log('addMore');
+        const t = <HTMLElement>document.getElementById(`${key}-${item.id}`);
+        if (!t) return;
+        t.classList.add('full-defs');
+    }
+
+    function updateMore() {
+        const li = document.getElementById(`${key}-${item.id}`);
+        if (li && li.scrollHeight - 3 > li.clientHeight) {
+            li.classList.add('more');
+        } else {
+            li?.classList.remove('more');
+        }
+    }
     function updateWord(word: Word) {
         const t = document.getElementById(key + '-word-' + item.id);
         if (t) {
@@ -74,16 +97,19 @@
     }
 
     function li_focus_definition(target: HTMLElement) {
+        const has_def = target.classList.contains('has-definition');
         let def = <HTMLElement | null>target.querySelector('.word-definition');
-        if (def) {
+        if (def && (!has_def || target.scrollHeight - 3 <= target.clientHeight)) {
             def.focus();
+            // target.classList.remove('full-defs');
+        } else {
+            // target.classList.toggle('full-defs');
         }
     }
 
     function li_clicked(e: MouseEvent) {
         if (e.target) {
-            let t = <HTMLElement>e.target;
-            li_focus_definition(t);
+            li_focus_definition(<HTMLElement>e.target);
         }
     }
 
@@ -104,6 +130,9 @@
     <button class="remove-word-btn" on:click={() => deleteWord(item)}>
         <i class="fa-solid fa-xmark" />
     </button>
+
+    <div class="more-btn" on:click={addMore}><i class="fa-solid fa-chevron-down" /></div>
+    <div class="less-btn" on:click={removeMore}><i class="fa-solid fa-chevron-up" /></div>
 
     <dfn
         id="{key}-word-{item.id}"
@@ -134,10 +163,11 @@
         width: 100%;
         margin: 0rem auto;
         overflow: hidden;
-        transition: height 1s ease-in-out;
         height: 2.5rem;
         border-left: 0px;
         border-right: 0px;
+        padding: 0.5rem 1rem;
+        word-wrap: break-word;
     }
 
     .highlight {
@@ -177,12 +207,44 @@
         /* overflow: hidden; */
     }
 
-    .word-item:focus-within {
+    .word-item:focus-within,
+    .full-defs {
+        /* why???? */
+        padding-bottom: calc(0.5rem - 3px);
+        /* padding-bottom: calc(0.5rem);  */
+    }
+    .word-item:focus-within,
+    .full-defs {
         overflow: auto;
         height: unset;
+        min-height: 2rem;
+    }
+    /* .full-defs .word-definition {
+        overflow: auto;
+    } */
+
+    .more-btn,
+    .less-btn {
+        color: #82858a;
     }
 
-    .full-defs .word-definition {
-        overflow: auto;
+    .more-btn {
+        display: none;
+    }
+
+    .less-btn {
+        display: none;
+    }
+
+    .word-item.more.full-defs .less-btn,
+    .word-item.more:focus-within .less-btn {
+        display: block;
+        float: right;
+        padding-right: 0px;
+    }
+    .word-item:not(:focus-within):not(.full-defs).more .more-btn {
+        display: block;
+        float: right;
+        padding-right: 0px;
     }
 </style>
