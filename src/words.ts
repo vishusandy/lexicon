@@ -1,5 +1,6 @@
 import { type Word, type WordCache, type WordList, defaultSortBy, defaultSortOrder, SortBy, SortOrder } from './types';
 import { browser } from '$app/environment';
+import { dictionaryCache } from './dictionary';
 
 const defaultWords: Array<Word> = ['Malapropism', 'Eggcorn', 'Malaphor', 'Promulgate', 'Complect', 'Sluice', 'Excoriate', 'Autoantonym', 'Subsume', 'Moribund', 'Alacrity', 'Folderol', 'Rapt', 'Tacit', 'Licentious', 'Priori', 'Posteriori'].sort().map((word, i) => (word_cache({
     word: word,
@@ -14,7 +15,7 @@ function new_word_cache(word: Word): WordCache {
     return {
         word: word.word.toLowerCase(),
         def: word.def?.toLocaleLowerCase(),
-        dict_def: word.dict_def?.toLocaleLowerCase(),
+        dict_def: word.dict_def ? dictionaryCache(word.dict_def) : undefined,
         tags: word.tags?.map(t => t.toLowerCase()),
     };
 }

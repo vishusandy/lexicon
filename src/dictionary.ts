@@ -18,6 +18,13 @@ export type DictionaryWord = {
     audio: DictionaryAudio[],
 };
 
+export function dictionaryCache(dict: DictionaryWord): string {
+    return dict.word.toLowerCase() + dict.parts.map((p) => {
+        p.definition.toLowerCase() + ' ' + p.synonyms.join(' ').toLowerCase() + ' ' + p.antonyms.join(' ').toLowerCase()
+    });
+}
+
+
 type APIEntry = {
     lookup: (word: string) => Promise<DictionaryWord | null>;
 };

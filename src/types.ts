@@ -1,3 +1,5 @@
+import type { DictionaryWord } from "./dictionary";
+
 export enum SortBy {
     Word = 'word',
     Id = 'id',
@@ -16,7 +18,7 @@ export type Word = {
     favorite: boolean,
     def?: string,
     tags?: string[],
-    dict_def?: string,
+    dict_def?: DictionaryWord,
     cache?: WordCache,
 };
 

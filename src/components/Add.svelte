@@ -14,7 +14,6 @@
     let def: string = '';
     let tags: string[] = [];
     let added: WordType | undefined = undefined;
-    let dict_def: string = '';
     let favorite: boolean = false;
 
     let dup: WordType | undefined = undefined;
@@ -65,19 +64,14 @@
 
     function getWord(): WordType {
         const definition = maybeString(def);
-        const dict_definition = maybeString(dict_def);
-
         const tags_trimmed = tags.length === 0 ? undefined : tags.map((t) => t.trim());
-
-        const trimmed = word.trim();
-        const capped = word.trim();
 
         let w: WordType = {
             id: 0,
             word: toTitleCase(word.trim()),
             favorite,
             def: definition,
-            dict_def: dict_definition,
+            dict_def: undefined,
             tags: tags_trimmed,
             cache: undefined
         };
