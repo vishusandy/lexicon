@@ -5,7 +5,7 @@
 <nav class="main">
     <a href="../add/">Add words</a>
 </nav>
-<h1>Word List</h1>
+<!-- <h1>Word List</h1> -->
 <div class="list-vocab-container">
     <Words key="words" />
 </div>

@@ -41,21 +41,21 @@
         position: absolute;
         margin-top: 0.55rem;
         margin-left: 0.7rem;
-        color: rgb(170, 173, 204);
+        color: rgb(185, 187, 206);
     }
     .search-container {
         display: block;
         margin: 0.5rem auto;
         background: white;
         width: 90%;
-        max-width: 16rem;
+        max-width: 20rem;
     }
 
     .search-input {
         border-radius: 0.6rem;
         display: block;
         font-size: 1.12rem;
-        padding: 0.4rem 1.5rem 0.4rem 2.5rem;
+        padding: 0.4rem 1.5rem 0.4rem 2.1rem;
         text-align: left;
     }
 </style>
