@@ -107,15 +107,16 @@
                 updateFilter(e.detail);
             }}
         />
-        <Sort
-            {key}
-            sort_by={list.sort_by}
-            sort_order={list.sort_order}
-            on:updateSort={(e) => updateSort(e.detail)}
-        />
         <div class="options-bar">
-            <div on:click={showAll}>Show</div>
-            <div on:click={showNone}>Hide</div>
+            <Sort
+                {key}
+                sort_by={list.sort_by}
+                sort_order={list.sort_order}
+                on:updateSort={(e) => updateSort(e.detail)}
+            />
+            <div class="show-hide">
+                <button on:click={showAll}>Show</button>/<button on:click={showNone}>Hide</button>
+            </div>
         </div>
     </div>
 
@@ -138,36 +139,33 @@
 {/if}
 
 <style>
+    .options-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        padding: 0.5rem 1.2rem 0.3rem 1.2rem;
+        background: #f1f2f7;
+        border-radius: 0.375rem;
+    }
+
     .word-group {
-        margin: 0rem 0rem 0rem 0rem;
         width: 100%;
         padding: 0.5rem 1.25rem;
-        height: fit-height;
-        border-radius: 0px;
-        /* border: 1px solid rgba(0, 0, 0, 0.125); */
-        border-top: 0px;
-
-        /* background: #f4f4f7; */
-        /* background: linear-gradient(
-            90deg,
-            rgba(247, 244, 239, 0.1) 0%,
-            rgba(139, 134, 123, 0.1) 25%,
-            rgba(117, 113, 104, 0.1) 50%,
-            rgba(139, 134, 123, 0.1) 75%,
-            rgba(247, 244, 239, 0.1) 100%
-        ); */
     }
 
     .sticky-search-bar {
         background: white;
-        /* display: flex; */
-        /* align-items: baseline; */
         border: 0px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-        padding: 1rem 0rem 0.9rem 0rem;
-        padding-bottom: 2rem;
+        padding: 1rem 0rem 0.4rem 0rem;
         position: sticky;
         top: 0px;
         z-index: 99;
+    }
+
+    button {
+        /* border-radius: 0.375rem; */
+        /* border: 1px solid #b9bfc5; */
+        border: 0px;
+        background: transparent;
     }
 </style>
