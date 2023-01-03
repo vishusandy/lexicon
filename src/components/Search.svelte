@@ -12,19 +12,20 @@
 
     function resetFilterEsc(e: KeyboardEvent) {
         if (escapePressed(e)) {
-            dispatch('updateFilter', { search: '', key });
             search = '';
+            dispatch('updateFilter', { search, key });
         }
     }
 
     function resetFilterBtn(e: Event) {
-        dispatch('updateFilter', { search: '', key });
         search = '';
+        dispatch('updateFilter', { search, key });
     }
 </script>
 
 <div class="search-container">
     <form on:submit|preventDefault={updateFilter}>
+        <div class="search-icon"><i class="fa-solid fa-magnifying-glass" /></div>
         <input
             bind:value={search}
             placeholder="filter"
@@ -36,25 +37,25 @@
 </div>
 
 <style>
+    .search-icon {
+        position: absolute;
+        margin-top: 0.55rem;
+        margin-left: 0.7rem;
+        color: rgb(170, 173, 204);
+    }
     .search-container {
-        display: inline-block;
-        margin-left: auto;
+        display: block;
+        margin: 0.5rem auto;
         background: white;
-        text-align: right;
+        width: 90%;
+        max-width: 16rem;
     }
 
     .search-input {
+        border-radius: 0.6rem;
         display: block;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-top: calc(0.375rem + 0.5px);
-        padding-bottom: calc(0.375rem + 0.5px);
+        font-size: 1.12rem;
+        padding: 0.4rem 1.5rem 0.4rem 2.5rem;
         text-align: left;
-    }
-
-    form {
-        display: inline-block;
     }
 </style>

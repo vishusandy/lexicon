@@ -160,8 +160,8 @@
 
     .sticky-search-bar {
         background: white;
-        display: flex;
-        align-items: baseline;
+        /* display: flex; */
+        /* align-items: baseline; */
         border: 0px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         padding: 1rem 0rem 0.9rem 0rem;
