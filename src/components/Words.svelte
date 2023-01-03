@@ -28,14 +28,28 @@
     else scrollTo = null;
 
     if (scrollTo) {
-        scroll(parseInt(scrollTo), key);
+        scrollToWord(parseInt(scrollTo), key);
     }
 
-    async function scroll(id: number, key: string) {
-        if (!Number.isNaN(id)) {
-            await tick();
-            scrollToWord(key, id);
-        }
+    function showAll() {
+        list.words
+            .filter((w) => filter_word(phrases, w))
+            .forEach((w) => {
+                const t = document.getElementById(`${key}-${w.id}`);
+                if (t && t.classList.contains('more')) {
+                    t.classList.add('full-defs');
+                }
+            });
+    }
+    function showNone() {
+        list.words
+            .filter((w) => filter_word(phrases, w))
+            .forEach((w) => {
+                const t = document.getElementById(`${key}-${w.id}`);
+                if (t && t.classList.contains('more')) {
+                    t.classList.remove('full-defs');
+                }
+            });
     }
 
     function updateWord(e: WordEvent) {
@@ -45,7 +59,7 @@
             list_sort(list);
             list_save(list);
             list = list;
-            scroll(e.word.id, key);
+            scrollToWord(e.word.id, key);
         } else {
             console.log('word update failed');
         }
@@ -99,9 +113,13 @@
             sort_order={list.sort_order}
             on:updateSort={(e) => updateSort(e.detail)}
         />
+        <div class="options-bar">
+            <div on:click={showAll}>Show</div>
+            <div on:click={showNone}>Hide</div>
+        </div>
     </div>
 
-    <ul class="word-group list-group {full_defs}">
+    <ul class="word-group {full_defs}">
         {#each list.words.filter((w) => filter_word(phrases, w)) as word}
             <Word
                 {key}
@@ -123,11 +141,21 @@
     .word-group {
         margin: 0rem 0rem 0rem 0rem;
         width: 100%;
-        padding: 0.5rem 0.5rem;
+        padding: 0.5rem 1.25rem;
         height: fit-height;
         border-radius: 0px;
-        border: 1px solid rgba(0, 0, 0, 0.125);
+        /* border: 1px solid rgba(0, 0, 0, 0.125); */
         border-top: 0px;
+
+        /* background: #f4f4f7; */
+        /* background: linear-gradient(
+            90deg,
+            rgba(247, 244, 239, 0.1) 0%,
+            rgba(139, 134, 123, 0.1) 25%,
+            rgba(117, 113, 104, 0.1) 50%,
+            rgba(139, 134, 123, 0.1) 75%,
+            rgba(247, 244, 239, 0.1) 100%
+        ); */
     }
 
     .sticky-search-bar {

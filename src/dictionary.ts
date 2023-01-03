@@ -47,9 +47,6 @@ async function getDictionaryDef(url: string, def_fn: (json: any) => DictionaryWo
     };
     const json = await resp.json();
 
-    console.log('received json');
-    console.log(json);
-
     return def_fn(json);
 }
 
@@ -62,15 +59,11 @@ function dictionaryAPIUrl(word: string): string {
 function dictionaryApiJsonDef(json_array: any): DictionaryWord | null {
     const json = json_array[0];
 
-    console.log('checking for word');
-
     if (!json.word) return null;
     let word: string = json.word;
 
-    console.log('checking for meanings');
     if (!json.meanings || !Array.isArray(json.meanings)) return null;
 
-    console.log('proceeding');
     function getEntries(json: any): DictionaryEntryDefintion[] {
         let entries: DictionaryEntryDefintion[] = [];
 
@@ -78,10 +71,7 @@ function dictionaryApiJsonDef(json_array: any): DictionaryWord | null {
             if (!meaning.partOfSpeech) return;
             const part: string = meaning.partOfSpeech;
 
-            console.log(`part of speech: ${part}`);
-
             if (Array.isArray(meaning.definitions)) {
-                console.log(`processing meaning definitions`);
                 meaning.definitions.forEach((def: any) => {
                     if (!def.definition) return;
                     const entry: DictionaryEntryDefintion = {

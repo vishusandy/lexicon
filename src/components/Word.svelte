@@ -5,6 +5,7 @@
     import { browser } from '$app/environment';
     import type { Word } from '../types';
     import { removeMarks } from '../events';
+    import DictDef from './DictDef.svelte';
 
     const dispatch = createEventDispatcher();
 
@@ -114,7 +115,7 @@
             console.log('def focus');
             // target.classList.remove('full-defs');
         } else {
-            target.classList.add('full-defs');
+            target.classList.toggle('full-defs');
         }
     }
 
@@ -132,11 +133,12 @@
     }
 </script>
 
+<hr />
 <li
     id="{key}-{item.id}"
     on:click|self={li_clicked}
     on:keydown|self={li_enter}
-    class="{spacer} list-group-item word-item"
+    class="{spacer} word-item"
 >
     <button class="remove-word-btn" on:click={() => deleteWord(item)}>
         <i class="fa-solid fa-xmark" />
@@ -167,18 +169,52 @@
     >
         {#if item.def}{item.def}{/if}
     </div>
+
+    <DictDef {key} dict={item.dict_def} />
 </li>
 
 <style>
+    hr {
+        margin: 0px auto;
+        height: 1px;
+        border: 0px;
+        width: 90%;
+        background: rgb(247, 244, 239);
+        background: linear-gradient(
+            90deg,
+            rgba(247, 244, 239, 1) 0%,
+            rgba(139, 134, 123, 1) 25%,
+            rgba(117, 113, 104, 1) 50%,
+            rgba(139, 134, 123, 1) 75%,
+            rgba(247, 244, 239, 1) 100%
+        );
+    }
+    hr:first-of-type {
+        display: none;
+    }
+
     .word-item {
+        /* background: #f4f4f7;
+        background: #f5f5f8;
+        border-radius: 0.375rem; */
         width: 100%;
-        margin: 0rem auto;
+        margin: 0.2rem auto;
         overflow: hidden;
         height: 2.5rem;
         border-left: 0px;
         border-right: 0px;
         padding: 0.5rem 1rem;
         word-wrap: break-word;
+    }
+
+    .word {
+        color: #171a1d;
+    }
+
+    .word-definition {
+        display: inline;
+        margin: 0px 0px 0px 0.2rem;
+        color: #495057;
     }
 
     .highlight {
@@ -211,13 +247,6 @@
         content: '       \200C';
     }
 
-    .word-definition {
-        display: inline;
-        margin: 0px 0px 0px 0.2rem;
-        color: #41474d;
-        /* overflow: hidden; */
-    }
-
     .word-item:focus-within,
     .full-defs {
         /* why???? */
@@ -230,12 +259,10 @@
         height: unset;
         min-height: 2rem;
     }
-    /* .full-defs .word-definition {
-        overflow: auto;
-    } */
 
     .more-btn,
     .less-btn {
+        margin-left: 0.5rem;
         color: #82858a;
     }
 
@@ -253,6 +280,7 @@
         float: right;
         padding-right: 0px;
     }
+
     .word-item:not(:focus-within):not(.full-defs).more .more-btn {
         display: block;
         float: right;

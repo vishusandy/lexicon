@@ -23,6 +23,14 @@ export function enterSpacePressed(e: KeyboardEvent) {
     }
 }
 
+export function escapePressed(e: KeyboardEvent): boolean {
+    if (e.code == 'Escape' && e.target) {
+        (<HTMLInputElement>e.target).blur();
+        return true;
+    }
+    return false;
+}
+
 export function removeMarks(s: string): string {
     return s.replace(/<\/?mark>/, '');
 }

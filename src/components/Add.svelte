@@ -111,35 +111,35 @@
     }
 
     function addWord(e: Event) {
+        // return immediately if the word is a duplicate
         if (trimDuplicateWord()) return false;
 
-        const w = getWord();
+        let w = getWord();
 
         addedAlert(w);
 
-        list_add(list, w);
-        list_sort(list);
-        list_save(list);
+        APIProviders.free_dict
+            .lookup(w.word)
+            .then((data) => {
+                w.dict_def = data ? data : undefined;
+                console.log('Added dictionary def: %o', w.dict_def);
+            })
+            .finally(() => {
+                list_add(list, w);
+                list_sort(list);
+                list_save(list);
 
-        APIProviders.free_dict.lookup(w.word).then((data) => {
-            if (!data) {
-                console.log('could not fetch word');
-            } else {
-                console.log(data);
-            }
-        });
+                const word_input = <HTMLInputElement | null | undefined>(
+                    document.getElementById(key + '-add-form')?.querySelector('input.word')
+                );
+                if (word_input) {
+                    word_input.classList.add('empty');
+                }
 
-        const word_input = <HTMLInputElement | null | undefined>(
-            document.getElementById(key + '-add-form')?.querySelector('input.word')
-        );
-
-        if (word_input) {
-            word_input.classList.add('empty');
-        }
-
-        word = '';
-        def = '';
-        dup = undefined;
+                word = '';
+                def = '';
+                dup = undefined;
+            });
     }
 </script>
 

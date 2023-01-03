@@ -1,3 +1,4 @@
+import { tick } from 'svelte';
 
 export function maybeString(s: string): string | undefined {
     const trimmed: string = s.trim();
@@ -22,17 +23,25 @@ function isVisible(domElement: HTMLElement) {
     });
 }
 
-export async function scrollToWord(key: string, id: number) {
-    console.log('checking scroll');
-    let word = document.getElementById(key + "-" + id);
-    if (word) {
-        const vis = await isVisible(word);
-        word.classList.add('highlight');
+async function scrollToElement(el: HTMLElement, id: number) {
+    if (el) {
+        const vis = await isVisible(el);
+        el.classList.add('highlight');
         setTimeout(() => {
-            word?.classList.remove('highlight');
+            el?.classList.remove('highlight');
         }, 3000);
         if (!vis) {
-            word.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+}
+
+export async function scrollToWord(id: number, key: string) {
+    if (!Number.isNaN(id)) {
+        await tick();
+        const t = document.getElementById(key + "-" + id);
+        if (t) {
+            scrollToElement(t, id);
         }
     }
 }
