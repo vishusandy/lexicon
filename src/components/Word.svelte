@@ -18,31 +18,43 @@
     let spacer: string;
     $: spacer = !item.def || item.def == '<br>' ? '' : 'has-definition';
 
+    function getWordElem(): HTMLElement | null {
+        return document.getElementById(key + '-word-' + item.id);
+    }
+
+    function getLiElem(): HTMLElement | null {
+        return document.getElementById(`${key}-${item.id}`);
+    }
+
+    function defId(): string {
+        return key + '-def-' + item.id;
+    }
+
     onMount(() => {
-        const t = document.getElementById(key + '-word-' + item.id);
+        const t = getWordElem();
         if (!t) return;
         updateTitle(t);
         updateMore();
     });
 
     afterUpdate(() => {
-        addHighlights(key + '-def-' + item.id);
+        addHighlights(defId());
         updateMore();
     });
 
     function removeMore(e: Event) {
-        const t = <HTMLElement>document.getElementById(`${key}-${item.id}`);
+        const t = getLiElem();
         if (!t) return;
         t.classList.remove('full-defs');
     }
     function addMore(e: Event) {
-        const t = <HTMLElement>document.getElementById(`${key}-${item.id}`);
+        const t = getLiElem();
         if (!t) return;
         t.classList.add('full-defs');
     }
 
     function updateMore() {
-        const li = document.getElementById(`${key}-${item.id}`);
+        const li = getLiElem();
         if (li && li.scrollHeight - 3 > li.clientHeight) {
             li.classList.add('more');
         } else {
@@ -50,23 +62,18 @@
         }
     }
     function updateWord(word: Word) {
+        const t = getWordElem();
         if (word.word == '') {
             if (!deleteWord(word)) {
-                const t = document.getElementById(key + '-word-' + item.id);
-                if (t) {
-                    item.word = t.title;
-                }
+                if (t) item.word = t.title;
             }
             return;
         }
 
-        const t = document.getElementById(key + '-word-' + item.id);
-        if (t) {
-            if (t.title != word.word) {
-                updateTitle(t);
-                dispatch('updateWord', { word, key });
-            }
-        } else {
+        if (!t) {
+            dispatch('updateWord', { word, key });
+        } else if (t.title != word.word) {
+            updateTitle(t);
             dispatch('updateWord', { word, key });
         }
     }
@@ -163,9 +170,9 @@
         on:keydown={enterPressed}
         on:blur={() => {
             updateDefinition(item);
-            addHighlights(key + '-def-' + item.id);
+            addHighlights(defId());
         }}
-        on:focus={() => removeHighlights(key + '-def-' + item.id)}
+        on:focus={() => removeHighlights(defId())}
     >
         {#if item.def}{item.def}{/if}
     </div>
