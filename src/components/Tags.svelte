@@ -11,16 +11,18 @@
     export let key: string;
     export let tags: string[] = [];
 
-    // afterUpdate(() => {
-    //     console.log('sending updateTags event');
-    //     dispatch('updateTags', { tags, key });
-    // });
-
     async function focusNewTag() {
         await tick();
         const t = document.getElementById(`${key}-tags`);
         if (t) {
             t.focus();
+        }
+    }
+
+    function tagChanged(e: TagUpdatedEvent) {
+        if (tags[e.index]) {
+            tags[e.index] = e.tag;
+            dispatch('updateTags');
         }
     }
 
@@ -36,8 +38,6 @@
             tags = [...new Set(tags)];
             target.innerText = '';
             focusNewTag();
-
-            console.log('sending updateTags event');
             dispatch('updateTags');
         }
     }
@@ -49,9 +49,13 @@
     }
 </script>
 
-<!-- <div class="tag-list"> -->
 {#each tags as tag, i}
-    <Tag bind:tag index={i} on:removeTag={(e) => deleteTag(e.detail)} />
+    <Tag
+        bind:tag
+        index={i}
+        on:removeTag={(e) => deleteTag(e.detail)}
+        on:tagUpdated={(e) => tagChanged(e.detail)}
+    />
 {/each}
 <span
     id="{key}-tags"
@@ -63,7 +67,6 @@
     contenteditable="true"
 />
 
-<!-- </div> -->
 <style lang="scss">
     @use '../mixins.scss';
 

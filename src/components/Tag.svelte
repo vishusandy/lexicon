@@ -16,7 +16,6 @@
     }
 
     function remove(e: Event) {
-        console.log('dispatching remove event');
         dispatch('removeTag', { index });
     }
 
@@ -53,10 +52,10 @@
         font-weight: 600;
         color: #a8303c;
         font-size: 0.8rem;
-        margin-left: -0.7rem;
-        margin-right: -0.4rem;
+        margin-left: -0.4rem;
+        margin-right: -0.6em;
         position: relative;
-        top: -0.3rem;
+        top: -0.5rem;
     }
 
     .tag::before {

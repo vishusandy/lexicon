@@ -90,6 +90,7 @@
         if (e.key != key) return;
         list_update(list, e.word, updateWordTags);
         list_save(list);
+        list = list;
     }
 
     function updateFavorite(e: WordEvent) {
