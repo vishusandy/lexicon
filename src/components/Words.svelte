@@ -25,7 +25,7 @@
 
     let search: string = '';
     let full_defs: string = '';
-    $: phrases = search.split(' ');
+    $: phrases = search.split(' ').filter((f) => f.length > 0);
     $: full_defs = search === '' ? '' : 'full-defs';
 
     let scrollTo: string | null;

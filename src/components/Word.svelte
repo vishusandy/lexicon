@@ -12,12 +12,7 @@
 
     export let key: string;
     export let item: Word;
-    export let highlight: string[] | undefined = undefined;
-    // let def: string;
-    // $: def = !item.def ? '': (highlight)? '<mark>' +  + '<mark>': item.def;
-
-    let spacer: string;
-    $: spacer = !item.def || item.def == '<br>' ? '' : 'has-definition';
+    export let highlight: string[];
 
     function getWordElem(): HTMLElement | null {
         return document.getElementById(key + '-word-' + item.id);
@@ -104,11 +99,11 @@
 </script>
 
 <hr />
-<li id="{key}-{item.id}" class="{spacer} word-item">
+<li id="{key}-{item.id}" class="word-item">
     <button class="remove-word-btn" on:click={() => deleteWord(item)}>
         <i class="fa-solid fa-xmark" />
     </button>
-    <details>
+    <details open={Array.isArray(highlight) && highlight.length > 0}>
         <summary>
             <input
                 id="{key}-fav-{item.id}"
@@ -135,6 +130,9 @@
             <div class="detail-arrow" />
         </summary>
         <div class="detail-content">
+            {#if item.dict_def}
+                <DictDef {key} dict={item.dict_def} />
+            {/if}
             <span class="def-label">Notes:</span>
             <div
                 id="{key}-def-{item.id}"
@@ -154,7 +152,6 @@
                 <span class="tags-label">Tags:</span>
                 <Tags {key} bind:tags={item.tags} on:updateTags={updateTags} />
             </div>
-            <DictDef {key} dict={item.dict_def} />
         </div>
     </details>
 </li>
@@ -218,6 +215,7 @@
 
     .def-label {
         float: left;
+        margin-right: 0.5rem;
     }
 
     .detail-content {
