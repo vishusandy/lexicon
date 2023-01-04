@@ -57,5 +57,13 @@ export type RemoveTagEvent = {
     index: number,
 };
 
+export type TagUpdatedEvent = {
+    tag: string,
+    index: number,
+};
 
+export type UpdateTagsEvent = {
+    tags: string[],
+    key: string
+};
 

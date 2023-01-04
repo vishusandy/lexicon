@@ -1,11 +1,20 @@
 <script lang="ts">
     import { tick } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
+    import { afterUpdate, onMount } from 'svelte';
     import Tag from './Tag.svelte';
     import { enterSpacePressed } from '../events';
-    import type { RemoveTagEvent } from '../types';
+    import type { RemoveTagEvent, TagUpdatedEvent } from '../types';
+
+    const dispatch = createEventDispatcher();
 
     export let key: string;
     export let tags: string[] = [];
+
+    // afterUpdate(() => {
+    //     console.log('sending updateTags event');
+    //     dispatch('updateTags', { tags, key });
+    // });
 
     async function focusNewTag() {
         await tick();
@@ -27,35 +36,38 @@
             tags = [...new Set(tags)];
             target.innerText = '';
             focusNewTag();
+
+            console.log('sending updateTags event');
+            dispatch('updateTags');
         }
-        console.log(tags);
     }
 
     function deleteTag(e: RemoveTagEvent) {
         tags.splice(e.index, 1);
         tags = tags;
+        dispatch('updateTags');
     }
 </script>
 
-<div class="tag-list">
-    {#each tags as tag, i}
-        <Tag bind:tag index={i} on:removeTag={(e) => deleteTag(e.detail)} />
-    {/each}
-    <div
-        id="{key}-tags"
-        class="tag-input form-border"
-        title="Add new tag"
-        placeholder="+"
-        on:keydown={enterSpacePressed}
-        on:focusout={processTags}
-        contenteditable="true"
-    />
-</div>
+<!-- <div class="tag-list"> -->
+{#each tags as tag, i}
+    <Tag bind:tag index={i} on:removeTag={(e) => deleteTag(e.detail)} />
+{/each}
+<span
+    id="{key}-tags"
+    class="tag-input form-border"
+    title="New tag"
+    placeholder="+"
+    on:keydown={enterSpacePressed}
+    on:focusout={processTags}
+    contenteditable="true"
+/>
 
+<!-- </div> -->
 <style lang="scss">
     @use '../mixins.scss';
     .tag-list {
-        display: flex;
+        // display: flex;
     }
 
     .tag-input {

@@ -37,18 +37,19 @@
 </div>
 
 <style>
+    .search-container {
+        display: block;
+        margin: 0rem auto 0.5rem;
+        background: white;
+        width: 90%;
+        max-width: 20rem;
+    }
+
     .search-icon {
         position: absolute;
         margin-top: 0.55rem;
         margin-left: 0.7rem;
         color: rgb(185, 187, 206);
-    }
-    .search-container {
-        display: block;
-        margin: 0.5rem auto;
-        background: white;
-        width: 90%;
-        max-width: 20rem;
     }
 
     .search-input {

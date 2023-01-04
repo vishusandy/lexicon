@@ -11,7 +11,7 @@ const defaultWords: Array<Word> = ['Malapropism', 'Eggcorn', 'Malaphor', 'Promul
     dict_def: undefined,
 })));
 
-function new_word_cache(word: Word): WordCache {
+export function new_word_cache(word: Word): WordCache {
     return {
         word: word.word.toLowerCase(),
         def: word.def?.toLocaleLowerCase(),
@@ -20,13 +20,13 @@ function new_word_cache(word: Word): WordCache {
     };
 }
 
-export function word_cache(word: Word) {
+export function word_cache(word: Word): Word {
     word.cache = new_word_cache(word);
     return word;
 }
 
 export function list_blank(key: string): WordList {
-    const list = {
+    let list = {
         "words": defaultWords,
         "next_id": defaultWords.length,
         "sort_by": defaultSortBy,
@@ -42,36 +42,41 @@ export function list_init(key: string): WordList {
     //     localStorage.removeItem(key);
     // }
     const stored = (browser) ? localStorage.getItem(key) : null;
-    const list: WordList = (stored) ? JSON.parse(stored) : list_blank(key);
+    let list: WordList = (stored) ? JSON.parse(stored) : list_blank(key);
+    // if (browser) {
+    //     console.log('sorting: %o', list)
+    //     list_sort(list);
+    // }
     return list;
 }
 
 export function list_add(list: WordList, word: Word): number {
-    // let w: Word = { word, id: list.next_id, def, favorite: false, tags: undefined, cache: undefined };
     word_cache(word);
     word.id = list.next_id;
     list.next_id += 1;
     return list.words.push(word) - 1;
 }
 
-export function list_update(list: WordList, id: number, word?: string, def?: string): boolean {
-    if (word === undefined && def === undefined) return false;
+export function list_update(list: WordList, word: Word, fn: (list_word: Word, updated: Word) => boolean): boolean {
+    const i = list.words.findIndex(w => w.id == word.id);
+    return i >= 0 && fn(list.words[i], word);
+}
 
+export function list_update_word(list: WordList, id: number, word: string): boolean {
     const i = list.words.findIndex(w => w.id == id);
-    if (i < 0) {
-        return false;
-    }
+    if (i < 0) return false;
 
-    if (word) {
-        list.words[i].word = word;
-    }
+    list.words[i].word = word;
+    list.words[i].cache = new_word_cache(list.words[i]);
+    return true;
+}
 
-    if (def !== undefined) {
-        list.words[i].def = def;
-    }
+export function list_update_definition(list: WordList, id: number, def: string | undefined): boolean {
+    const i = list.words.findIndex(w => w.id == id);
+    if (i < 0) return false;
 
-    word_cache(list.words[i]);
-
+    list.words[i].def = def;
+    list.words[i].cache = new_word_cache(list.words[i]);
     return true;
 }
 
@@ -94,8 +99,8 @@ export function list_save(list: WordList) {
     }
 }
 
-function sort_fn(sort_by: SortBy, sort_order: SortOrder): (a: Word, b: Word) => number {
-    let sort;
+function sort_fn(sort_by: SortBy, sort_order: SortOrder, sort_favorites: boolean = true): (a: Word, b: Word) => number {
+    let sort: (a: Word, b: Word) => number;
 
     switch (sort_by) {
         case SortBy.Id:
@@ -125,7 +130,16 @@ function sort_fn(sort_by: SortBy, sort_order: SortOrder): (a: Word, b: Word) => 
             }
             break;
     }
-    return sort;
+    // if (sort_favorites) {
+    const favs = (a: Word, b: Word): number => {
+        const m = Math.pow(-1, Number(sort_order === SortOrder.Asc));
+        const f = (Number(a.favorite) - Number(b.favorite)) * m;
+        return (f !== 0) ? f : sort(a, b);
+    };
+    return favs;
+    // } else {
+    //     return sort;
+    // }
 }
 
 // returns true if the word should be shown

@@ -168,7 +168,9 @@
     </div>
     <div class="label" on:keydown={focusAddTag} on:click={focusAddTag}>Tags</div>
     <div class="tag-container">
-        <Tags {key} bind:tags />
+        <div class="tag-list">
+            <Tags {key} bind:tags />
+        </div>
     </div>
 
     <div class="alert-box">
@@ -191,6 +193,10 @@
 </form>
 
 <style>
+    .tag-list {
+        display: flex;
+    }
+
     .alert-box {
         margin-top: 1rem;
         margin-bottom: 2rem;

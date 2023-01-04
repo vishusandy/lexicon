@@ -6,9 +6,10 @@
     export let key: string;
     export let sort_by: SortBy;
     export let sort_order: SortOrder;
+
     let sort_title: string;
     let desc: boolean = sort_order === SortOrder.Desc;
-    // let desc: boolean;
+
     $: sort_order = desc ? SortOrder.Desc : SortOrder.Asc;
     $: sort_title = desc ? 'Descending sort order' : 'Ascending sort order';
 
@@ -19,26 +20,24 @@
 
 <div class="sort-container">
     <form on:submit|preventDefault>
-        <div class="sort-group">
-            <!-- <label for="{key}-sort-by" class="sort-by-label">Sort By</label> -->
-            <select id="{key}-sort-by" bind:value={sort_by} on:change={updateSort} title="Sort by">
-                <option value="word" selected={sort_by == SortBy.Word}>Word</option>
-                <option value="id" selected={sort_by == SortBy.Id}>Id</option>
-            </select>
-            <input
-                id="{key}-sort-order"
-                bind:checked={desc}
-                on:change={updateSort}
-                type="checkbox"
-                title={sort_title}
-                class="sort-checkbox form-check-input"
-            />
-            <label
-                for="{key}-sort-order"
-                class="sort-checkbox-label form-check-label"
-                title={sort_title}
-            />
-        </div>
+        <!-- <label for="{key}-sort-by" class="sort-by-label">Sort By</label> -->
+        <select id="{key}-sort-by" bind:value={sort_by} on:change={updateSort} title="Sort by">
+            <option value="word" selected={sort_by == SortBy.Word}>Word</option>
+            <option value="id" selected={sort_by == SortBy.Id}>Date</option>
+        </select>
+        <input
+            id="{key}-sort-order"
+            bind:checked={desc}
+            on:change={updateSort}
+            type="checkbox"
+            title={sort_title}
+            class="sort-checkbox form-check-input"
+        />
+        <label
+            for="{key}-sort-order"
+            class="sort-checkbox-label form-check-label"
+            title={sort_title}
+        />
     </form>
 </div>
 
@@ -48,11 +47,8 @@
     }
 
     .sort-group {
-        width: fit-content;
-        height: 2rem;
-    }
-
-    .sort-group label {
+        /* width: fit-content;
+        height: 2rem; */
     }
 
     select {

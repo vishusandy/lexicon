@@ -7,9 +7,11 @@
 
     const dispatch = createEventDispatcher();
 
-    function checkBlank(e: Event) {
+    function checkUpdate(e: Event) {
         if (tag == '' || tag == '<br>') {
             dispatch('removeTag', { index });
+        } else {
+            dispatch('tagUpdated', { tag, index });
         }
     }
 
@@ -17,6 +19,7 @@
         console.log('dispatching remove event');
         dispatch('removeTag', { index });
     }
+
     function removeKeydown(e: KeyboardEvent) {
         if (e.code == 'Enter' || e.code == 'NumpadEnter') {
             remove(e);
@@ -25,15 +28,15 @@
 </script>
 
 <div class="tag-btn">
-    <div
+    <span
         class="tag form-border"
         bind:innerHTML={tag}
-        on:focusout={checkBlank}
+        on:focusout={checkUpdate}
         on:keydown={enterSpacePressed}
         contenteditable="true"
     >
         {tag}
-    </div>
+    </span>
     <button class="x-tag">
         <i on:click={remove} on:keydown={removeKeydown} class="fa-solid fa-xmark" />
     </button>
@@ -50,8 +53,8 @@
         font-weight: 600;
         color: #a8303c;
         font-size: 0.8rem;
-        margin-left: -0.5rem;
-        margin-right: -0.2rem;
+        margin-left: -0.7rem;
+        margin-right: -0.4rem;
         position: relative;
         top: -0.3rem;
     }

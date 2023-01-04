@@ -1,6 +1,5 @@
 <script lang="ts">
     import { browser } from '$app/environment';
-    import { tick } from 'svelte';
     import Sort from './Sort.svelte';
     import Word from './Word.svelte';
     import Search from './Search.svelte';
@@ -11,13 +10,19 @@
         list_save,
         list_sort,
         list_update,
-        filter_word
+        list_update_word,
+        list_update_definition,
+        filter_word,
+        new_word_cache
     } from '../words';
     import { removeMarks } from '../events';
     import { scrollToWord } from '../utils';
 
     export let key: string = 'words';
     let list: WordList = list_init(key);
+    list_sort(list);
+    list = list;
+
     let search: string = '';
     let full_defs: string = '';
     $: phrases = search.split(' ');
@@ -35,9 +40,9 @@
         list.words
             .filter((w) => filter_word(phrases, w))
             .forEach((w) => {
-                const t = document.getElementById(`${key}-${w.id}`);
-                if (t && t.classList.contains('more')) {
-                    t.classList.add('full-defs');
+                const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+                if (t) {
+                    t.open = true;
                 }
             });
     }
@@ -45,9 +50,9 @@
         list.words
             .filter((w) => filter_word(phrases, w))
             .forEach((w) => {
-                const t = document.getElementById(`${key}-${w.id}`);
-                if (t && t.classList.contains('more')) {
-                    t.classList.remove('full-defs');
+                const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+                if (t) {
+                    t.open = false;
                 }
             });
     }
@@ -55,7 +60,7 @@
     function updateWord(e: WordEvent) {
         if (e.key != key) return;
         console.log('checking word update');
-        if (list_update(list, e.word.id, e.word.word)) {
+        if (list_update_word(list, e.word.id, e.word.word)) {
             list_sort(list);
             list_save(list);
             list = list;
@@ -68,11 +73,37 @@
     function updateDefinition(e: WordEvent) {
         if (e.key != key || !e.word.def) return;
         let def = removeMarks(e.word.def.trim());
-        if (list_update(list, e.word.id, undefined, def)) {
+        if (list_update_definition(list, e.word.id, def)) {
             list_save(list);
         } else {
             console.log('definition update failed');
         }
+    }
+
+    function updateTags(e: WordEvent) {
+        function updateWordTags(list_word: WordType, updated: WordType) {
+            list_word.tags = updated.tags;
+            list_word.cache = new_word_cache(list_word);
+            return true;
+        }
+
+        if (e.key != key) return;
+        list_update(list, e.word, updateWordTags);
+        list_save(list);
+    }
+
+    function updateFavorite(e: WordEvent) {
+        function updateWordFavorite(list_word: WordType, updated: WordType) {
+            list_word.favorite = updated.favorite;
+            return true;
+        }
+        console.log('updating favorite');
+
+        if (e.key != key) return;
+        list_update(list, e.word, updateWordFavorite);
+        // list_sort(list);
+        list_save(list);
+        list = list;
     }
 
     function deleteWord(e: WordEvent) {
@@ -108,15 +139,15 @@
             }}
         />
         <div class="options-bar">
+            <div class="show-hide">
+                <button on:click={showAll}>Show</button>/<button on:click={showNone}>Hide</button>
+            </div>
             <Sort
                 {key}
                 sort_by={list.sort_by}
                 sort_order={list.sort_order}
                 on:updateSort={(e) => updateSort(e.detail)}
             />
-            <div class="show-hide">
-                <button on:click={showAll}>Show</button>/<button on:click={showNone}>Hide</button>
-            </div>
         </div>
     </div>
 
@@ -129,6 +160,8 @@
                 on:updateWord={(e) => updateWord(e.detail)}
                 on:updateDefinition={(e) => updateDefinition(e.detail)}
                 on:deleteWord={(e) => deleteWord(e.detail)}
+                on:updateWordTags={(e) => updateTags(e.detail)}
+                on:updateFavorite={(e) => updateFavorite(e.detail)}
             />
         {:else}
             <p>No matching words</p>
@@ -139,6 +172,10 @@
 {/if}
 
 <style>
+    .show-hide {
+        font-size: 90%;
+        align-self: center;
+    }
     .options-bar {
         display: flex;
         justify-content: space-between;
@@ -158,7 +195,7 @@
         border: 0px;
         padding: 1rem 0rem 0.4rem 0rem;
         position: sticky;
-        top: 0px;
+        margin-top: 1rem;
         z-index: 99;
     }
 
