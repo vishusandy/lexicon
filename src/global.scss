@@ -103,6 +103,10 @@ mark {
 }
 
 .highlight-tag {
-    // background-color: yellow !important;
     font-weight: 600;
+}
+
+.highlight {
+    background: #f1f6ff;
+    box-shadow: 0 0 0 0.15rem rgba(53, 125, 220, 0.25);
 }

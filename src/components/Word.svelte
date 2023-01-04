@@ -275,15 +275,10 @@
     }
 
     .word-item {
-        /* background: #f4f4f7;
-        background: #f5f5f8;
-        border-radius: 0.375rem; */
+        /* border: 1px solid transparent; */
+        border-radius: 0.75rem;
         width: 100%;
         margin: 0.2rem auto;
-        /* overflow: hidden; */
-        /* height: 2.5rem; */
-        border-left: 0px;
-        border-right: 0px;
         padding: 0.5rem 1rem;
         word-wrap: break-word;
     }
@@ -300,10 +295,6 @@
         width: 100%;
     }
 
-    .highlight {
-        background: yellow;
-    }
-
     li:first-of-type {
         border-top-width: 0px;
     }
@@ -313,7 +304,7 @@
         align-items: flex-start;
         margin-bottom: 4rem;
         list-style-type: none;
-        transition: background-color 1.5s ease-in-out;
+        transition: background-color 1.5s ease-in-out, box-shadow 1.5s ease-in;
     }
 
     .remove-word-btn {
