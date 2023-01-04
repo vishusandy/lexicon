@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { APIProviders } from '../dictionary';
-    import Tags from './Tags.svelte';
-    import { list_add, list_init, list_save, list_sort, word_cache } from '../words';
-    import type { WordList, Word as WordType } from '../types';
-    import { enterPressed } from '../events';
-    import { toTitleCase, maybeString } from '../utils';
     import { tick } from 'svelte';
+    import Tags from './Tags.svelte';
+    import DictDef from './DictDef.svelte';
+    import { APIProviders, type DictionaryWord } from '../dictionary';
+    import { enterPressed } from '../events';
+    import type { WordList, Word as WordType } from '../types';
+    import { toTitleCase, maybeString } from '../utils';
+    import { list_add, list_init, list_save, list_sort, word_cache } from '../words';
 
     export let key: string;
     let list: WordList = list_init(key);
@@ -15,6 +16,8 @@
     let tags: string[] = [];
     let added: WordType | undefined = undefined;
     let favorite: boolean = false;
+    let dict_def: DictionaryWord | undefined = undefined;
+    let dict_def_word: string = '';
 
     let dup: WordType | undefined = undefined;
 
@@ -50,7 +53,7 @@
 
     // word form has either lost focus or it was submitted
     // returns false if the entered word is a duplicate
-    function trimDuplicateWord() {
+    function trimDuplicateWord(): boolean {
         updateDup();
 
         if (dup) {
@@ -60,6 +63,26 @@
         }
 
         return false;
+    }
+
+    function updateDictCache() {
+        console.log('updateDictCache running');
+        if (word != '' && word != dict_def_word) {
+            console.log('updating dict def');
+            APIProviders.free_dict.lookup(word).then((data) => {
+                if (data) {
+                    console.log('retrieved data: %o', data);
+                    dict_def_word = word;
+                    dict_def = data;
+                }
+            });
+        }
+    }
+
+    function wordLostFocus() {
+        console.log('word lost focus');
+        trimDuplicateWord();
+        updateDictCache();
     }
 
     function getWord(): WordType {
@@ -118,28 +141,37 @@
 
         addedAlert(w);
 
-        APIProviders.free_dict
-            .lookup(w.word)
-            .then((data) => {
-                w.dict_def = data ? data : undefined;
-                console.log('Added dictionary def: %o', w.dict_def);
-            })
-            .finally(() => {
-                list_add(list, w);
-                list_sort(list);
-                list_save(list);
+        if (!dict_def || word != dict_def_word) {
+            APIProviders.free_dict
+                .lookup(w.word)
+                .then((data) => {
+                    w.dict_def = data ? data : undefined;
+                    console.log('Added dictionary def: %o', w.dict_def);
+                })
+                .finally(() => {
+                    addWordFinish(w);
+                });
+        } else {
+            w.dict_def = dict_def;
+            addWordFinish(w);
+        }
+    }
 
-                const word_input = <HTMLInputElement | null | undefined>(
-                    document.getElementById(key + '-add-form')?.querySelector('input.word')
-                );
-                if (word_input) {
-                    word_input.classList.add('empty');
-                }
+    function addWordFinish(w: WordType) {
+        list_add(list, w);
+        list_sort(list);
+        list_save(list);
 
-                word = '';
-                def = '';
-                dup = undefined;
-            });
+        const word_input = <HTMLInputElement | null | undefined>(
+            document.getElementById(key + '-add-form')?.querySelector('input.word')
+        );
+        if (word_input) {
+            word_input.classList.add('empty');
+        }
+
+        word = '';
+        def = '';
+        dup = undefined;
     }
 </script>
 
@@ -150,14 +182,14 @@
             id="{key}-add-input"
             bind:value={word}
             on:input={updateDup}
-            on:focusout={trimDuplicateWord}
+            on:focusout={wordLostFocus}
             required={true}
             type="text"
             class="word empty form-control"
         />
     </div>
     <div class="mb-3">
-        <div class="label form-label" on:keydown={focusDef} on:click={focusDef}>Definition</div>
+        <div class="label form-label" on:keydown={focusDef} on:click={focusDef}>Notes</div>
         <div
             contenteditable="true"
             on:keydown={enterPressed}
@@ -172,6 +204,10 @@
             <Tags {key} bind:tags />
         </div>
     </div>
+
+    {#if dict_def}
+        <DictDef dict={dict_def} />
+    {/if}
 
     <div class="alert-box">
         {#if dup}
@@ -224,6 +260,7 @@
         width: fit-content;
         margin-top: 0.2rem;
         margin-left: 0.4rem;
+        margin-bottom: 1.5rem;
     }
 
     .add-container {
