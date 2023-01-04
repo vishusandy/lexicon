@@ -16,7 +16,7 @@ export function new_word_cache(word: Word): WordCache {
         word: word.word.toLowerCase(),
         def: word.def?.toLocaleLowerCase(),
         dict_def: word.dict_def ? dictionaryCache(word.dict_def) : undefined,
-        tags: word.tags?.map(t => t.toLowerCase()),
+        tags: word.tags?.map(t => '#' + t.toLowerCase()),
     };
 }
 
@@ -67,7 +67,9 @@ export function list_update_word(list: WordList, id: number, word: string): bool
     if (i < 0) return false;
 
     list.words[i].word = word;
+    console.log('updating cache for %o', list.words[i]);
     list.words[i].cache = new_word_cache(list.words[i]);
+    console.log('updated cache to %o', list.words[i].cache);
     return true;
 }
 

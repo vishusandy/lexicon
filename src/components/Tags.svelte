@@ -66,9 +66,6 @@
 <!-- </div> -->
 <style lang="scss">
     @use '../mixins.scss';
-    .tag-list {
-        // display: flex;
-    }
 
     .tag-input {
         @include mixins.tag;

@@ -31,6 +31,4 @@ export function escapePressed(e: KeyboardEvent): boolean {
     return false;
 }
 
-export function removeMarks(s: string): string {
-    return s.replace(/<\/?mark>/, '');
-}
+

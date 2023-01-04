@@ -20,8 +20,10 @@ export type DictionaryWord = {
 
 export function dictionaryCache(dict: DictionaryWord): string {
     return dict.word.toLowerCase() + dict.parts.map((p) => {
-        p.definition.toLowerCase() + ' ' + p.synonyms.join(' ').toLowerCase() + ' ' + p.antonyms.join(' ').toLowerCase()
-    });
+        const syn = (p.synonyms.length != 0) ? ' ' + p.synonyms.join(' ').toLowerCase() : '';
+        const ant = (p.antonyms.length != 0) ? ' ' + p.antonyms.join(' ').toLowerCase() : '';
+        return p.definition.toLowerCase() + syn + ant;
+    }).join(' ');
 }
 
 

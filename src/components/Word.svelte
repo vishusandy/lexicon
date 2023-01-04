@@ -4,7 +4,7 @@
     import { afterUpdate, onMount } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
-    import { removeMarks } from '../events';
+    import { addMarks, removeMarks } from '../utils';
     import DictDef from './DictDef.svelte';
     import Tags from './Tags.svelte';
 
@@ -14,6 +14,10 @@
     export let item: Word;
     export let highlight: string[];
 
+    function defId(): string {
+        return key + '-def-' + item.id;
+    }
+
     function getWordElem(): HTMLElement | null {
         return document.getElementById(key + '-word-' + item.id);
     }
@@ -22,8 +26,8 @@
         return document.getElementById(`${key}-${item.id}`);
     }
 
-    function defId(): string {
-        return key + '-def-' + item.id;
+    function getDefElem(): HTMLElement | null {
+        return document.getElementById(defId());
     }
 
     onMount(() => {
@@ -33,7 +37,7 @@
     });
 
     afterUpdate(() => {
-        addHighlights(defId());
+        addHighlights();
     });
 
     function updateWord(word: Word) {
@@ -79,22 +83,52 @@
         dispatch('updateFavorite', { word: item, key });
     }
 
-    function addHighlights(id: string) {
-        const t = document.getElementById(id);
-        if (!t || !highlight || highlight.length === 0) return;
-        for (let i = 0; i < highlight.length; i++) {
-            const s = highlight[i];
-            if (s == '') continue;
-            const re = new RegExp(`(${s})`, 'gi');
-            console.log(`replacing '${s}'`);
-            t.innerHTML = t.innerHTML.replace(re, '<mark>$1</mark>');
+    function addHighlights() {
+        removeHighlights();
+        if (highlight.length === 0) return;
+        const def = getDefElem();
+        const li = getLiElem();
+        const w = getWordElem();
+
+        if (w) {
+            w.innerHTML = addMarks(w.innerHTML, highlight);
+        }
+
+        if (def) {
+            def.innerHTML = addMarks(def.innerHTML, highlight);
+        }
+
+        if (li) {
+            li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
+                (node) => (node.innerHTML = addMarks(node.innerHTML, highlight))
+            );
+
+            li.querySelectorAll('.tag').forEach((node) => {
+                if (highlight.some((f) => f == '#' + node.innerHTML.toLocaleLowerCase())) {
+                    node.parentElement?.classList.add('highlight-tag');
+                }
+            });
         }
     }
 
-    function removeHighlights(id: string) {
-        const t = document.getElementById(id);
-        if (!t) return;
-        t.innerHTML = removeMarks(t.innerHTML);
+    function removeHighlights() {
+        const def = getDefElem();
+        const li = getLiElem();
+        const w = getWordElem();
+
+        if (w) {
+            w.innerHTML = removeMarks(w.innerHTML);
+        }
+
+        if (def) {
+            def.innerHTML = removeMarks(def.innerHTML);
+        }
+
+        if (li) {
+            li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
+                (node) => (node.innerHTML = removeMarks(node.innerHTML))
+            );
+        }
     }
 </script>
 
@@ -131,7 +165,7 @@
         </summary>
         <div class="detail-content">
             {#if item.dict_def}
-                <DictDef {key} dict={item.dict_def} />
+                <DictDef dict={item.dict_def} />
             {/if}
             <span class="def-label">Notes:</span>
             <div
@@ -142,9 +176,9 @@
                 on:keydown={enterPressed}
                 on:blur={() => {
                     updateDefinition();
-                    addHighlights(defId());
+                    addHighlights();
                 }}
-                on:focus={() => removeHighlights(defId())}
+                on:focus={() => removeHighlights()}
             >
                 {#if item.def}{item.def}{/if}
             </div>
@@ -185,11 +219,6 @@
         color: #ecd609;
         content: '\f005';
         font-weight: 900;
-    }
-
-    .star::after {
-        content: '\f005';
-        font-weight: 400;
     }
 
     .tags-label {

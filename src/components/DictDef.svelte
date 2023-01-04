@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { DictionaryWord } from '../dictionary';
-    export let key: string;
     export let dict: DictionaryWord;
 </script>
 
@@ -13,11 +12,11 @@
                     {#each dict.parts as part}
                         <li>
                             <p>
-                                <span class="pos">{part.part}</span>:
+                                <span class="pos">{part.part}</span>
                                 <span class="def">{part.definition}</span>
                             </p>
                             {#if part.synonyms.length > 0}
-                                <p class="syn-ack">
+                                <p class="syn">
                                     Synonyms:
                                     {#each part.synonyms as syn}
                                         {syn}
@@ -25,7 +24,7 @@
                                 </p>
                             {/if}
                             {#if part.antonyms.length > 0}
-                                <p class="syn-ack">
+                                <p class="ant">
                                     Antonyms:
                                     {#each part.antonyms as ant}
                                         {ant}
@@ -49,16 +48,18 @@
         margin: 0px;
     }
 
-    .syn-ack {
+    .syn,
+    .ant {
         margin-left: 1rem;
     }
 
     .pos {
-        /* font-weight: 600; */
+        color: #505458;
+        font-style: italic;
+        margin-right: 0.5rem;
     }
 
     .def {
-        color: #404346;
     }
 
     ul {

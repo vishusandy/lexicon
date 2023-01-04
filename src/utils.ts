@@ -45,3 +45,15 @@ export async function scrollToWord(id: number, key: string) {
         }
     }
 }
+
+export function addMarks(s: string, search: string[]): string {
+    for (let i = 0; i < search.length; i++) {
+        const re = new RegExp(`(${search[i]})`, 'gi');
+        s = s.replace(re, `<mark>$1</mark>`);
+    }
+    return s;
+}
+
+export function removeMarks(s: string): string {
+    return s.replaceAll(/<\/?mark>/gi, '');
+}

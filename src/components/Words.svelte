@@ -15,13 +15,14 @@
         filter_word,
         new_word_cache
     } from '../words';
-    import { removeMarks } from '../events';
-    import { scrollToWord } from '../utils';
+    import { scrollToWord, removeMarks } from '../utils';
 
     export let key: string = 'words';
     let list: WordList = list_init(key);
     list_sort(list);
     list = list;
+
+    console.log(list);
 
     let search: string = '';
     let full_defs: string = '';
@@ -59,7 +60,6 @@
 
     function updateWord(e: WordEvent) {
         if (e.key != key) return;
-        console.log('checking word update');
         if (list_update_word(list, e.word.id, e.word.word)) {
             list_sort(list);
             list_save(list);

@@ -46,11 +46,6 @@
         flex: 0 0 auto;
     }
 
-    .sort-group {
-        /* width: fit-content;
-        height: 2rem; */
-    }
-
     select {
         appearance: none;
         background-color: transparent;
@@ -108,9 +103,5 @@
         /* content: '\f175'; */
         font-weight: 600;
         content: '\f0dc';
-    }
-
-    form {
-        /* display: inline-block; */
     }
 </style>
