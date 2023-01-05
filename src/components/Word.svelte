@@ -199,8 +199,10 @@
     .fav-label {
         color: #686a6e;
         font-family: 'Font Awesome 6 Free';
-        font-size: 0.85rem;
-        padding: 0.2rem 0.3rem;
+        font-size: 0.9rem;
+        padding: 0.2rem 0.3rem 0.2rem;
+        margin-right: 0.2rem;
+        margin-left: -1rem;
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
@@ -216,7 +218,8 @@
     }
 
     .fav-checkbox[type='checkbox']:checked + .fav-label::after {
-        color: #ecd609;
+        /* color: #ecd609; */
+        color: #eec009;
         content: '\f005';
         font-weight: 900;
     }
@@ -270,7 +273,7 @@
 
     details summary {
         list-style-type: none;
-        margin-left: 0.5rem;
+        margin-left: 0.3rem;
         display: flex;
     }
 
@@ -311,6 +314,7 @@
         color: rgb(210, 141, 141);
         background: transparent;
         border: 0px;
+        padding-top: 0.1rem;
     }
 
     hr {

@@ -21,6 +21,24 @@
 
     let dup: WordType | undefined = undefined;
 
+    let added_timer_fade: ReturnType<typeof setTimeout> | undefined = undefined;
+    let added_timer_remove: ReturnType<typeof setTimeout> | undefined = undefined;
+    let input_timer: ReturnType<typeof setTimeout> | undefined = undefined;
+    const post_input_delay: number = 300;
+
+    function handleInput() {
+        updateDup();
+        newInputTimer();
+    }
+
+    function newInputTimer() {
+        if (input_timer) {
+            clearTimeout(input_timer);
+            input_timer = undefined;
+        }
+        input_timer = setTimeout(() => updateDictCache(), post_input_delay);
+    }
+
     function updateDup() {
         let lower = word.trim().toLocaleLowerCase();
         dup = list.words.find((w) => w.cache?.word === lower);
@@ -66,21 +84,20 @@
     }
 
     function updateDictCache() {
-        console.log('updateDictCache running');
         if (word != '' && word != dict_def_word) {
-            console.log('updating dict def');
             APIProviders.free_dict.lookup(word).then((data) => {
                 if (data) {
-                    console.log('retrieved data: %o', data);
                     dict_def_word = word;
                     dict_def = data;
+                } else {
+                    dict_def = undefined;
+                    dict_def_word = '';
                 }
             });
         }
     }
 
     function wordLostFocus() {
-        console.log('word lost focus');
         trimDuplicateWord();
         updateDictCache();
     }
@@ -117,19 +134,29 @@
     }
 
     async function addedAlert(w: WordType) {
+        if (added_timer_fade) {
+            clearTimeout(added_timer_fade);
+            added_timer_fade = undefined;
+        }
+        if (added_timer_remove) {
+            clearTimeout(added_timer_remove);
+            added_timer_remove = undefined;
+        }
+
         added = w;
         await tick();
-        setTimeout(() => {
+        added_timer_fade = setTimeout(() => {
             const a = document.getElementById(key + '-added-alert');
             if (a) {
                 a.style.opacity = '0';
             }
         }, 8000);
-        setTimeout(() => {
+        added_timer_remove = setTimeout(() => {
             const a = document.getElementById(key + '-added-alert');
             if (a) {
                 a.remove();
             }
+            added = undefined;
         }, 12000);
     }
 
@@ -169,9 +196,12 @@
             word_input.classList.add('empty');
         }
 
+        tags = [];
         word = '';
         def = '';
         dup = undefined;
+        dict_def = undefined;
+        dict_def_word = '';
     }
 </script>
 
@@ -181,7 +211,7 @@
         <input
             id="{key}-add-input"
             bind:value={word}
-            on:input={updateDup}
+            on:input={handleInput}
             on:focusout={wordLostFocus}
             required={true}
             type="text"

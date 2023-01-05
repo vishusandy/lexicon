@@ -52,10 +52,8 @@ async function getDictionaryDef(url: string, def_fn: (json: any) => DictionaryWo
     return def_fn(json);
 }
 
-const dict_api_url: string = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-
 function dictionaryAPIUrl(word: string): string {
-    return `${dict_api_url}${word}`;
+    return 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
 }
 
 function dictionaryApiJsonDef(json_array: any): DictionaryWord | null {
