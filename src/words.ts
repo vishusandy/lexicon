@@ -96,7 +96,9 @@ export function list_remove(list: WordList, id: number): boolean {
 }
 
 export function list_sort(list: WordList) {
-    list.words.sort(sort_fn(list.sort_by, list.sort_order));
+    if (list.words) {
+        list.words.sort(sort_fn(list.sort_by, list.sort_order));
+    }
 }
 
 export function list_save(list: WordList) {
