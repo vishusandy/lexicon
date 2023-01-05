@@ -7,18 +7,23 @@ const config = {
     // Consult https://kit.svelte.dev/docs/integrations#preprocessors
     // for more information about preprocessors
     preprocess: vitePreprocess(),
-
     kit: {
         adapter: adapter({
             pages: 'build',
             assets: 'build',
             fallback: null,
             precompress: false,
-            strict: true
+            strict: true,
+            paths: {
+                base: process.env.NODE_ENV === "production" ? '/lexicon' : '',
+            }
         }),
+        // base: '/lexicon',
         // outDir: 'docs'
 
     }
 };
+
+// repo: 'https://github.com/vishusandy/lexicon.git',
 
 export default config;

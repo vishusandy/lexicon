@@ -1,5 +1,6 @@
 <script lang="ts">
     import { tick } from 'svelte';
+    import { base } from '$app/paths';
     import Tags from './Tags.svelte';
     import DictDef from './DictDef.svelte';
     import { APIProviders, type DictionaryWord } from '../dictionary';
@@ -243,12 +244,14 @@
         {#if dup}
             <div class="duplicate-alert alert alert-danger">
                 <p>
-                    Word <a href="../list/?word={dup.id}"><dfn class="word">{word.trim()}</dfn></a> exists
+                    Word <a href="{base}/list/?word={dup.id}"
+                        ><dfn class="word">{word.trim()}</dfn></a
+                    > exists
                 </p>
             </div>
         {:else if added}
             <div id="{key}-added-alert" class="added-alert alert alert-success">
-                Added word <a href="../list?word={added.id}">{added.word}</a>
+                Added word <a href="{base}/list?word={added.id}">{added.word}</a>
             </div>
         {/if}
     </div>
