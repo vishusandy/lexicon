@@ -1,8 +1,12 @@
 import { type Word, type WordCache, type WordList, defaultSortBy, defaultSortOrder, SortBy, SortOrder } from './types';
 import { browser } from '$app/environment';
 import { dictionaryCache } from './dictionary';
+import { cur_date } from './utils';
 
-const defaultWords: Array<Word> = ['Malapropism', 'Eggcorn', 'Malaphor', 'Promulgate', 'Complect', 'Sluice', 'Excoriate', 'Autoantonym', 'Subsume', 'Moribund', 'Alacrity', 'Folderol', 'Rapt', 'Tacit', 'Licentious', 'Priori', 'Posteriori'].sort().map((word, i) => (word_cache({
+
+// const default_word_list: string[] = !browser ? [] : ['Malapropism', 'Eggcorn', 'Malaphor', 'Promulgate', 'Complect', 'Sluice', 'Excoriate', 'Autoantonym', 'Subsume', 'Moribund', 'Alacrity', 'Folderol', 'Rapt', 'Tacit', 'Licentious', 'Priori', 'Posteriori'];
+const default_word_list: string[] = [];
+const defaultWords: Array<Word> = default_word_list.sort().map((word, i) => (word_cache({
     word: word,
     id: i,
     def: undefined,
@@ -170,3 +174,17 @@ function match_word_phrase(word: Word, phrase: string): boolean {
     //     ;
 }
 
+export function download_json(): boolean {
+    if (!browser) return false;
+    const json = localStorage.getItem('words');
+    if (!json) return false;
+    // https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser
+    const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
+    let node = document.createElement('a');
+    node.setAttribute('href', data);
+    node.setAttribute('download', 'vocab' + cur_date() + '.json');
+    document.body.appendChild(node);
+    node.click();
+    node.remove();
+    return true;
+}

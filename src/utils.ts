@@ -57,3 +57,8 @@ export function addMarks(s: string, search: string[]): string {
 export function removeMarks(s: string): string {
     return s.replaceAll(/<\/?mark>/gi, '');
 }
+
+export function cur_date(): string {
+    const time = new Date();
+    return `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`;
+}
