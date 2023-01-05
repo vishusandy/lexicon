@@ -4,7 +4,7 @@
 </script>
 
 <nav class="main">
-    <a href="{base}/add/">Add words</a>
+    <a href="{base}/add">Add words</a>
 </nav>
 <!-- <h1>Word List</h1> -->
 <div class="list-vocab-container">

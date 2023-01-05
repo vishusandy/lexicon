@@ -244,7 +244,7 @@
         {#if dup}
             <div class="duplicate-alert alert alert-danger">
                 <p>
-                    Word <a href="{base}/list/?word={dup.id}"
+                    Word <a href="{base}/list?word={dup.id}"
                         ><dfn class="word">{word.trim()}</dfn></a
                     > exists
                 </p>
