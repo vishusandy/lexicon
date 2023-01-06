@@ -59,6 +59,10 @@
 
     function updateDefinition() {
         item.def = item.def?.replaceAll('<br>', '');
+        const t = getDefElem();
+        if (t) {
+            t.innerHTML = t.innerHTML.replaceAll('<br>', '');
+        }
         dispatch('updateDefinition', { word: item, key });
     }
 
