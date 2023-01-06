@@ -59,9 +59,6 @@
         margin-right: 0.5rem;
     }
 
-    .def {
-    }
-
     ul {
         list-style-type: disc;
     }

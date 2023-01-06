@@ -130,6 +130,10 @@
             );
         }
     }
+
+    function refreshWord() {
+        dispatch('refreshWord', { word: item, key });
+    }
 </script>
 
 <hr />
@@ -137,17 +141,20 @@
     <button class="remove-word-btn" on:click={() => deleteWord(item)}>
         <i class="fa-solid fa-xmark" />
     </button>
+    <button class="refresh-btn" on:click={refreshWord} title="Refresh defintion">
+        <i class="fa-solid fa-arrows-rotate" />
+    </button>
+    <input
+        id="{key}-fav-{item.id}"
+        bind:checked={item.favorite}
+        title="Favorite"
+        class="fav-checkbox"
+        type="checkbox"
+        on:change={updateFavorite}
+    />
+    <label for="{key}-fav-{item.id}" class="fav-label" />
     <details open={Array.isArray(highlight) && highlight.length > 0}>
         <summary>
-            <input
-                id="{key}-fav-{item.id}"
-                bind:checked={item.favorite}
-                title="Favorite"
-                class="fav-checkbox"
-                type="checkbox"
-                on:change={updateFavorite}
-            />
-            <label for="{key}-fav-{item.id}" class="fav-label" />
             <dfn
                 id="{key}-word-{item.id}"
                 class="word"
@@ -191,13 +198,23 @@
 </li>
 
 <style>
+    .refresh-btn {
+        background-color: transparent;
+        border: 0px;
+        margin: 0px 0.2rem 0px 0.3rem;
+        font-size: 0.95rem;
+        margin-top: 0.1rem;
+        color: #666;
+    }
+
     .fav-checkbox {
         position: relative;
         opacity: 0;
     }
 
     .fav-label {
-        color: #686a6e;
+        /* color: #686a6e; */
+        color: #666;
         font-family: 'Font Awesome 6 Free';
         font-size: 0.9rem;
         padding: 0.2rem 0.3rem 0.2rem;
@@ -282,7 +299,7 @@
         border-radius: 0.75rem;
         width: 100%;
         margin: 0.2rem auto;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 0rem 0.5rem 0rem;
         word-wrap: break-word;
     }
 

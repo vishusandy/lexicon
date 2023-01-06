@@ -2,10 +2,12 @@ import { type Word, type WordCache, type WordList, defaultSortBy, defaultSortOrd
 import { browser } from '$app/environment';
 import { dictionaryCache } from './dictionary';
 import { cur_date } from './utils';
+// import { APIProviders, type DictionaryWord } from './dictionary';
 
 
 // const default_word_list: string[] = !browser ? [] : ['Malapropism', 'Eggcorn', 'Malaphor', 'Promulgate', 'Complect', 'Sluice', 'Excoriate', 'Autoantonym', 'Subsume', 'Moribund', 'Alacrity', 'Folderol', 'Rapt', 'Tacit', 'Licentious', 'Priori', 'Posteriori'];
-const default_word_list: string[] = [];
+// const default_word_list: string[] = ['Excoriate'];
+const default_word_list: string[] = ['Admonition', 'Adroit', 'Amalgamate', 'Amenity', 'Anathema', 'Anima', 'Animus', 'Annealing', 'Antithesis', 'Aplomb', 'Appurtenant', 'Apropos', 'Arbitrage', 'Argot', 'Artifice', 'Assiduous', 'Assiduously', 'Atavistic', 'Austere', 'Auteur', 'Balaclava', 'Bastion', 'Bellicose', 'Betide', 'Bifurcate', 'Blasé', 'Blithe', 'Bolide', 'Bolster', 'Buoy', 'Buoyant', 'Cacophonous', 'Cadence', 'Canard', 'Capitulate', 'Capricious', 'Certitude', 'Cherpsed', 'Chuffed', 'Clarion', 'Commutual', 'Comparative', 'Conceit', 'Confab', 'Congruous', 'Conjoint', 'Conjunct', 'Coquettish', 'Coterie', 'Couth', 'Crudités', 'Cynosure', 'Daub', 'Demarcation', 'Derisively', 'Dexterous', 'Discomfit', 'Dodecahedron', 'Du Jour', 'Elan', 'Elucidate', 'Emollient', 'Emoluments', 'En Passant', 'Enjoin', 'Ennui', 'Ensconced', 'Epigenetics', 'Epitaph', 'Expatriate', 'Expedient', 'Foibles', 'Garrulous', 'Gradation', 'Gyre', 'Halcyon', 'Hearten', 'Hummock', 'Impenitent', 'In Situ', 'Indelible', 'Indelibly', 'Indemnification', 'Indemnity', 'Inexorable', 'Ingénue', 'Insouciant', 'Interregnum', 'Interstitial', 'Intractable', 'Intransigent', 'Jaunty', 'Joie De Vivre', 'Jovial', 'Lampoon', 'Latently', 'Livery', 'Loquacious', 'Magnanimity', 'Malaise', 'Moiety', 'Monition', 'Morose', 'Mot Juste', 'Myopic', 'Nadir', 'Nascent', 'Née', 'Nonce', 'Nonchalant', 'Nonplus', 'Obdurate', 'Oeuvre', 'Omphalos', 'Onus', 'Ostracize', 'Pablum', 'Pallor', 'Panopticon', 'Patently', 'Patina', 'Patois', 'Paucity', 'Perdurable', 'Pervasive', 'Phalanx', 'Pilloried', 'Pique', 'Pontificate', 'Portend', 'Predominant', 'Preponderant', 'Pro Tem', 'Proffer', 'Profiteroles', 'Proletariat', 'Proliferation', 'Proscribe', 'Pundit', 'Quotidian', 'Recalcitrant', 'Redound', 'Refractory', 'Rustication', 'Salient', 'Simulacrum', 'Sinew', 'Soupcon', 'Specious', 'Strata', 'Stratum', 'Substantive', 'Superbolide', 'Superlative', 'Swarthy', 'Terse', 'Titter', 'Unremitting', 'Vanguard', 'Veracity', 'Vignette', 'Vogue'];
 const defaultWords: Array<Word> = default_word_list.sort().map((word, i) => (word_cache({
     word: word,
     id: i,
@@ -30,14 +32,23 @@ export function word_cache(word: Word): Word {
 }
 
 export function list_blank(key: string): WordList {
+    let words = defaultWords;
     let list = {
-        "words": defaultWords,
+        "words": words,
         "next_id": defaultWords.length,
         "sort_by": defaultSortBy,
         "sort_order": defaultSortOrder,
         "key": key
     };
     list_save(list);
+    // let word_promises = defaultWords.map(w =>
+    //     APIProviders.default.lookup(w.word).then(data => {
+    //         w.dict_def = data ? data : undefined;
+    //     })
+    // );
+    // Promise.allSettled(word_promises).then(() => {
+    //     list.words = list.words;
+    // });
     return list;
 }
 
@@ -96,7 +107,7 @@ export function list_remove(list: WordList, id: number): boolean {
 }
 
 export function list_sort(list: WordList) {
-    if (list.words) {
+    if (list.words && list.words.length > 1) {
         list.words.sort(sort_fn(list.sort_by, list.sort_order));
     }
 }

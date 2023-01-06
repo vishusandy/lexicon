@@ -1,7 +1,8 @@
 <script lang="ts">
+    import { base } from '$app/paths';
     import { browser } from '$app/environment';
     if (browser) {
-        window.location.assign('./add');
+        window.location.assign(`${base}/add`);
     }
 </script>
 

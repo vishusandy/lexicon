@@ -36,6 +36,7 @@ const free_dict: APIEntry = {
 }
 
 export const APIProviders = {
+    default: free_dict,
     free_dict,
 };
 

@@ -86,7 +86,7 @@
 
     function updateDictCache() {
         if (word != '' && word != dict_def_word) {
-            APIProviders.free_dict.lookup(word).then((data) => {
+            APIProviders.default.lookup(word).then((data) => {
                 if (data) {
                     dict_def_word = word;
                     dict_def = data;
@@ -170,11 +170,10 @@
         addedAlert(w);
 
         if (!dict_def || word != dict_def_word) {
-            APIProviders.free_dict
+            APIProviders.default
                 .lookup(w.word)
                 .then((data) => {
                     w.dict_def = data ? data : undefined;
-                    console.log('Added dictionary def: %o', w.dict_def);
                 })
                 .finally(() => {
                     addWordFinish(w);

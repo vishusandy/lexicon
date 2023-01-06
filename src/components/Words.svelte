@@ -3,6 +3,7 @@
     import Sort from './Sort.svelte';
     import Word from './Word.svelte';
     import Search from './Search.svelte';
+    import { APIProviders, type DictionaryWord } from '../dictionary';
     import type { Word as WordType, WordList, WordEvent, SortEvent, FilterEvent } from '../types';
     import {
         list_init,
@@ -98,13 +99,31 @@
             list_word.favorite = updated.favorite;
             return true;
         }
-        console.log('updating favorite');
 
         if (e.key != key) return;
         list_update(list, e.word, updateWordFavorite);
-        // list_sort(list);
+        // intentionally not calling list_sort() because it will rearrange the order of items
+        // while the user is still marking favorites
         list_save(list);
         list = list;
+    }
+
+    function refreshWord(e: WordEvent) {
+        function refreshWordUpdate(list_word: WordType, updated: WordType) {
+            list_word.dict_def = updated.dict_def;
+            return true;
+        }
+
+        if (e.key != key) return;
+        APIProviders.default.lookup(e.word.word).then((data) => {
+            if (data) {
+                e.word.dict_def = data;
+                e.word.cache = new_word_cache(e.word);
+                list_update(list, e.word, refreshWordUpdate);
+                list_save(list);
+                list = list;
+            }
+        });
     }
 
     function deleteWord(e: WordEvent) {
@@ -131,52 +150,54 @@
     }
 </script>
 
-{#if list.words}
-    <div class="sticky-search-bar list-group-item">
-        <Search
-            {key}
-            on:updateFilter={(e) => {
-                updateFilter(e.detail);
-            }}
-        />
-        <div class="options-bar">
-            <div class="show-hide">
-                <button on:click={showAll}>Show</button>/<button on:click={showNone}>Hide</button>
-            </div>
-            <Sort
-                {key}
-                sort_by={list.sort_by}
-                sort_order={list.sort_order}
-                on:updateSort={(e) => updateSort(e.detail)}
-            />
+<div class="sticky-search-bar list-group-item">
+    <Search
+        {key}
+        on:updateFilter={(e) => {
+            updateFilter(e.detail);
+        }}
+    />
+    <div class="options-bar">
+        <div class="show-hide">
+            <button on:click={showAll}>Show</button>/<button on:click={showNone}>Hide</button>
         </div>
+        <Sort
+            {key}
+            sort_by={list.sort_by}
+            sort_order={list.sort_order}
+            on:updateSort={(e) => updateSort(e.detail)}
+        />
     </div>
+</div>
 
-    <ul class="word-group {full_defs}">
-        {#each list.words.filter((w) => filter_word(phrases, w)) as word}
-            <Word
-                {key}
-                item={word}
-                highlight={phrases}
-                on:updateWord={(e) => updateWord(e.detail)}
-                on:updateDefinition={(e) => updateDefinition(e.detail)}
-                on:deleteWord={(e) => deleteWord(e.detail)}
-                on:updateWordTags={(e) => updateTags(e.detail)}
-                on:updateFavorite={(e) => updateFavorite(e.detail)}
-            />
-        {:else}
+<ul class="word-group {full_defs}">
+    {#each list.words.filter((w) => filter_word(phrases, w)) as word}
+        <Word
+            {key}
+            item={word}
+            highlight={phrases}
+            on:updateWord={(e) => updateWord(e.detail)}
+            on:updateDefinition={(e) => updateDefinition(e.detail)}
+            on:deleteWord={(e) => deleteWord(e.detail)}
+            on:updateWordTags={(e) => updateTags(e.detail)}
+            on:updateFavorite={(e) => updateFavorite(e.detail)}
+            on:refreshWord={(e) => refreshWord(e.detail)}
+        />
+    {:else}
+        {#if search}
             <p>No matching words</p>
-        {/each}
-    </ul>
-{:else}
-    <p>No words have been added yet</p>
-{/if}
+        {:else}
+            <p>No words have been added</p>
+        {/if}
+    {/each}
+</ul>
 
 <style>
     .show-hide {
         font-size: 90%;
         align-self: center;
     }
+
     .options-bar {
         display: flex;
         justify-content: space-between;

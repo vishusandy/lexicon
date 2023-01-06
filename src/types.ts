@@ -67,3 +67,8 @@ export type UpdateTagsEvent = {
     key: string
 };
 
+// export type RefreshWordEvent = {
+//     word: string,
+//     key: string,
+// };
+
