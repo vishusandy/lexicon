@@ -3,7 +3,7 @@
     import Sort from './Sort.svelte';
     import Word from './Word.svelte';
     import Search from './Search.svelte';
-    import { APIProviders, type DictionaryWord } from '../dictionary';
+    import { APIProviders } from '../dictionary';
     import type { Word as WordType, WordList, WordEvent, SortEvent, FilterEvent } from '../types';
     import {
         list_init,
@@ -23,7 +23,7 @@
     list_sort(list);
     list = list;
 
-    console.log(list);
+    console.log('word list: %o', list);
 
     let search: string = '';
     let full_defs: string = '';

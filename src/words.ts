@@ -56,7 +56,7 @@ export function list_init(key: string): WordList {
     // if (browser) {
     //     localStorage.removeItem(key);
     // }
-    const stored = (browser) ? localStorage.getItem(key) : null;
+    const stored: string | null = (browser) ? localStorage.getItem(key) : null;
     let list: WordList = (stored) ? JSON.parse(stored) : list_blank(key);
     // if (browser) {
     //     console.log('sorting: %o', list)
