@@ -136,6 +136,10 @@
     }
 
     function refreshWord() {
+        const t = getLiElem()?.querySelector('details');
+        if (t) {
+            t.open = true;
+        }
         dispatch('refreshWord', { word: item, key });
     }
 

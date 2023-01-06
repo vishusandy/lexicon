@@ -3,6 +3,7 @@
     import Sort from './Sort.svelte';
     import Word from './Word.svelte';
     import Search from './Search.svelte';
+    import Alert from './Alert.svelte';
     import { APIProviders } from '../dictionary';
     import type { Word as WordType, WordList, WordEvent, SortEvent, FilterEvent } from '../types';
     import {
@@ -29,6 +30,8 @@
     let full_defs: string = '';
     $: phrases = search.split(' ').filter((f) => f.length > 0);
     $: full_defs = search === '' ? '' : 'full-defs';
+
+    let alert: string | undefined = undefined;
 
     let scrollTo: string | null;
     if (browser) scrollTo = new URLSearchParams(window.location.search).get('word');
@@ -116,15 +119,21 @@
         }
 
         if (e.key != key) return;
-        APIProviders.default.lookup(e.word.word).then((data) => {
-            if (data) {
-                e.word.dict_def = data;
+        APIProviders.default
+            .lookup(e.word.word)
+            .then((data) => {
+                if (data) {
+                    e.word.dict_def = data;
+                } else {
+                    alert = `'${e.word.word}' has no dictionary definition`;
+                }
+            })
+            .finally(() => {
                 e.word.cache = new_word_cache(e.word);
                 list_update(list, e.word, refreshWordUpdate);
                 list_save(list);
                 list = list;
-            }
-        });
+            });
     }
 
     function deleteWord(e: WordEvent) {
@@ -192,6 +201,10 @@
         {/if}
     {/each}
 </ul>
+
+{#if alert}
+    <Alert bind:message={alert} />
+{/if}
 
 <style>
     .show-hide {
