@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { enterPressed } from '../events';
-    import { createEventDispatcher } from 'svelte';
-    import { afterUpdate, onMount } from 'svelte';
+    import { enterPressed, escapePressed } from '../events';
+    import { createEventDispatcher, afterUpdate, onMount, tick } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
     import { addMarks, removeMarks } from '../utils';
@@ -40,20 +39,21 @@
         addHighlights();
     });
 
-    function updateWord(word: Word) {
+    function updateWord() {
         const t = getWordElem();
-        if (word.word == '') {
-            if (!deleteWord(word)) {
-                if (t) item.word = t.title;
+        if (!t) return;
+        item.word = t.innerHTML;
+
+        if (item.word == '') {
+            if (!deleteWord(item)) {
+                item.word = t.title;
             }
             return;
         }
 
-        if (!t) {
-            dispatch('updateWord', { word, key });
-        } else if (t.title != word.word) {
+        if (t.title != item.word) {
             updateTitle(t);
-            dispatch('updateWord', { word, key });
+            dispatch('updateWord', { word: item, key });
         }
     }
 
@@ -134,6 +134,16 @@
     function refreshWord() {
         dispatch('refreshWord', { word: item, key });
     }
+
+    function handleWordKeyPress(e: KeyboardEvent) {
+        const t = <HTMLInputElement | null>e.target;
+        if (e.code == 'Escape' && t) {
+            t.innerHTML = t.title;
+            t.blur();
+            return;
+        }
+        enterPressed(e);
+    }
 </script>
 
 <hr />
@@ -155,13 +165,16 @@
     <label for="{key}-fav-{item.id}" class="fav-label" />
     <details open={Array.isArray(highlight) && highlight.length > 0}>
         <summary>
+            <!-- 
+                
+                bind:innerHTML={item.word}
+            -->
             <dfn
                 id="{key}-word-{item.id}"
                 class="word"
                 contenteditable="true"
-                on:blur={() => updateWord(item)}
-                on:keydown={enterPressed}
-                bind:innerHTML={item.word}
+                on:blur={() => updateWord()}
+                on:keydown={handleWordKeyPress}
                 on:click={(e) => {
                     e.preventDefault();
                 }}
@@ -179,7 +192,6 @@
                 id="{key}-def-{item.id}"
                 class="word-definition"
                 contenteditable="true"
-                bind:innerHTML={item.def}
                 on:keydown={enterPressed}
                 on:blur={() => {
                     updateDefinition();

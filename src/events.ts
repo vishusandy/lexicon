@@ -8,7 +8,6 @@ export function enterPressed(e: KeyboardEvent) {
             t.blur();
         }
         e.preventDefault();
-        return;
     }
 }
 

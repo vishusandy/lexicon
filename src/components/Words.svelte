@@ -60,14 +60,15 @@
     }
 
     function updateWord(e: WordEvent) {
+        console.log(e);
         if (e.key != key) return;
-        if (list_update_word(list, e.word.id, e.word.word)) {
+        if (e.word && list_update_word(list, e.word.id, e.word.word)) {
             list_sort(list);
             list_save(list);
             list = list;
             scrollToWord(e.word.id, key);
         } else {
-            console.log('word update failed');
+            console.log('word update failed: %o', e.word);
         }
     }
 
