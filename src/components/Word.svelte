@@ -6,6 +6,7 @@
     import { addMarks, removeMarks } from '../utils';
     import DictDef from './DictDef.svelte';
     import Tags from './Tags.svelte';
+    import Audio from './Audio.svelte';
 
     const dispatch = createEventDispatcher();
 
@@ -173,10 +174,6 @@
     <label for="{key}-fav-{item.id}" class="fav-label" />
     <details open={Array.isArray(highlight) && highlight.length > 0}>
         <summary>
-            <!-- 
-                
-                bind:innerHTML={item.word}
-            -->
             <dfn
                 id="{key}-word-{item.id}"
                 class="word"
@@ -192,6 +189,14 @@
             <div class="detail-arrow" />
         </summary>
         <div class="detail-content">
+            {#if item.dict_def && item.dict_def.audio.length > 0}
+                <div class="audio-entries">
+                    {#each item.dict_def.audio as audio}
+                        <Audio src={audio.url} title={audio.phonetics} />
+                    {/each}
+                </div>
+            {/if}
+
             {#if item.dict_def}
                 <DictDef dict={item.dict_def} />
             {/if}
@@ -218,6 +223,11 @@
 </li>
 
 <style>
+    .audio-entries {
+        text-indent: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
     .refresh-btn {
         background-color: transparent;
         border: 0px;
