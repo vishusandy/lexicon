@@ -207,7 +207,9 @@
 
 <form id="{key}-add-form" on:submit|preventDefault={addWord} class="mt-4">
     <div class="mb-3">
-        <label for="{key}-add-input" class="form-label">Word</label>
+        <label for="{key}-add-input" class="form-label" title="required"
+            >Word<span class="required">*</span></label
+        >
         <input
             id="{key}-add-input"
             bind:value={word}
@@ -257,6 +259,9 @@
 
     <div id="{key}-add-container" class="add-container">
         <button type="submit" class="add btn btn-primary">Add Word </button><br />
+    </div>
+    <div>
+        <span class="required">*</span> denotes a required field
     </div>
 </form>
 
@@ -320,5 +325,10 @@
         overflow-wrap: break-word;
         transition: height 0.3s ease-out, border-color 0.15s ease-in-out,
             box-shadow 0.15s ease-in-out;
+    }
+
+    .required {
+        color: #525457;
+        font-style: italic;
     }
 </style>
