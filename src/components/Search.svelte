@@ -33,6 +33,9 @@
             on:keydown={resetFilterEsc}
             class="search-input form-control"
         />
+        {#if search}
+            <button on:click={resetFilterBtn} class="reset-btn"><i class="fa-solid fa-x" /></button>
+        {/if}
     </form>
 </div>
 
@@ -54,9 +57,22 @@
 
     .search-input {
         border-radius: 0.6rem;
-        display: block;
+        display: inline-block;
         font-size: 1.12rem;
-        padding: 0.4rem 1.5rem 0.4rem 2.1rem;
+        padding: 0.4rem 1.9rem 0.4rem 2.1rem;
         text-align: left;
+    }
+
+    .reset-btn {
+        background-color: transparent;
+        border: 0px;
+        font-size: 0.9rem;
+        color: rgb(158, 30, 30);
+        padding: 0.3rem 0.3rem 0.3rem;
+        position: absolute;
+        /* display: none; */
+        /* right: 0px; */
+        margin-left: -1.8rem;
+        margin-top: 0.3rem;
     }
 </style>
