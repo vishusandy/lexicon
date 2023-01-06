@@ -1,1 +1,0 @@
-import{S as t,i as e,s as a}from"../../chunks/index-a0aa925d.js";function o(s){return window.location.assign("./add"),[]}class l extends t{constructor(n){super(),e(this,n,o,null,a,{})}}export{l as default};
