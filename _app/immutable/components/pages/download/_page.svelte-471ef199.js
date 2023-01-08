@@ -1,0 +1,1 @@
+import{S as e,i as n,s as o}from"../../../chunks/index-71376991.js";import{d as a}from"../../../chunks/words-56918134.js";function r(s){return a(),[]}class u extends e{constructor(t){super(),n(this,t,r,null,o,{})}}export{u as default};
