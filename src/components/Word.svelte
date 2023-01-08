@@ -44,6 +44,7 @@
         const t = getWordElem();
         if (!t) return;
         item.word = t.innerHTML;
+        t.innerHTML = '';
 
         if (item.word == '') {
             if (!deleteWord(item)) {
@@ -77,6 +78,7 @@
     }
 
     function updateTitle(dfn: HTMLElement) {
+        console.log('updating title to %s', item.word);
         dfn.title = item.word;
     }
 
@@ -155,8 +157,9 @@
     }
 </script>
 
-<hr />
+<hr id="{key}-hr-{item.id}" />
 <li id="{key}-{item.id}" class="word-item">
+    <input class="select-word" type="checkbox" data-id={item.id} />
     <button class="remove-word-btn" on:click={() => deleteWord(item)}>
         <i class="fa-solid fa-xmark" />
     </button>
@@ -228,12 +231,23 @@
         margin-top: 0.5rem;
     }
 
+    .select-word {
+        margin-left: 0.5rem;
+        margin-right: 0.25rem;
+    }
+
+    .remove-word-btn {
+        color: rgb(210, 141, 141);
+        background: transparent;
+        border: 0px;
+        padding-top: 0.1rem;
+    }
+
     .refresh-btn {
         background-color: transparent;
         border: 0px;
-        margin: 0px 0.2rem 0px 0.3rem;
+        margin: 0.1rem 0px 0px 0.05rem;
         font-size: 0.95rem;
-        margin-top: 0.1rem;
         color: #666;
     }
 
@@ -351,17 +365,10 @@
 
     li {
         display: flex;
-        align-items: flex-start;
+        align-items: baseline;
         margin-bottom: 4rem;
         list-style-type: none;
         transition: background-color 1.5s ease-in-out, box-shadow 1.5s ease-in;
-    }
-
-    .remove-word-btn {
-        color: rgb(210, 141, 141);
-        background: transparent;
-        border: 0px;
-        padding-top: 0.1rem;
     }
 
     hr {

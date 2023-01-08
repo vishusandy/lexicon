@@ -87,7 +87,7 @@
     function updateDictCache() {
         if (word != '' && word != dict_def_word) {
             APIProviders.default.lookup(word).then((data) => {
-                if (data) {
+                if (data && word !== '') {
                     dict_def_word = word;
                     dict_def = data;
                 } else {

@@ -82,9 +82,7 @@ export function list_update_word(list: WordList, id: number, word: string): bool
     if (i < 0) return false;
 
     list.words[i].word = word;
-    console.log('updating cache for %o', list.words[i]);
     list.words[i].cache = new_word_cache(list.words[i]);
-    console.log('updated cache to %o', list.words[i].cache);
     return true;
 }
 
@@ -106,10 +104,11 @@ export function list_remove(list: WordList, id: number): boolean {
     return false;
 }
 
-export function list_sort(list: WordList) {
+export function list_sort(list: WordList): WordList {
     if (list.words && list.words.length > 1) {
         list.words.sort(sort_fn(list.sort_by, list.sort_order));
     }
+    return list;
 }
 
 export function list_save(list: WordList) {

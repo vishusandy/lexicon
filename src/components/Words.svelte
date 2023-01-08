@@ -18,13 +18,13 @@
         new_word_cache
     } from '../words';
     import { scrollToWord, removeMarks } from '../utils';
+    import { tick } from 'svelte';
 
     export let key: string = 'words';
     let list: WordList = list_init(key);
-    list_sort(list);
-    list = list;
+    list = list_sort(list);
 
-    console.log('word list: %o', list);
+    let check_all: boolean = false;
 
     let search: string = '';
     let full_defs: string = '';
@@ -41,32 +41,130 @@
         scrollToWord(parseInt(scrollTo), key);
     }
 
-    function showAll() {
-        list.words
-            .filter((w) => filter_word(phrases, w))
-            .forEach((w) => {
-                const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+    function count_checked(): number {
+        const boxes = <NodeListOf<HTMLInputElement>>(
+            document.querySelectorAll('input[type="checkbox"].select-word')
+        );
+        return editAction((node) => true);
+    }
+
+    function selectAll() {
+        let checked = count_checked() === 0;
+        const boxes = <NodeListOf<HTMLInputElement>>(
+            document.querySelectorAll('input[type="checkbox"].select-word')
+        );
+        if (!boxes) return 0;
+        console.log('selecting with action=%i', checked);
+        let c: number = 0;
+        boxes.forEach((node) => {
+            node.checked = checked;
+            c += 1;
+        });
+        if (c !== 0) {
+            check_all = checked;
+        }
+    }
+
+    function editAction(fn: (node: HTMLInputElement) => boolean): number {
+        const boxes = <NodeListOf<HTMLInputElement>>(
+            document.querySelectorAll('input[type="checkbox"].select-word')
+        );
+        if (!boxes) return 0;
+        let c: number = 0;
+        boxes.forEach((node) => {
+            if (node.checked && fn(node)) {
+                c += 1;
+            }
+        });
+        return c;
+    }
+
+    async function actionDelete() {
+        const count = count_checked();
+        if (!browser || count === 0) return false;
+        if (!window.confirm(count === 1 ? 'Delete word?' : `Delete ${count} words?`)) {
+            return false;
+        }
+        const deleted = editAction((node) => {
+            if (node.dataset.id) {
+                const n = Number(node.dataset.id);
+                if (!Number.isNaN(n)) {
+                    if (list_remove(list, n)) {
+                        const p = node.parentElement;
+                        if (p) {
+                            p.parentElement?.removeChild(p);
+                        }
+                        const hr = document.getElementById(`${key}-hr-${n}`);
+                        if (hr) {
+                            hr.parentElement?.removeChild(hr);
+                        } else {
+                        }
+                        return true;
+                    } else {
+                        console.log(`delete for ${n} failed`);
+                    }
+                }
+            }
+            return false;
+        });
+        await tick();
+        if (deleted > 0) {
+            list_save(list);
+            list = list;
+        }
+        return true;
+    }
+
+    function actionShowAll() {
+        if (count_checked() === 0) {
+            list.words
+                .filter((w) => filter_word(phrases, w))
+                .forEach((w) => {
+                    const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+                    if (t) {
+                        t.open = true;
+                    }
+                });
+        } else {
+            editAction((node) => {
+                const t = node.parentElement?.querySelector('details');
                 if (t) {
                     t.open = true;
+                    return true;
                 }
+                return false;
             });
+        }
     }
-    function showNone() {
-        list.words
-            .filter((w) => filter_word(phrases, w))
-            .forEach((w) => {
-                const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+
+    function actionShowNone() {
+        if (count_checked() === 0) {
+            list.words
+                .filter((w) => filter_word(phrases, w))
+                .forEach((w) => {
+                    const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+                    if (t) {
+                        t.open = false;
+                    }
+                });
+        } else {
+            editAction((node) => {
+                const t = node.parentElement?.querySelector('details');
                 if (t) {
                     t.open = false;
+                    return true;
                 }
+                return false;
             });
+        }
     }
 
     function updateWord(e: WordEvent) {
         console.log(e);
         if (e.key != key) return;
         if (e.word && list_update_word(list, e.word.id, e.word.word)) {
-            list_sort(list);
+            list = list_sort(list);
+            console.log('updated list: %o', list.words);
             list_save(list);
             list = list;
             scrollToWord(e.word.id, key);
@@ -169,7 +267,19 @@
     />
     <div class="options-bar">
         <div class="show-hide">
-            <button on:click={showAll}>Show</button>/<button on:click={showNone}>Hide</button>
+            <div class="select-options">
+                <input
+                    type="checkbox"
+                    class="select-checkbox"
+                    bind:checked={check_all}
+                    on:change={selectAll}
+                />
+                <div class="select-group">
+                    <button on:click={actionDelete}>Delete</button>
+                    <button on:click={actionShowAll}>Show</button>
+                    <button on:click={actionShowNone}>Hide</button>
+                </div>
+            </div>
         </div>
         <Sort
             {key}
@@ -181,7 +291,7 @@
 </div>
 
 <ul class="word-group {full_defs}">
-    {#each list.words.filter((w) => filter_word(phrases, w)) as word}
+    {#each list.words.filter((w) => filter_word(phrases, w)) as word (word.id)}
         <Word
             {key}
             item={word}
@@ -207,8 +317,27 @@
 {/if}
 
 <style>
+    .select-group {
+        display: inline-block;
+        margin-right: 0.5rem;
+        margin-left: 0.2rem;
+    }
+
+    .select-group button:not(:last-of-type)::after {
+        content: ' ';
+        border-right: 1px solid #bbb;
+        margin-left: 0.3rem;
+        margin-right: -0.25rem;
+    }
+
+    .select-words {
+        display: inline-block;
+        width: fit-content;
+        margin-right: 0.5rem;
+    }
+
     .show-hide {
-        font-size: 90%;
+        font-size: 95%;
         align-self: center;
     }
 
@@ -223,7 +352,7 @@
 
     .word-group {
         width: 100%;
-        padding: 0.5rem 1.25rem;
+        padding: 0.5rem 1.25rem 0.5rem 1.25rem;
     }
 
     .sticky-search-bar {
@@ -240,5 +369,6 @@
         /* border: 1px solid #b9bfc5; */
         border: 0px;
         background: transparent;
+        padding: 0px 0.25rem;
     }
 </style>
