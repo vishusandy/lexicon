@@ -37,7 +37,6 @@
     });
 
     afterUpdate(() => {
-        addHighlights();
         const w = getWordElem();
         const d = getDefElem();
         if (w) {
@@ -46,6 +45,7 @@
         if (d && item.def) {
             d.innerHTML = item.def;
         }
+        addHighlights();
     });
 
     function updateWord() {
@@ -68,10 +68,12 @@
     }
 
     function updateDefinition() {
-        item.def = item.def?.replaceAll('<br>', '');
+        // item.def = item.def?.replaceAll('<br>', '');
+        // item.def =
         const t = getDefElem();
         if (t) {
-            t.innerHTML = t.innerHTML.replaceAll('<br>', '');
+            item.def = t.innerHTML.replaceAll('<br>', '');
+            // t.innerHTML = t.innerHTML.replaceAll('<br>', '');
         }
         dispatch('updateDefinition', { word: item, key });
     }
@@ -106,11 +108,11 @@
         const w = getWordElem();
 
         if (w) {
-            w.innerHTML = addMarks(w.innerHTML, highlight);
+            w.innerHTML = addMarks(item.word, highlight);
         }
 
-        if (def) {
-            def.innerHTML = addMarks(def.innerHTML, highlight);
+        if (def && item.def) {
+            def.innerHTML = addMarks(item.def, highlight);
         }
 
         if (li) {
