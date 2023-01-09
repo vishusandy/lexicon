@@ -38,13 +38,21 @@
 
     afterUpdate(() => {
         addHighlights();
+        const w = getWordElem();
+        const d = getDefElem();
+        if (w) {
+            w.innerHTML = item.word;
+        }
+        if (d && item.def) {
+            d.innerHTML = item.def;
+        }
     });
 
     function updateWord() {
         const t = getWordElem();
         if (!t) return;
         item.word = t.innerHTML;
-        t.innerHTML = '';
+        // t.innerHTML = '';
 
         if (item.word == '') {
             if (!deleteWord(item)) {
