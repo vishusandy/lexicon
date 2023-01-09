@@ -42,7 +42,7 @@
 </div>
 
 <style lang="scss">
-    @use '../mixins.scss';
+    @use '../styles/mixins.scss';
 
     .x-tag {
         background-color: transparent;

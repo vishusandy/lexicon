@@ -68,7 +68,7 @@
 />
 
 <style lang="scss">
-    @use '../mixins.scss';
+    @use '../styles/mixins.scss';
 
     .tag-input {
         @include mixins.tag;
