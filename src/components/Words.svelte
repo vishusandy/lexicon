@@ -30,6 +30,8 @@
     let full_defs: string = '';
     $: phrases = search.split(' ').filter((f) => f.length > 0);
     $: full_defs = search === '' ? '' : 'full-defs';
+    let filtered: WordType[];
+    $: filtered = list.words.filter((w) => filter_word(phrases, w));
 
     let alert: string | undefined = undefined;
 
@@ -117,14 +119,14 @@
 
     function actionShowAll() {
         if (count_checked() === 0) {
-            list.words
-                .filter((w) => filter_word(phrases, w))
-                .forEach((w) => {
-                    const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
-                    if (t) {
-                        t.open = true;
-                    }
-                });
+            // list.words
+            //     .filter((w) => filter_word(phrases, w))
+            filtered.forEach((w) => {
+                const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+                if (t) {
+                    t.open = true;
+                }
+            });
         } else {
             editAction((node) => {
                 const t = node.parentElement?.querySelector('details');
@@ -139,14 +141,14 @@
 
     function actionShowNone() {
         if (count_checked() === 0) {
-            list.words
-                .filter((w) => filter_word(phrases, w))
-                .forEach((w) => {
-                    const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
-                    if (t) {
-                        t.open = false;
-                    }
-                });
+            // list.words
+            //     .filter((w) => filter_word(phrases, w))
+            filtered.forEach((w) => {
+                const t = document.getElementById(`${key}-${w.id}`)?.querySelector('details');
+                if (t) {
+                    t.open = false;
+                }
+            });
         } else {
             editAction((node) => {
                 const t = node.parentElement?.querySelector('details');
@@ -288,10 +290,16 @@
             on:updateSort={(e) => updateSort(e.detail)}
         />
     </div>
+    {#if search != ''}
+        <div class="filter-count">
+            Showing <b>{filtered.length}</b> out of <b>{list.words.length}</b> words
+        </div>
+    {/if}
 </div>
 
 <ul class="word-group {full_defs}">
-    {#each list.words.filter((w) => filter_word(phrases, w)) as word (word.id)}
+    <!-- {#each list.words.filter((w) => filter_word(phrases, w)) as word (word.id)} -->
+    {#each filtered as word (word.id)}
         <Word
             {key}
             item={word}
@@ -317,6 +325,12 @@
 {/if}
 
 <style>
+    .filter-count {
+        margin: 0.3rem 0px 0rem;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+
     .del-btn::before {
         color: #8f1111;
         content: '\f00d';
