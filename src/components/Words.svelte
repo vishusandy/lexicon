@@ -275,9 +275,9 @@
                     on:change={selectAll}
                 />
                 <div class="select-group">
-                    <button on:click={actionDelete}>Delete</button>
-                    <button on:click={actionShowAll}>Show</button>
-                    <button on:click={actionShowNone}>Hide</button>
+                    <button on:click={actionShowAll} class="show-btn" title="Show selected" />
+                    <button on:click={actionShowNone} class="hide-btn" title="Hide selected" />
+                    <button on:click={actionDelete} class="del-btn" title="Delete selected" />
                 </div>
             </div>
         </div>
@@ -317,18 +317,37 @@
 {/if}
 
 <style>
+    .del-btn::before {
+        color: #8f1111;
+        content: '\f00d';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+    }
+
+    .show-btn::before {
+        content: '\f06e';
+        font-family: 'Font Awesome 6 Free';
+        color: #333;
+    }
+
+    .hide-btn::before {
+        color: #555;
+        content: '\f070';
+        font-family: 'Font Awesome 6 Free';
+    }
+
     .select-group {
         display: inline-block;
         margin-right: 0.5rem;
         margin-left: 0.2rem;
     }
 
-    .select-group button:not(:last-of-type)::after {
+    /* .select-group button:not(:last-of-type)::after {
         content: ' ';
         border-right: 1px solid #bbb;
         margin-left: 0.3rem;
         margin-right: -0.25rem;
-    }
+    } */
 
     .select-words {
         display: inline-block;
