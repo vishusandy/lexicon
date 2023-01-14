@@ -200,3 +200,7 @@ export function download_json(): boolean {
     node.remove();
     return true;
 }
+
+export function getWordElem(key: string, id: number): HTMLElement | null {
+    return document.getElementById(key + '-word-' + id);
+}

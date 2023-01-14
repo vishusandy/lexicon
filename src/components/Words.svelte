@@ -15,7 +15,8 @@
         list_update_word,
         list_update_definition,
         filter_word,
-        new_word_cache
+        new_word_cache,
+        getWordElem
     } from '../words';
     import { scrollToWord, removeMarks } from '../utils';
     import { tick } from 'svelte';
@@ -163,9 +164,25 @@
 
     function updateWord(e: WordEvent) {
         console.log(e);
-        if (e.key != key) return;
-        if (e.word && list_update_word(list, e.word.id, e.word.word)) {
+        if (e.key != key || !e.word || !e.word.word) return;
+        let lower = e.word.word.trim().toLocaleLowerCase();
+        let dup = list.words.find((w) => w.cache?.word === lower);
+        let original = list.words.find((w) => w.id === e.word.id);
+        let t = getWordElem(key, e.word.id);
+        if (original != undefined && dup != undefined) {
+            console.log('original: %o\ndup: %o', original, dup);
+            console.log('duplicate word');
+            if (t) {
+                console.log('resetting to ' + t.title);
+                t.innerHTML = t.title;
+                original.word = t.title;
+            }
+        } else if (list_update_word(list, e.word.id, e.word.word)) {
             list = list_sort(list);
+            if (t) {
+                console.log('updating title');
+                t.title = e.word.word;
+            }
             console.log('updated list: %o', list.words);
             list_save(list);
             list = list;

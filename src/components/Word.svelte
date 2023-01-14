@@ -1,12 +1,13 @@
 <script lang="ts">
-    import { enterPressed, escapePressed } from '../events';
-    import { createEventDispatcher, afterUpdate, onMount, tick } from 'svelte';
+    import { enterPressed } from '../events';
+    import { createEventDispatcher, afterUpdate, onMount } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
     import { addMarks, removeMarks } from '../utils';
     import DictDef from './DictDef.svelte';
     import Tags from './Tags.svelte';
     import Audio from './Audio.svelte';
+    import { getWordElem } from '../words';
 
     const dispatch = createEventDispatcher();
 
@@ -18,10 +19,6 @@
         return key + '-def-' + item.id;
     }
 
-    function getWordElem(): HTMLElement | null {
-        return document.getElementById(key + '-word-' + item.id);
-    }
-
     function getLiElem(): HTMLElement | null {
         return document.getElementById(`${key}-${item.id}`);
     }
@@ -31,13 +28,13 @@
     }
 
     onMount(() => {
-        const t = getWordElem();
+        const t = getWordElem(key, item.id);
         if (!t) return;
         updateTitle(t);
     });
 
     afterUpdate(() => {
-        const w = getWordElem();
+        const w = getWordElem(key, item.id);
         const d = getDefElem();
         if (w) {
             w.innerHTML = item.word;
@@ -49,7 +46,7 @@
     });
 
     function updateWord() {
-        const t = getWordElem();
+        const t = getWordElem(key, item.id);
         if (!t) return;
         item.word = t.innerHTML;
         // t.innerHTML = '';
@@ -62,7 +59,7 @@
         }
 
         if (t.title != item.word) {
-            updateTitle(t);
+            // updateTitle(t);
             dispatch('updateWord', { word: item, key });
         }
     }
@@ -105,7 +102,7 @@
         if (highlight.length === 0) return;
         const def = getDefElem();
         const li = getLiElem();
-        const w = getWordElem();
+        const w = getWordElem(key, item.id);
 
         if (w) {
             w.innerHTML = addMarks(item.word, highlight);
@@ -131,7 +128,7 @@
     function removeHighlights() {
         const def = getDefElem();
         const li = getLiElem();
-        const w = getWordElem();
+        const w = getWordElem(key, item.id);
 
         if (w) {
             w.innerHTML = removeMarks(w.innerHTML);
