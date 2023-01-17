@@ -1,0 +1,1 @@
+import{S as a,i as e,s as n}from"../../chunks/index-cee4d27d.js";import{b as o}from"../../chunks/paths-b4419565.js";function i(s){return window.location.assign(`${o}/add`),[]}class u extends a{constructor(t){super(),e(this,t,i,null,n,{})}}export{u as default};
