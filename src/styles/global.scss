@@ -152,6 +152,11 @@ mark {
     border: 0px;
 }
 
+.remove-btn[disabled] {
+    color: #93989c;
+    cursor: not-allowed;
+}
+
 legend.options-group-title {
     cursor: default;
     user-select: none;

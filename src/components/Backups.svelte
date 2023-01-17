@@ -1,7 +1,7 @@
 <script lang="ts">
     import { browser } from '$app/environment';
     import type { BackupEntry } from '../types';
-    import { list_blank, list_save } from '../words';
+    import { download_json } from '../words';
     import Modal from './Modal.svelte';
 
     export let key: string;
@@ -18,7 +18,8 @@
     function updateBackups() {
         for (let i = 0; i < localStorage.length; i++) {
             const k = localStorage.key(i);
-            if (k && k != key) {
+            // if (k && k != key) {
+            if (k) {
                 backups.push({ name: k, key: i });
             }
         }
@@ -205,29 +206,47 @@
         {#each backups as backup (backup.key)}
             <div class="backup-entry">
                 <div class="backup-content">
+                    {#if backup.name != key}
+                        <button
+                            type="button"
+                            class="remove-btn"
+                            on:click={(e) => deleteBackup(e, backup.name)}
+                            ><i class="fa-solid fa-xmark" /></button
+                        >
+                    {:else}
+                        <button type="button" class="remove-btn" disabled={true}
+                            ><i class="fa-solid fa-xmark" /></button
+                        >
+                    {/if}
                     <button
+                        on:click={(e) => download_json(backup.name)}
                         type="button"
-                        class="remove-btn"
-                        on:click={(e) => deleteBackup(e, backup.name)}
-                        ><i class="fa-solid fa-xmark" /></button
+                        class="btn download-btn"><i class="fa-solid fa-download" /></button
                     >
-                    <button
-                        on:click={(e) => openRenameModal(e, backup.name)}
-                        type="submit"
-                        id="{key}-backup-rename-{backup.name}"
-                        title="Rename backup"
-                        value={backup.name}
-                        class="btn rename-btn"><i class="fa-solid fa-pen" /></button
-                    >
-                    <input
-                        type="radio"
-                        name="btn-edit"
-                        class="btn-edit"
-                        title="Select backup for restore"
-                        id="{key}-restore-{backup.key}"
-                        required={true}
-                        value={backup.name}
-                    />
+                    {#if backup.name != key}
+                        <button
+                            on:click={(e) => openRenameModal(e, backup.name)}
+                            type="submit"
+                            id="{key}-backup-rename-{backup.name}"
+                            title="Rename backup"
+                            value={backup.name}
+                            class="btn rename-btn"><i class="fa-solid fa-pen" /></button
+                        >
+                        <input
+                            type="radio"
+                            name="btn-edit"
+                            class="btn-edit"
+                            title="Select backup for restore"
+                            id="{key}-restore-{backup.key}"
+                            required={true}
+                            value={backup.name}
+                        />
+                    {:else}
+                        <button type="button" disabled={true} class="btn rename-btn"
+                            ><i class="fa-solid fa-pen" /></button
+                        >
+                    {/if}
+
                     <div class="backup-name">
                         <label
                             class="backup-name-label"
@@ -288,12 +307,6 @@
 </Modal>
 
 <style>
-    .rename-btn {
-        padding: 0px;
-        margin-left: 0.5rem;
-        color: #dfab00;
-    }
-
     .dialog-title {
         font-size: 1.1rem;
         margin-bottom: 1rem;
@@ -353,7 +366,24 @@
         padding: 0px;
     }
 
+    .download-btn {
+        padding: 0px;
+        margin-left: 0.4rem;
+        color: #434649;
+    }
+
+    .rename-btn {
+        padding: 0px;
+        margin-left: 0.4rem;
+        color: #dfab00;
+    }
+
+    .rename-btn[disabled] {
+        color: #93989c;
+        cursor: not-allowed;
+    }
+
     .btn-edit {
-        margin-left: 0.5rem;
+        margin-left: 0.4rem;
     }
 </style>
