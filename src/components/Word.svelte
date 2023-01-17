@@ -118,7 +118,7 @@
             );
 
             li.querySelectorAll('.tag').forEach((node) => {
-                if (highlight.some((f) => f == '#' + node.innerHTML.toLocaleLowerCase())) {
+                if (highlight.some((f) => f == '#' + node.innerHTML.toLowerCase())) {
                     node.parentElement?.classList.add('highlight-tag');
                 }
             });
@@ -167,7 +167,7 @@
 <hr id="{key}-hr-{item.id}" />
 <li id="{key}-{item.id}" class="word-item">
     <input class="select-word" type="checkbox" data-id={item.id} />
-    <button class="remove-word-btn" on:click={() => deleteWord(item)}>
+    <button class="remove-word-btn remove-btn" on:click={() => deleteWord(item)}>
         <i class="fa-solid fa-xmark" />
     </button>
     <button class="refresh-btn" on:click={refreshWord} title="Refresh defintion">
@@ -244,9 +244,9 @@
     }
 
     .remove-word-btn {
-        color: rgb(210, 141, 141);
+        /* color: #b34f4f;
         background: transparent;
-        border: 0px;
+        border: 0px; */
         padding-top: 0.1rem;
     }
 

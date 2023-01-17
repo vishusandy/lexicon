@@ -7,10 +7,10 @@
     import { enterPressed } from '../events';
     import type { WordList, Word as WordType } from '../types';
     import { toTitleCase, maybeString } from '../utils';
-    import { list_add, list_init, list_save, list_sort, word_cache } from '../words';
+    import { list_add, list_get, list_save, list_sort, word_cache } from '../words';
 
     export let key: string;
-    let list: WordList = list_init(key);
+    let list: WordList = list_get(key);
 
     let word: string = '';
     let def: string = '';
@@ -41,7 +41,7 @@
     }
 
     function updateDup() {
-        let lower = word.trim().toLocaleLowerCase();
+        let lower = word.trim().toLowerCase();
         dup = list.words.find((w) => w.cache?.word === lower);
 
         const form = document.getElementById(key + '-add-form');
@@ -51,11 +51,11 @@
 
             if (word_input) {
                 word_input.setCustomValidity(dup ? 'Duplicate word' : '');
-                if (word) {
-                    word_input.classList.remove('empty');
-                } else {
-                    word_input.classList.add('empty');
-                }
+                // if (word) {
+                //     word_input.classList.remove('empty');
+                // } else {
+                //     word_input.classList.add('empty');
+                // }
             }
 
             if (btn) {
@@ -210,6 +210,7 @@
         <label for="{key}-add-input" class="form-label" title="required"
             >Word<span class="required">*</span></label
         >
+        <!-- svelte-ignore a11y-autofocus -->
         <input
             id="{key}-add-input"
             bind:value={word}
@@ -217,7 +218,8 @@
             on:focusout={wordLostFocus}
             required={true}
             type="text"
-            class="word empty form-control"
+            class="word form-control"
+            autofocus={true}
         />
     </div>
     <div class="mb-3">

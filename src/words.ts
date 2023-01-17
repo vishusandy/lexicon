@@ -20,7 +20,7 @@ const defaultWords: Array<Word> = default_word_list.sort().map((word, i) => (wor
 export function new_word_cache(word: Word): WordCache {
     return {
         word: word.word.toLowerCase(),
-        def: word.def?.toLocaleLowerCase(),
+        def: word.def?.toLowerCase(),
         dict_def: word.dict_def ? dictionaryCache(word.dict_def) : undefined,
         tags: word.tags?.map(t => '#' + t.toLowerCase()),
     };
@@ -32,37 +32,46 @@ export function word_cache(word: Word): Word {
 }
 
 export function list_blank(key: string): WordList {
+    let list = {
+        "words": [],
+        "next_id": defaultWords.length,
+        "sort_by": defaultSortBy,
+        "sort_order": defaultSortOrder,
+        "key": key.toLowerCase()
+    };
+    return list;
+}
+
+function list_default(key: string): WordList {
     let words = defaultWords;
     let list = {
         "words": words,
         "next_id": defaultWords.length,
         "sort_by": defaultSortBy,
         "sort_order": defaultSortOrder,
-        "key": key
+        "key": key.toLowerCase()
     };
     list_save(list);
-    // let word_promises = defaultWords.map(w =>
-    //     APIProviders.default.lookup(w.word).then(data => {
-    //         w.dict_def = data ? data : undefined;
-    //     })
-    // );
-    // Promise.allSettled(word_promises).then(() => {
-    //     list.words = list.words;
-    // });
     return list;
 }
 
-export function list_init(key: string): WordList {
+export function list_get(key: string): WordList {
     // if (browser) {
     //     localStorage.removeItem(key);
     // }
-    const stored: string | null = (browser) ? localStorage.getItem(key) : null;
-    let list: WordList = (stored) ? JSON.parse(stored) : list_blank(key);
+    const stored: string | null = (browser) ? localStorage.getItem(key.toLowerCase()) : null;
+    let list: WordList = (stored) ? JSON.parse(stored) : list_default(key);
     // if (browser) {
     //     console.log('sorting: %o', list)
     //     list_sort(list);
     // }
     return list;
+}
+
+export function list_save(list: WordList) {
+    if (browser) {
+        localStorage.setItem(list.key.toLowerCase(), JSON.stringify(list));
+    }
 }
 
 export function list_add(list: WordList, word: Word): number {
@@ -109,12 +118,6 @@ export function list_sort(list: WordList): WordList {
         list.words.sort(sort_fn(list.sort_by, list.sort_order));
     }
     return list;
-}
-
-export function list_save(list: WordList) {
-    if (browser) {
-        localStorage.setItem(list.key, JSON.stringify(list));
-    }
 }
 
 function sort_fn(sort_by: SortBy, sort_order: SortOrder, sort_favorites: boolean = true): (a: Word, b: Word) => number {
@@ -186,9 +189,9 @@ function match_word_phrase(word: Word, phrase: string): boolean {
     //     ;
 }
 
-export function download_json(): boolean {
+export function download_json(key: string): boolean {
     if (!browser) return false;
-    const json = localStorage.getItem('words');
+    const json = localStorage.getItem(key.toLowerCase());
     if (!json) return false;
     // https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser
     const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);

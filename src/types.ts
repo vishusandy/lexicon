@@ -67,6 +67,15 @@ export type UpdateTagsEvent = {
     key: string
 };
 
+export type BackupEntry = {
+    name: string,
+    key: number,
+};
+
+export type NewBackup = {
+    name: string,
+};
+
 // export type RefreshWordEvent = {
 //     word: string,
 //     key: string,

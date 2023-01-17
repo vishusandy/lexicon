@@ -7,7 +7,7 @@
     import { APIProviders } from '../dictionary';
     import type { Word as WordType, WordList, WordEvent, SortEvent, FilterEvent } from '../types';
     import {
-        list_init,
+        list_get,
         list_remove,
         list_save,
         list_sort,
@@ -22,7 +22,7 @@
     import { tick } from 'svelte';
 
     export let key: string = 'words';
-    let list: WordList = list_init(key);
+    let list: WordList = list_get(key);
     list = list_sort(list);
 
     let check_all: boolean = false;
@@ -165,7 +165,7 @@
     function updateWord(e: WordEvent) {
         console.log(e);
         if (e.key != key || !e.word || !e.word.word) return;
-        let lower = e.word.word.trim().toLocaleLowerCase();
+        let lower = e.word.word.trim().toLowerCase();
         let dup = list.words.find((w) => w.cache?.word === lower);
         let original = list.words.find((w) => w.id === e.word.id);
         let t = getWordElem(key, e.word.id);
@@ -273,7 +273,7 @@
 
     function updateFilter(e: FilterEvent) {
         if (e.key != key) return;
-        search = e.search.toLocaleLowerCase();
+        search = e.search.toLowerCase();
     }
 </script>
 

@@ -32,7 +32,7 @@
             const ts = target.innerText
                 .trim()
                 .split(' ')
-                .map((t) => t.trim().toLocaleLowerCase())
+                .map((t) => t.trim().toLowerCase())
                 .filter((t) => t != '' && t != '<br>');
             tags.push(...ts);
             tags = [...new Set(tags)];

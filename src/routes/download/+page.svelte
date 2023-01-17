@@ -1,5 +1,4 @@
 <script lang="ts">
     import { download_json } from '../../words';
-
-    download_json();
+    download_json('words');
 </script>
