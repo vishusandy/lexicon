@@ -12,9 +12,15 @@
 </script>
 
 <nav class="main">
-    {#each links as link}
-        {#if link.page != current}
-            <a href={link.url}>{link.name}</a>
-        {/if}
-    {/each}
+    <ul>
+        {#each links as link}
+            <li>
+                {#if link.page != current}
+                    <a href={link.url}>{link.name}</a>
+                {:else}
+                    {link.name}
+                {/if}
+            </li>
+        {/each}
+    </ul>
 </nav>
