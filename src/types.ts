@@ -76,6 +76,12 @@ export type NewBackup = {
     name: string,
 };
 
+export type NavLink = {
+    name: string,
+    url: string,
+    page: string,
+};
+
 // export type RefreshWordEvent = {
 //     word: string,
 //     key: string,

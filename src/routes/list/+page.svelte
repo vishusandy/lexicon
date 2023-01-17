@@ -1,12 +1,11 @@
 <script lang="ts">
     import { base } from '$app/paths';
     import Words from '../../components/Words.svelte';
+    import Nav from '../../components/Nav.svelte';
 </script>
 
-<nav class="main">
-    <a href="{base}/add">Add words</a>
-</nav>
-<!-- <h1>Word List</h1> -->
+<Nav current="list" />
+
 <div class="list-vocab-container">
     <Words key="words" />
 </div>

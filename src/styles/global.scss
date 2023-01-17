@@ -46,6 +46,12 @@ nav.main {
     text-align: center;
 }
 
+nav.main a {
+    display: inline-block;
+    margin: 0px 0.4rem;
+}
+
+
 .add-vocab {
     max-width: 400px;
     margin: 0px auto;
