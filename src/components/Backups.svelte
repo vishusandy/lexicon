@@ -1,7 +1,7 @@
 <script lang="ts">
     import { browser } from '$app/environment';
     import type { BackupEntry } from '../types';
-    import { download_json } from '../words';
+    import { download_json, list_get } from '../words';
     import Modal from './Modal.svelte';
 
     export let key: string;
@@ -13,14 +13,14 @@
 
     // rename modal
     let rename_str: string = '';
-    let rename_placeholder: string = '';
+    // let rename_placeholder: string = '';
 
     function updateBackups() {
         for (let i = 0; i < localStorage.length; i++) {
             const k = localStorage.key(i);
-            // if (k && k != key) {
             if (k) {
-                backups.push({ name: k, key: i });
+                let list = list_get(k);
+                backups.push({ name: k, key: i, size: list.words.length });
             }
         }
     }
@@ -170,7 +170,6 @@
 
     function deleteBackup(e: Event, name: string): boolean {
         e.preventDefault();
-        // const t = <HTMLButtonElement | null>e.target;
         if (!browser) return false;
         if (!window.confirm("Delete backup '" + name + "'?")) {
             return false;
@@ -181,7 +180,7 @@
     }
 </script>
 
-<legend class="options-group-title">New Backup</legend>
+<legend class="options-group-title">Save Backup</legend>
 <div class="options-group">
     <form on:submit={submitNewBackup}>
         <div class="new-backup">
@@ -200,7 +199,7 @@
     </form>
 </div>
 
-<legend class="options-group-title">Restore Backup</legend>
+<legend class="options-group-title">Saved Backups</legend>
 <div class="options-group">
     <form id="{key}-backup-list-form">
         {#each backups as backup (backup.key)}
@@ -255,6 +254,9 @@
                         >
                             {backup.name}
                         </label>
+                        <div class="backup-length">
+                            ({backup.size} words)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -338,6 +340,13 @@
     .backup-name {
         /* width: 100%; */
         flex-grow: 1;
+    }
+
+    .backup-length {
+        display: inline;
+        font-size: 0.9rem;
+        font-style: italic;
+        color: #434649;
     }
 
     .backup-name-label {

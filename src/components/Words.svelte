@@ -180,7 +180,7 @@
         } else if (list_update_word(list, e.word.id, e.word.word)) {
             list = list_sort(list);
             if (t) {
-                console.log('updating title');
+                // console.log('updating title');
                 t.title = e.word.word;
             }
             console.log('updated list: %o', list.words);

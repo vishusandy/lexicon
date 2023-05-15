@@ -70,6 +70,7 @@ export type UpdateTagsEvent = {
 export type BackupEntry = {
     name: string,
     key: number,
+    size: number,
 };
 
 export type NewBackup = {

@@ -85,7 +85,7 @@
     }
 
     function updateTitle(dfn: HTMLElement) {
-        console.log('updating title to %s', item.word);
+        // console.log('updating title to %s', item.word);
         dfn.title = item.word;
     }
 
