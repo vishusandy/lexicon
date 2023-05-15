@@ -60,5 +60,5 @@ export function removeMarks(s: string): string {
 
 export function cur_date(): string {
     const time = new Date();
-    return `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`;
+    return time.toISOString().split('T')[0];
 }

@@ -197,7 +197,7 @@ export function download_json(key: string): boolean {
     const data = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
     let node = document.createElement('a');
     node.setAttribute('href', data);
-    node.setAttribute('download', 'vocab' + cur_date() + '.json');
+    node.setAttribute('download', key.replaceAll(' ', '_') + '_' + cur_date() + '.json');
     document.body.appendChild(node);
     node.click();
     node.remove();
