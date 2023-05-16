@@ -83,6 +83,17 @@ export type NavLink = {
     page: string,
 };
 
+
+export function isWordList(list: any): list is WordList {
+    return "words" in list &&
+        "next_id" in list &&
+        "sort_by" in list &&
+        "sort_order" in list &&
+        "key" in list;
+}
+
+
+
 // export type RefreshWordEvent = {
 //     word: string,
 //     key: string,

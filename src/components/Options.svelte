@@ -69,7 +69,7 @@
 <legend class="options-group-title">Options</legend>
 <div class="options-group">
     <div class="option-item">
-        <button on:click={() => refreshAllWords('words')} type="button" class="btn btn-secondary"
+        <button on:click={() => refreshAllWords('words')} type="button" class="btn btn-primary"
             >Refresh All Defintions</button
         >
     </div>

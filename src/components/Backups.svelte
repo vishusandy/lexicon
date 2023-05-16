@@ -1,15 +1,23 @@
 <script lang="ts">
     import { browser } from '$app/environment';
-    import type { BackupEntry } from '../types';
+    import { createEventDispatcher } from 'svelte';
+    import { isWordList, type BackupEntry } from '../types';
     import { download_json, list_get } from '../words';
+    import Alert from './Alert.svelte';
     import Modal from './Modal.svelte';
 
     export let key: string;
+
+    const dispatch = createEventDispatcher();
+
     let backups: BackupEntry[] = [];
 
     // restore modal
     let new_name: string = '';
     let rename_cur: boolean = true;
+
+    let alert: string | undefined = undefined;
+    let alert_type: string | undefined = undefined;
 
     // rename modal
     let rename_str: string = '';
@@ -136,6 +144,51 @@
         localStorage.setItem(t.value.toLowerCase(), cur);
         refresh();
         t.value = '';
+    }
+
+    function submitUpload(e: Event) {
+        if (!browser) return;
+
+        e.preventDefault();
+        let el = <HTMLInputElement | null>document.getElementById(`${key}-upload-backup`);
+
+        if (!el || !el.files || !el.files[0]) {
+            alert = 'Please select a file';
+            alert_type = 'error';
+            return;
+        }
+
+        if (!window.confirm('This will overwrite the current word list, continue?')) return;
+
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent) => {
+            if (!reader.result) {
+                alert = 'Upload failed';
+                alert_type = 'error';
+                return;
+            }
+
+            let text = <string>reader.result;
+            let obj = JSON.parse(text);
+            console.log(isWordList(obj));
+
+            if (!isWordList(obj)) {
+                alert = 'Invalid backup file.';
+                alert_type = 'error';
+                return;
+            }
+
+            localStorage.setItem(key, text);
+            alert = 'Backup restored';
+            alert_type = 'info';
+
+            let el = <HTMLInputElement | null>document.getElementById(`${key}-upload-backup`);
+            if (el) {
+                el.value = '';
+            }
+        };
+
+        reader.readAsText(el.files[0]);
     }
 
     function openRestoreModal(e: Event) {
@@ -273,6 +326,23 @@
     </form>
 </div>
 
+<legend class="options-group-title">Upload Backup</legend>
+<div class="options-group">
+    <form on:submit={(e) => submitUpload(e)}>
+        <div class="new-backup">
+            <div class="upload-backup-container">
+                <input
+                    id="{key}-upload-backup"
+                    class="upload-backup form-control"
+                    type="file"
+                    accept=".json,application/json"
+                />
+            </div>
+            <button class="btn btn-danger upload-backup-btn">Restore Backup</button>
+        </div>
+    </form>
+</div>
+
 <Modal id="backup-modal" onSubmit={submitRestore} submit_text="Restore">
     <div class="original-name">
         <div class="dialog-title">
@@ -307,6 +377,14 @@
     />
     <input type="hidden" id="{key}-rename-hidden" />
 </Modal>
+
+{#if alert}
+    {#if alert_type != undefined}
+        <Alert bind:message={alert} alert_style={alert_type} />
+    {:else}
+        <Alert bind:message={alert} />
+    {/if}
+{/if}
 
 <style>
     .dialog-title {
@@ -394,5 +472,32 @@
 
     .btn-edit {
         margin-left: 0.4rem;
+    }
+    .btn-secondary {
+        border: 1px solid #999;
+    }
+    .upload-backup {
+        border: 0px;
+    }
+
+    .upload-backup-btn {
+        flex-shrink: 0;
+    }
+
+    .upload-backup::file-selector-button {
+        --bs-btn-padding-x: 0.75rem;
+        --bs-btn-padding-y: 0.125rem;
+
+        --bs-btn-font-size: 1rem;
+        --bs-btn-font-weight: 400;
+        --bs-btn-line-height: 1.5;
+
+        --bs-btn-color: #212529;
+        padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
+        font-family: var(--bs-btn-font-family);
+        font-size: var(--bs-btn-font-size);
+        font-weight: var(--bs-btn-font-weight);
+        line-height: var(--bs-btn-line-height);
+        color: var(--bs-btn-color);
     }
 </style>
