@@ -32,6 +32,7 @@
             on:input={updateFilter}
             on:keydown={resetFilterEsc}
             class="search-input form-control"
+            autofocus={true}
         />
         {#if search}
             <button on:click={resetFilterBtn} class="reset-btn"><i class="fa-solid fa-x" /></button>
