@@ -349,20 +349,21 @@
     }
 
     .del-btn::before {
-        color: #8f1111;
+        color: #ca4c3b;
         content: '\f00d';
         font-family: 'Font Awesome 6 Free';
         font-weight: 900;
+        font-size: 1.2rem;
     }
 
     .show-btn::before {
         content: '\f06e';
         font-family: 'Font Awesome 6 Free';
-        color: #333;
+        color: #c4c4c4;
     }
 
     .hide-btn::before {
-        color: #555;
+        color: #b1b0b0;
         content: '\f070';
         font-family: 'Font Awesome 6 Free';
     }
@@ -395,9 +396,11 @@
         display: flex;
         justify-content: space-between;
         margin-top: 15px;
-        padding: 0.5rem 1.2rem 0.3rem 1.2rem;
-        background: #f1f2f7;
-        border-radius: 0.375rem;
+        padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+        /* background: #f1f2f7; */
+        background: #34353a;
+        color: #c92672;
+        border-radius: 1rem;
     }
 
     .word-group {
