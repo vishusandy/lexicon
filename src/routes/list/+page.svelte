@@ -5,7 +5,7 @@
 </script>
 
 <Nav current="list" />
-
+<h1>Word List</h1>
 <div class="list-vocab-container">
     <Words key="words" />
 </div>

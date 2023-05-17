@@ -28,7 +28,7 @@
         <div class="search-icon"><i class="fa-solid fa-magnifying-glass" /></div>
         <input
             bind:value={search}
-            placeholder="filter"
+            placeholder=""
             on:input={updateFilter}
             on:keydown={resetFilterEsc}
             class="search-input form-control"
@@ -60,7 +60,8 @@
         display: inline-block;
         font-size: 1.12rem;
         padding: 0.4rem 1.9rem 0.4rem 2.1rem;
-        text-align: left;
+        /* text-align: left; */
+        text-align: center;
     }
 
     .reset-btn {

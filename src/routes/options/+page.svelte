@@ -11,6 +11,8 @@
     <a href="{base}/add">Add words</a>
 </nav> -->
 
+<h1>Options</h1>
+
 <div class="options-page">
     <Backups key="words" />
     <Option key="words" />

@@ -408,9 +408,9 @@
     .sticky-search-bar {
         background: white;
         border: 0px;
-        padding: 1rem 0rem 0.4rem 0rem;
+        padding: 2rem 0rem 0.4rem 0rem;
         position: sticky;
-        margin-top: 1rem;
+        margin-top: -1rem;
         z-index: 99;
     }
 

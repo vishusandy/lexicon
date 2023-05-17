@@ -40,19 +40,36 @@ h1 {
 nav.main {
     position: sticky;
     top: 0px;
-    background: #f1f2f7;
-    padding: 0.3rem 0px;
+    // background: #f1f2f7;
+    background: #34353a;
+    padding: 0.7rem 0px;
     z-index: 1000;
     text-align: center;
+    color: white;
 }
 
 nav.main ul {
+    display: flex;
     margin-bottom: 0px;
+    // width: fit-content;
+    justify-content: center;
+    margin: 0px auto;
+    max-width: 650px;
+    // font-size: 1.1rem;
+    font-weight: bold;
 }
 
 nav.main li {
+    width: 30%;
     display: inline-block;
     margin: 0px 0.4rem;
+    text-align: center;
+}
+
+nav.main a {
+    // color: #c73939;
+    // color: #c77939;
+    color: #c92672;
 }
 
 
@@ -147,6 +164,7 @@ mark {
     border-radius: 0.75rem;
     padding: 1rem 1rem;
     margin: 0px auto;
+    box-shadow: 5px 5px 3px #eee;
     // background-color: #f4f6fa;
 }
 
