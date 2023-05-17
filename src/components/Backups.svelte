@@ -1,6 +1,5 @@
 <script lang="ts">
     import { browser } from '$app/environment';
-    import { createEventDispatcher } from 'svelte';
     import { isWordList, type BackupEntry } from '../types';
     import { download_json, list_get } from '../words';
     import Alert from './Alert.svelte';
@@ -8,20 +7,17 @@
 
     export let key: string;
 
-    const dispatch = createEventDispatcher();
-
     let backups: BackupEntry[] = [];
+
+    let alert: string | undefined = undefined;
+    let alert_type: string | undefined = undefined;
 
     // restore modal
     let new_name: string = '';
     let rename_cur: boolean = true;
 
-    let alert: string | undefined = undefined;
-    let alert_type: string | undefined = undefined;
-
     // rename modal
     let rename_str: string = '';
-    // let rename_placeholder: string = '';
 
     function updateBackups() {
         for (let i = 0; i < localStorage.length; i++) {
@@ -44,19 +40,18 @@
     function validBackupName(e: Event, input_id: string): boolean {
         const t = <HTMLInputElement | null>document.getElementById(input_id);
         if (!t) {
-            console.log('could not find id: ' + input_id);
             return false;
         }
 
         if (t.value != '') {
             t.setCustomValidity('');
+
             if (browser) {
                 const ls = localStorage.getItem(t.value.toLowerCase());
+
                 if (t.value.toLowerCase() == key.toLowerCase()) {
-                    // console.log("name '" + t.value + "' is reserved");
                     t.setCustomValidity(`'${key}' is a reserved name`);
                 } else if (ls != null) {
-                    // console.log('name ' + t.value + ' exists');
                     t.setCustomValidity('Backup exists');
                 } else {
                     return true;
@@ -67,25 +62,27 @@
     }
 
     function submitRename(d: HTMLDialogElement, e: Event): boolean {
-        // validBackupName(e, key + '-rename-backup');
-        // console.log('attempting to rename to ' + rename_str);
         if (!validBackupName(e, key + '-rename-backup')) {
             console.log('invalid name:' + rename_str);
             e.preventDefault();
             return false;
         }
-        // const t = document.getElementById(key + '-rename-backup');
+
         const h = <HTMLInputElement | null>document.getElementById(key + '-rename-hidden');
         const new_name = rename_str.toLowerCase();
         const new_ls = localStorage.getItem(new_name);
+
         if (!h || !h.value || !rename_str || new_ls != null) return false;
+
         const old_name = h.value.toLowerCase();
         const old_ls = localStorage.getItem(old_name);
+
         if (!old_ls) return false;
-        console.log('renaming ' + old_name + ' to ' + new_name);
+
         localStorage.setItem(new_name, old_ls);
         localStorage.removeItem(old_name);
         refresh();
+
         return true;
     }
 
@@ -123,6 +120,9 @@
             }
             localStorage.setItem(key, restore);
 
+            alert = 'Backup restored';
+            alert_type = 'info';
+
             refresh();
         }
         return true;
@@ -142,6 +142,10 @@
         }
 
         localStorage.setItem(t.value.toLowerCase(), cur);
+
+        alert = 'Backup created';
+        alert_type = 'info';
+
         refresh();
         t.value = '';
     }
@@ -186,6 +190,7 @@
             if (el) {
                 el.value = '';
             }
+            refresh();
         };
 
         reader.readAsText(el.files[0]);
@@ -227,6 +232,10 @@
         if (!window.confirm("Delete backup '" + name + "'?")) {
             return false;
         }
+
+        alert = 'Backup deleted';
+        alert_type = 'error';
+
         localStorage.removeItem(name);
         refresh();
         return true;
