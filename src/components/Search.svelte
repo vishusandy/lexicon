@@ -53,7 +53,7 @@
         position: absolute;
         margin-top: 0.55rem;
         margin-left: 0.7rem;
-        color: rgb(185, 187, 206);
+        color: rgb(146, 147, 156);
     }
 
     .search-input {
@@ -63,6 +63,8 @@
         padding: 0.4rem 1.9rem 0.4rem 2.1rem;
         /* text-align: left; */
         text-align: center;
+        border: 1px solid #828282;
+        box-shadow: 0px 0px 3px #e2e2e2;
     }
 
     .reset-btn {
