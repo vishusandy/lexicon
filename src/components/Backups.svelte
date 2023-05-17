@@ -262,6 +262,7 @@
                         <button
                             type="button"
                             class="remove-btn"
+                            title="Delete backup"
                             on:click={(e) => deleteBackup(e, backup.name)}
                             ><i class="fa-solid fa-xmark" /></button
                         >
@@ -273,14 +274,15 @@
                     <button
                         on:click={(e) => download_json(backup.name)}
                         type="button"
-                        class="btn download-btn"><i class="fa-solid fa-download" /></button
+                        class="btn download-btn"
+                        title="Download backup"><i class="fa-solid fa-download" /></button
                     >
                     {#if backup.name != key}
                         <button
                             on:click={(e) => openRenameModal(e, backup.name)}
                             type="submit"
                             id="{key}-backup-rename-{backup.name}"
-                            title="Rename backup"
+                            title="Rename"
                             value={backup.name}
                             class="btn rename-btn"><i class="fa-solid fa-pen" /></button
                         >
@@ -288,7 +290,7 @@
                             type="radio"
                             name="btn-edit"
                             class="btn-edit"
-                            title="Select backup for restore"
+                            title="Select this backup for restore"
                             id="{key}-restore-{backup.key}"
                             required={true}
                             value={backup.name}
@@ -297,6 +299,7 @@
                         <button type="button" disabled={true} class="btn rename-btn"
                             ><i class="fa-solid fa-pen" /></button
                         >
+                        <input type="radio" class="btn-edit-current" disabled />
                     {/if}
 
                     <div class="backup-name">
@@ -305,7 +308,11 @@
                             for="{key}-restore-{backup.key}"
                             title="Select backup for restore"
                         >
-                            {backup.name}
+                            {#if backup.name == key}
+                                <div class="backup-current">Current</div>
+                            {:else}
+                                {backup.name}
+                            {/if}
                         </label>
                         <div class="backup-length">
                             ({backup.size} words)
@@ -456,7 +463,8 @@
     .download-btn {
         padding: 0px;
         margin-left: 0.4rem;
-        color: #434649;
+        /* color: #434649; */
+        color: #0c7ae7;
     }
 
     .rename-btn {
@@ -466,16 +474,25 @@
     }
 
     .rename-btn[disabled] {
-        color: #93989c;
+        /* color: #93989c; */
+        color: #7d8d9b;
         cursor: not-allowed;
     }
 
     .btn-edit {
         margin-left: 0.4rem;
     }
-    .btn-secondary {
-        border: 1px solid #999;
+
+    .btn-edit-current {
+        margin-left: 0.4rem;
+        cursor: not-allowed;
+        /* visibility: hidden; */
     }
+
+    .backup-current {
+        font-weight: bold;
+    }
+
     .upload-backup {
         border: 0px;
     }
