@@ -59,6 +59,7 @@
         border-radius: 0.9rem;
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
+        padding-left: 0.9rem;
         /* padding: 0.15rem 0.2rem 0.15rem 0.2rem; */
         /* height: 2.4rem; */
         height: 2rem;
