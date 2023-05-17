@@ -1,6 +1,5 @@
 <script lang="ts">
     import { base } from '$app/paths';
-    import Add from './Add.svelte';
     import type { NavLink } from '../types';
 
     export let current: string;

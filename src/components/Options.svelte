@@ -2,7 +2,7 @@
     import { browser } from '$app/environment';
     import { APIProviders } from '../dictionary';
     import Alert from './Alert.svelte';
-    import type { Word as WordType, WordEvent, WordList } from '../types';
+    import type { Word as WordType, WordList } from '../types';
     import { list_blank, list_get, list_save, list_update, new_word_cache } from '../words';
 
     export let key: string;
@@ -12,7 +12,7 @@
     function clearWords() {
         if (!browser) return;
 
-        if (!window.confirm('This will clear all words in your word list.  Continue?')) {
+        if (!window.confirm('This will clear all words in your current word list.  Continue?')) {
             return;
         }
 
