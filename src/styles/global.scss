@@ -88,6 +88,11 @@ nav.main a {
     margin: 0px auto;
 }
 
+input[type="text"],
+div.form-control {
+    box-shadow: 0px 0px 2px #e7e7e7;
+}
+
 .form-border:focus-within:not(:invalid) {
     border-color: #86b7fe;
     outline: 0;
