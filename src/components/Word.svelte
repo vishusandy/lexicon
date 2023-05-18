@@ -317,7 +317,7 @@
         text-align: right;
         /* display: flex; */
         display: flex;
-        /* justify-content: flex-end; */
+        justify-content: flex-end;
     }
 
     .word-definition[contenteditable]:empty:not(:focus):before {
