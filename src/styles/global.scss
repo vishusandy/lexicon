@@ -204,3 +204,26 @@ legend.options-group-title {
     margin-left: 0.4rem;
     color: #353c40;
 }
+
+.options-group input.form-control[type="text"],
+.add-form-container input.form-control[type="text"],
+.add-form-container div.form-control[contenteditable] {
+    background-color: #424242;
+    border: 1px solid #353637;
+    box-shadow: none;
+    color: #dbe5ec;
+}
+
+.options-group input.form-control[type="text"]::placeholder,
+.add-form-container input.form-control[type="text"]::placeholder,
+.add-form-container div.form-control[contenteditable]::placeholder {
+    opacity: 1;
+    color: #b0b6bb;
+}
+
+.options-group input.form-control[type="text"]:focus,
+.add-form-container input.form-control[type="text"]:focus,
+.add-form-container div.form-control[contenteditable]:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(54, 134, 253, 0.555);
+}

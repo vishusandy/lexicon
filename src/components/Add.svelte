@@ -263,7 +263,7 @@
     <div id="{key}-add-container" class="add-container">
         <button type="submit" class="add btn btn-primary">Add Word </button><br />
     </div>
-    <div>
+    <div class="required-description">
         <span class="required">*</span> denotes a required field
     </div>
     <!-- </div> -->
@@ -337,6 +337,10 @@
         overflow-wrap: break-word;
         transition: height 0.3s ease-out, border-color 0.15s ease-in-out,
             box-shadow 0.15s ease-in-out;
+    }
+
+    .required-description {
+        color: #c7ced4;
     }
 
     .required {
