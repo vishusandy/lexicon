@@ -17,14 +17,17 @@
     export let highlight: string[];
 
     let dict_def: DictionaryWord | undefined = item.dict_def;
-    $: dict_def = highlightDefinition(item.dict_def);
+    $: dict_def = highlightDefinition(highlight, item.dict_def);
 
-    function highlightDefinition(def: DictionaryWord | undefined): DictionaryWord | undefined {
+    function highlightDefinition(
+        search: string[],
+        def?: DictionaryWord
+    ): DictionaryWord | undefined {
         if (!def) return;
         let d = { ...def };
         for (let part of d.parts) {
-            part.definition = addMarks(removeMarks(part.definition), highlight);
-            part.part = addMarks(removeMarks(part.part), highlight);
+            part.definition = addMarks(removeMarks(part.definition), search);
+            part.part = addMarks(removeMarks(part.part), search);
         }
         return d;
     }
