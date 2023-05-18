@@ -242,7 +242,7 @@
                 {#if item.def}{item.def}{/if}
             </div>
             <div class="tag-list">
-                <span class="tags-label">Tags:</span>
+                <div class="tags-label">Tags</div>
                 <Tags {key} bind:tags={item.tags} on:updateTags={updateTags} />
             </div>
         </div>
@@ -311,13 +311,25 @@
 
     .tags-label {
         margin-right: 0.5rem;
+        color: #4b4b4b;
+        align-self: center;
+        font-family: var(--heading-font);
+        font-weight: bold;
+        font-size: 0.95rem;
     }
 
     .tag-list {
-        text-align: right;
-        /* display: flex; */
+        /* text-align: right; */
         display: flex;
-        justify-content: flex-end;
+        flex-wrap: wrap;
+        background: #f6f6f8;
+        border: 1px solid #ebe7e7;
+        padding: 0.3rem 1rem;
+        border-radius: 1rem;
+        box-shadow: 0px 0px 4px #f0efef;
+        /* justify-content: flex-end; */
+        width: fit-content;
+        margin-left: auto;
     }
 
     .word-definition[contenteditable]:empty:not(:focus):before {
