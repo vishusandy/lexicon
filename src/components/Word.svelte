@@ -322,14 +322,15 @@
         /* text-align: right; */
         display: flex;
         flex-wrap: wrap;
-        background: #f6f6f8;
-        border: 1px solid #ebe7e7;
+        /* background: #f6f6f8; */
+        /* border: 1px solid #ebe7e7; */
         padding: 0.3rem 1rem;
-        border-radius: 1rem;
-        box-shadow: 0px 0px 4px #f0efef;
+        /* border-radius: 1rem; */
+        /* box-shadow: 0px 0px 4px #f0efef; */
         /* justify-content: flex-end; */
         width: fit-content;
         margin-left: auto;
+        justify-content: flex-end;
     }
 
     .word-definition[contenteditable]:empty:not(:focus):before {
