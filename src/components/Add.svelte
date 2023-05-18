@@ -205,7 +205,8 @@
     }
 </script>
 
-<form id="{key}-add-form" on:submit|preventDefault={addWord} class="mt-4">
+<form id="{key}-add-form" class="add-form-container mt-4" on:submit|preventDefault={addWord}>
+    <!-- <div class="add-container"> -->
     <div class="mb-3">
         <label for="{key}-add-input" class="form-label" title="required"
             >Word<span class="required">*</span></label
@@ -240,7 +241,7 @@
     </div>
 
     {#if dict_def}
-        <DictDef dict={dict_def} />
+        <DictDef dict={dict_def} scheme="dark" />
     {/if}
 
     <div class="alert-box">
@@ -265,11 +266,20 @@
     <div>
         <span class="required">*</span> denotes a required field
     </div>
+    <!-- </div> -->
 </form>
 
 <style>
+    .add-form-container {
+        background: #34353a;
+        padding: 1rem;
+        border-radius: 1rem;
+        color: #ebf3fa;
+    }
+
     .tag-list {
         display: flex;
+        color: #47535e;
     }
 
     .alert-box {
@@ -330,7 +340,7 @@
     }
 
     .required {
-        color: #525457;
+        color: #f74b4b;
         font-style: italic;
     }
 </style>

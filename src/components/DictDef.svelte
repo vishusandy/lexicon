@@ -1,9 +1,10 @@
 <script lang="ts">
     import type { DictionaryWord } from '../dictionary';
     export let dict: DictionaryWord;
+    export let scheme: string = '';
 </script>
 
-<div class="dict-def-container">
+<div class="dict-def-container {scheme}">
     <dl>
         <dt>{dict.word}</dt>
         {#if dict.parts.length > 0}
@@ -57,6 +58,11 @@
         color: #505458;
         font-style: italic;
         margin-right: 0.5rem;
+        cursor: default;
+    }
+
+    .dark .pos {
+        color: #9ba3aa;
     }
 
     ul {

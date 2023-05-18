@@ -469,6 +469,9 @@
         padding: 0px;
         color: #ee1d1d;
     }
+    .remove-btn[disabled] {
+        color: #9a9a9d;
+    }
 
     .download-btn {
         padding: 0px;
@@ -486,7 +489,8 @@
 
     .rename-btn[disabled] {
         /* color: #93989c; */
-        color: #878b8f;
+        /* color: #878b8f; */
+        color: #9a9a9d;
         cursor: not-allowed;
     }
 
