@@ -314,9 +314,10 @@
     }
 
     .tag-list {
+        text-align: right;
+        /* display: flex; */
         display: flex;
-        justify-content: flex-end;
-        align-items: baseline;
+        /* justify-content: flex-end; */
     }
 
     .word-definition[contenteditable]:empty:not(:focus):before {

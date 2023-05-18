@@ -50,12 +50,14 @@
         display: inline-block;
         font-family: 'Font Awesome 6 Free';
         font-weight: 600;
-        color: #a8303c;
-        font-size: 0.8rem;
-        margin-left: -0.4rem;
-        margin-right: -0.6em;
+        // color: #a8303c;
+        color: #c54754;
+        font-size: 0.85rem;
+        margin-left: -0.3rem;
+        margin-right: -0.4em;
+        text-shadow: 0px 0px 2px #c6afaf;
         position: relative;
-        top: -0.5rem;
+        top: -0.25rem;
     }
 
     .tag::before {
@@ -66,11 +68,13 @@
         display: inline-block;
         width: fit-content;
         padding: 0.1rem 0.6rem;
+        padding-right: 0.3rem;
+        font-style: italic;
     }
 
     .tag-btn {
         @include mixins.tag;
-        padding: 0.1rem 0.6rem 0.1rem 0.1rem;
+        padding-left: 0.1rem;
     }
 
     .tag-btn:hover:not(:focus) {
