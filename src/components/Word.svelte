@@ -5,6 +5,7 @@
     import type { Word } from '../types';
     import { addMarks, removeMarks } from '../utils';
     import DictDef from './DictDef.svelte';
+    import type { DictionaryWord } from 'src/dictionary';
     import Tags from './Tags.svelte';
     import Audio from './Audio.svelte';
     import { getWordElem } from '../words';
@@ -14,6 +15,19 @@
     export let key: string;
     export let item: Word;
     export let highlight: string[];
+
+    let dict_def: DictionaryWord | undefined = item.dict_def;
+    $: dict_def = highlightDefinition(item.dict_def);
+
+    function highlightDefinition(def: DictionaryWord | undefined): DictionaryWord | undefined {
+        if (!def) return;
+        let d = { ...def };
+        for (let part of d.parts) {
+            part.definition = addMarks(removeMarks(part.definition), highlight);
+            part.part = addMarks(removeMarks(part.part), highlight);
+        }
+        return d;
+    }
 
     function defId(): string {
         return key + '-def-' + item.id;
@@ -33,17 +47,17 @@
         updateTitle(t);
     });
 
-    afterUpdate(() => {
-        const w = getWordElem(key, item.id);
-        const d = getDefElem();
-        if (w) {
-            w.innerHTML = item.word;
-        }
-        if (d && item.def) {
-            d.innerHTML = item.def;
-        }
-        addHighlights();
-    });
+    // afterUpdate(() => {
+    // const w = getWordElem(key, item.id);
+    // const d = getDefElem();
+    // if (w) {
+    //     w.innerHTML = item.word;
+    // }
+    // if (d && item.def) {
+    //     d.innerHTML = item.def;
+    // }
+    // addHighlights();
+    // });
 
     function updateWord() {
         const t = getWordElem(key, item.id);
@@ -207,8 +221,8 @@
                 </div>
             {/if}
 
-            {#if item.dict_def}
-                <DictDef dict={item.dict_def} />
+            {#if dict_def}
+                <DictDef dict={dict_def} />
             {/if}
             <span class="def-label">Notes:</span>
             <div

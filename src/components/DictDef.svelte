@@ -12,8 +12,8 @@
                     {#each dict.parts as part}
                         <li>
                             <p>
-                                <span class="pos">{part.part}</span>
-                                <span class="def">{part.definition}</span>
+                                <span class="pos">{@html part.part}</span>
+                                <span class="def">{@html part.definition}</span>
                             </p>
                             {#if part.synonyms.length > 0}
                                 <p class="syn">
