@@ -32,6 +32,7 @@
             on:input={updateFilter}
             on:keydown={resetFilterEsc}
             class="search-input form-control"
+            type="text"
             autofocus={true}
         />
         {#if search}
@@ -61,9 +62,11 @@
         display: inline-block;
         font-size: 1.12rem;
         padding: 0.4rem 1.9rem 0.4rem 2.1rem;
-        /* text-align: left; */
         text-align: center;
         border: 1px solid #828282;
+    }
+
+    .search-input:not(:focus) {
         box-shadow: 0px 0px 3px #e2e2e2;
     }
 
@@ -74,8 +77,6 @@
         color: rgb(158, 30, 30);
         padding: 0.3rem 0.3rem 0.3rem;
         position: absolute;
-        /* display: none; */
-        /* right: 0px; */
         margin-left: -1.8rem;
         margin-top: 0.3rem;
     }
