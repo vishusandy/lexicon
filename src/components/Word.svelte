@@ -457,7 +457,12 @@
         border: 0px;
         background: transparent;
         color: #eec009;
+        text-shadow: 0px 0px 2px #e1c34b;
         font-size: 1.7rem;
+    }
+
+    .note-empty button:focus {
+        text-shadow: none;
     }
 
     .note-text {
