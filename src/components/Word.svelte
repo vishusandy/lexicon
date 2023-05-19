@@ -419,14 +419,14 @@
         margin: 0px auto;
         height: 1px;
         border: 0px;
-        width: 90%;
+        /* width: 90%; */
         background: rgb(247, 244, 239);
         background: linear-gradient(
             90deg,
             rgba(247, 244, 239, 1) 0%,
-            rgba(139, 134, 123, 1) 25%,
+            rgba(139, 134, 123, 1) 3%,
             rgba(117, 113, 104, 1) 50%,
-            rgba(139, 134, 123, 1) 75%,
+            rgba(139, 134, 123, 1) 97%,
             rgba(247, 244, 239, 1) 100%
         );
     }
