@@ -45,28 +45,17 @@
     }
 
     onMount(() => {
+        noteVisible();
+
         const t = getWordElem(key, item.id);
         if (!t) return;
         updateTitle(t);
     });
 
-    // afterUpdate(() => {
-    // const w = getWordElem(key, item.id);
-    // const d = getDefElem();
-    // if (w) {
-    //     w.innerHTML = item.word;
-    // }
-    // if (d && item.def) {
-    //     d.innerHTML = item.def;
-    // }
-    // addHighlights();
-    // });
-
     function updateWord() {
         const t = getWordElem(key, item.id);
         if (!t) return;
         item.word = t.innerHTML;
-        // t.innerHTML = '';
 
         if (item.word == '') {
             if (!deleteWord(item)) {
@@ -76,7 +65,6 @@
         }
 
         if (t.title != item.word) {
-            // updateTitle(t);
             dispatch('updateWord', { word: item, key });
         }
     }
@@ -179,6 +167,61 @@
         }
         enterPressed(e);
     }
+
+    function adjustTextarea(e: Event) {
+        const t = <HTMLTextAreaElement | null>e.target;
+        if (!t) return;
+        t.style.height = 'auto';
+        t.style.height = t.scrollHeight + 'px';
+    }
+
+    function addNote(e: Event) {}
+
+    function updateNote() {
+        if (item.def === '') {
+            item.def = undefined;
+        }
+        noteVisible();
+        dispatch('updateDefinition', { word: item, key });
+    }
+
+    function noteVisible() {
+        if (item.def !== undefined && item.def !== '') {
+            showNote(false);
+        } else {
+            hideNote();
+        }
+    }
+
+    function showNote(focus: boolean) {
+        const e = document.getElementById(`note-empty-${key}-${item.id}`);
+        const s = document.getElementById(`note-shown-${key}-${item.id}`);
+        if (e) {
+            e.classList.add('hidden');
+        } else {
+            console.log(`could not find: note-empty-${key}-${item.id}`);
+        }
+        if (s) {
+            s.classList.remove('hidden');
+            if (focus) {
+                const t = s.querySelector('textarea');
+                if (t) {
+                    t.focus();
+                }
+            }
+        }
+    }
+
+    function hideNote() {
+        const e = document.getElementById(`note-empty-${key}-${item.id}`);
+        const s = document.getElementById(`note-shown-${key}-${item.id}`);
+        if (e) {
+            e.classList.remove('hidden');
+        }
+        if (s) {
+            s.classList.add('hidden');
+        }
+    }
 </script>
 
 <hr id="{key}-hr-{item.id}" />
@@ -227,20 +270,25 @@
             {#if dict_def}
                 <DictDef dict={dict_def} />
             {/if}
-            <span class="def-label">Notes:</span>
-            <div
-                id="{key}-def-{item.id}"
-                class="word-definition"
-                contenteditable="true"
-                on:keydown={enterPressed}
-                on:blur={() => {
-                    updateDefinition();
-                    addHighlights();
-                }}
-                on:focus={() => removeHighlights()}
-            >
-                {#if item.def}{item.def}{/if}
+
+            <div class="note-container">
+                <div id="note-empty-{key}-{item.id}" class="note-empty hidden">
+                    <button on:click={() => showNote(true)} title="Add Note">
+                        <!-- <i class="fa-solid fa-note-sticky" /> -->
+                        <i class="fa-solid fa-circle-plus" />
+                    </button>
+                </div>
+                <div id="note-shown-{key}-{item.id}" class="note-shown hidden">
+                    <legend>Notes</legend>
+                    <textarea
+                        class="note-text form-control"
+                        bind:value={item.def}
+                        on:input={adjustTextarea}
+                        on:blur={updateNote}
+                    />
+                </div>
             </div>
+
             <div class="tag-list">
                 <div class="tags-label">Tags</div>
                 <Tags {key} bind:tags={item.tags} on:updateTags={updateTags} />
@@ -261,9 +309,6 @@
     }
 
     .remove-word-btn {
-        /* color: #b34f4f;
-        background: transparent;
-        border: 0px; */
         padding-top: 0.1rem;
     }
 
@@ -281,7 +326,6 @@
     }
 
     .fav-label {
-        /* color: #686a6e; */
         color: #666;
         font-family: 'Font Awesome 6 Free';
         font-size: 0.9rem;
@@ -303,7 +347,6 @@
     }
 
     .fav-checkbox[type='checkbox']:checked + .fav-label::after {
-        /* color: #ecd609; */
         color: #eec009;
         content: '\f005';
         font-weight: 900;
@@ -319,34 +362,17 @@
     }
 
     .tag-list {
-        /* text-align: right; */
         display: flex;
         flex-wrap: wrap;
-        /* background: #f6f6f8; */
-        /* border: 1px solid #ebe7e7; */
         padding: 0.3rem 1rem;
-        /* border-radius: 1rem; */
-        /* box-shadow: 0px 0px 4px #f0efef; */
-        /* justify-content: flex-end; */
         width: fit-content;
         margin-left: auto;
         justify-content: flex-end;
     }
 
-    .word-definition[contenteditable]:empty:not(:focus):before {
-        content: 'notes';
-        color: #616568;
-        cursor: text;
-    }
-
     .detail-arrow {
         display: inline-block;
         margin-left: auto;
-    }
-
-    .def-label {
-        float: left;
-        margin-right: 0.5rem;
     }
 
     .detail-content {
@@ -366,7 +392,6 @@
     }
 
     details {
-        /* display: inline-block; */
         width: 100%;
     }
 
@@ -377,7 +402,6 @@
     }
 
     .word-item {
-        /* border: 1px solid transparent; */
         border-radius: 0.75rem;
         width: 100%;
         margin: 0.2rem auto;
@@ -388,13 +412,6 @@
     .word {
         color: #171a1d;
         cursor: text;
-    }
-
-    .word-definition {
-        display: block;
-        margin: 0px 0px 0px 0.2rem;
-        color: #495057;
-        width: 100%;
     }
 
     li:first-of-type {
@@ -429,52 +446,41 @@
         display: none;
     }
 
-    /* .has-definition .word-definition::before {
-        content: '-';
-        color: #6c757d;
-        margin-right: 0.3rem;
-    } */
+    .note-container legend {
+        color: #28292a;
+    }
 
-    /* li:not(.has-definition) .word::after {
-        content: '       \200C';
-    } */
+    .note-empty {
+        text-align: right;
+        margin-top: -0.5rem;
+        margin-right: 0.8rem;
+        margin-left: 1rem;
+        margin-bottom: 0.3rem;
+    }
 
-    /* .word-item:focus-within,
-    .full-defs {
-        padding-bottom: calc(0.5rem - 3px);
-    } */
+    .note-shown {
+        margin-right: 1rem;
+        margin-left: 1rem;
+        margin-bottom: 1rem;
+    }
 
-    /* .word-item:focus-within,
-    .full-defs {
-        overflow: auto;
-        height: unset;
-        min-height: 2rem;
-    } */
+    .note-empty button {
+        border: 0px;
+        background: transparent;
+        color: #eec009;
+        font-size: 1.7rem;
+    }
 
-    /* .more-btn,
-    .less-btn {
-        margin-left: 0.5rem;
-        color: #82858a;
-    } */
+    .note-text {
+        width: 100%;
+        resize: vertical;
+    }
 
-    /* .more-btn {
+    .note-shown.hidden {
         display: none;
-    } */
+    }
 
-    /* .less-btn {
+    .note-empty.hidden {
         display: none;
-    } */
-
-    /* .word-item.more.full-defs .less-btn,
-    .word-item.more:focus-within .less-btn {
-        display: block;
-        float: right;
-        padding-right: 0px;
-    } */
-
-    /* .word-item:not(:focus-within):not(.full-defs).more .more-btn {
-        display: block;
-        float: right;
-        padding-right: 0px;
-    } */
+    }
 </style>
