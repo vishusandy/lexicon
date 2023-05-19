@@ -6,7 +6,7 @@
     import { APIProviders, type DictionaryWord } from '../dictionary';
     import { enterPressed } from '../events';
     import type { WordList, Word as WordType } from '../types';
-    import { toTitleCase, maybeString } from '../utils';
+    import { adjustTextarea, toTitleCase, maybeString } from '../utils';
     import { list_add, list_get, list_save, list_sort, word_cache } from '../words';
 
     export let key: string;
@@ -225,13 +225,20 @@
     </div>
     <div class="mb-3">
         <div class="label form-label" on:keydown={focusDef} on:click={focusDef}>Notes</div>
-        <div
+
+        <textarea
+            id="{key}-add-input"
+            bind:value={def}
+            on:input={adjustTextarea}
+            class="def form-control"
+        />
+        <!-- <div
             contenteditable="true"
             on:keydown={enterPressed}
             bind:innerHTML={def}
             id="{key}-add-def"
             class="def form-control"
-        />
+        /> -->
     </div>
     <div class="label" on:keydown={focusAddTag} on:click={focusAddTag}>Tags</div>
     <div class="tag-container">
@@ -266,7 +273,6 @@
     <div class="required-description">
         <span class="required">*</span> denotes a required field
     </div>
-    <!-- </div> -->
 </form>
 
 <style>
@@ -335,8 +341,7 @@
         font-size: 1rem;
         font-family: var(--input-font);
         overflow-wrap: break-word;
-        transition: height 0.3s ease-out, border-color 0.15s ease-in-out,
-            box-shadow 0.15s ease-in-out;
+        resize: none;
     }
 
     .required-description {

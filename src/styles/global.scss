@@ -211,15 +211,19 @@ legend.options-group-title {
 }
 
 .options-group input.form-control[type="text"],
+.options-group textarea,
 .add-form-container input.form-control[type="text"],
+.add-form-container textarea,
 .add-form-container div.form-control[contenteditable] {
-    background-color: #424242;
+    background-color: #424242 !important;
     border: 1px solid #dbe6ee;
     box-shadow: 0px 0px 4px #6f93aa;
-    color: #dbe5ec;
+    color: #dbe5ec !important;
 }
 
 .options-group input.form-control[type="text"]::placeholder,
+.options-group textarea::placeholder,
+.add-form-container textarea::placeholder,
 .add-form-container input.form-control[type="text"]::placeholder,
 .add-form-container div.form-control[contenteditable]::placeholder {
     opacity: 1;
@@ -227,8 +231,10 @@ legend.options-group-title {
 }
 
 .options-group input.form-control[type="text"]:focus,
+.options-group textarea:focus-within,
+.add-form-container textarea:focus,
 .add-form-container input.form-control[type="text"]:focus,
 .add-form-container div.form-control[contenteditable]:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(54, 134, 253, 0.555);
+    box-shadow: 0 0 0 0.25rem rgba(54, 134, 253, 0.555) !important;
 }
