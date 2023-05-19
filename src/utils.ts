@@ -62,3 +62,10 @@ export function cur_date(): string {
     const time = new Date();
     return time.toISOString().split('T')[0];
 }
+
+export function adjustTextarea(e: Event) {
+    const t = <HTMLTextAreaElement | null>e.target;
+    if (!t) return;
+    t.style.height = 'auto';
+    t.style.height = t.scrollHeight + 'px';
+}

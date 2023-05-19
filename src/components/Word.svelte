@@ -1,9 +1,9 @@
 <script lang="ts">
     import { enterPressed } from '../events';
-    import { createEventDispatcher, afterUpdate, onMount } from 'svelte';
+    import { createEventDispatcher, onMount, afterUpdate } from 'svelte';
     import { browser } from '$app/environment';
     import type { Word } from '../types';
-    import { addMarks, removeMarks } from '../utils';
+    import { addMarks, adjustTextarea, removeMarks } from '../utils';
     import DictDef from './DictDef.svelte';
     import type { DictionaryWord } from 'src/dictionary';
     import Tags from './Tags.svelte';
@@ -18,6 +18,58 @@
 
     let dict_def: DictionaryWord | undefined = item.dict_def;
     $: dict_def = highlightDefinition(highlight, item.dict_def);
+
+    afterUpdate(() => {
+        const w = getWordElem(key, item.id);
+        const d = getDefElem();
+        if (w) {
+            w.innerHTML = item.word;
+        }
+        if (d && item.def) {
+            d.innerHTML = item.def;
+        }
+        addHighlights();
+    });
+    function addHighlights() {
+        removeHighlights();
+        if (highlight.length === 0) return;
+        const li = getLiElem();
+        const w = getWordElem(key, item.id);
+
+        if (w) {
+            w.innerHTML = addMarks(item.word, highlight);
+        }
+
+        if (li) {
+            li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
+                (node) => (node.innerHTML = addMarks(node.innerHTML, highlight))
+            );
+
+            li.querySelectorAll('dt').forEach((node) => {
+                node.innerHTML = addMarks(node.innerHTML, highlight);
+            });
+            li.querySelectorAll('.tag').forEach((node) => {
+                if (highlight.some((f) => f == '#' + node.innerHTML.toLowerCase())) {
+                    node.parentElement?.classList.add('highlight-tag');
+                }
+            });
+        }
+    }
+
+    function removeHighlights() {
+        const li = getLiElem();
+        const w = getWordElem(key, item.id);
+
+        if (w) {
+            w.innerHTML = removeMarks(w.innerHTML);
+        }
+
+        if (li) {
+            li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
+                (node) => (node.innerHTML = removeMarks(node.innerHTML))
+            );
+        }
+    }
 
     function highlightDefinition(
         search: string[],
@@ -69,17 +121,6 @@
         }
     }
 
-    function updateDefinition() {
-        // item.def = item.def?.replaceAll('<br>', '');
-        // item.def =
-        const t = getDefElem();
-        if (t) {
-            item.def = t.innerHTML.replaceAll('<br>', '');
-            // t.innerHTML = t.innerHTML.replaceAll('<br>', '');
-        }
-        dispatch('updateDefinition', { word: item, key });
-    }
-
     function deleteWord(word: Word): boolean | undefined {
         if (!browser) return undefined;
         if (!window.confirm('Delete word?')) {
@@ -90,7 +131,6 @@
     }
 
     function updateTitle(dfn: HTMLElement) {
-        // console.log('updating title to %s', item.word);
         dfn.title = item.word;
     }
 
@@ -100,54 +140,6 @@
 
     function updateFavorite() {
         dispatch('updateFavorite', { word: item, key });
-    }
-
-    function addHighlights() {
-        removeHighlights();
-        if (highlight.length === 0) return;
-        const def = getDefElem();
-        const li = getLiElem();
-        const w = getWordElem(key, item.id);
-
-        if (w) {
-            w.innerHTML = addMarks(item.word, highlight);
-        }
-
-        if (def && item.def) {
-            def.innerHTML = addMarks(item.def, highlight);
-        }
-
-        if (li) {
-            li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
-                (node) => (node.innerHTML = addMarks(node.innerHTML, highlight))
-            );
-
-            li.querySelectorAll('.tag').forEach((node) => {
-                if (highlight.some((f) => f == '#' + node.innerHTML.toLowerCase())) {
-                    node.parentElement?.classList.add('highlight-tag');
-                }
-            });
-        }
-    }
-
-    function removeHighlights() {
-        const def = getDefElem();
-        const li = getLiElem();
-        const w = getWordElem(key, item.id);
-
-        if (w) {
-            w.innerHTML = removeMarks(w.innerHTML);
-        }
-
-        if (def) {
-            def.innerHTML = removeMarks(def.innerHTML);
-        }
-
-        if (li) {
-            li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
-                (node) => (node.innerHTML = removeMarks(node.innerHTML))
-            );
-        }
     }
 
     function refreshWord() {
@@ -167,15 +159,6 @@
         }
         enterPressed(e);
     }
-
-    function adjustTextarea(e: Event) {
-        const t = <HTMLTextAreaElement | null>e.target;
-        if (!t) return;
-        t.style.height = 'auto';
-        t.style.height = t.scrollHeight + 'px';
-    }
-
-    function addNote(e: Event) {}
 
     function updateNote() {
         if (item.def === '') {
