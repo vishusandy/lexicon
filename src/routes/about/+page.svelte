@@ -1,0 +1,100 @@
+<script lang="ts">
+    import Nav from '../../components/Nav.svelte';
+</script>
+
+<Nav current="about" />
+
+<div class="about">
+    <h1>About</h1>
+
+    <section class="alert alert-danger">
+        <h2>Note</h2>
+        <p>
+            This vocab list is <b>only</b> stored on <i>your</i> device. Your word list will not be viewable
+            from other devices.
+        </p>
+    </section>
+    <div class="dark-theme">
+        <section>
+            <h2>How it works</h2>
+            <p>
+                This was made with <a
+                    href="https://kit.svelte.dev/"
+                    target="_blank"
+                    rel="noreferrer">Svelte Kit</a
+                >. All data is stored in your browser locally using the
+                <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
+                    target="_blank"
+                    rel="noreferrer">Web Storage API</a
+                >.
+            </p>
+            <p>
+                Dictionary defintions and audio pronunciations are made possible by <a
+                    href="https://dictionaryapi.dev/"
+                    target="_blank"
+                    rel="noreferrer">dictionaryapi.dev</a
+                >. Please support them!
+            </p>
+            <p>
+                You can find the source code at
+                <a href="https://github.com/vishusandy/lexicon" target="_blank" rel="noreferrer"
+                    >https://github.com/vishusandy/lexicon</a
+                >.
+            </p>
+        </section>
+
+        <section>
+            <h2>About Me</h2>
+            <p>
+                My GitHub: <a href="https://github.com/vishusandy" target="_blank" rel="noreferrer"
+                    >https://github.com/vishusandy</a
+                >
+            </p>
+            <p>
+                My blog: <a href="https://vishusandy.github.io/" target="_blank" rel="noreferrer"
+                    >https://vishusandy.github.io/</a
+                >
+            </p>
+        </section>
+    </div>
+</div>
+
+<style>
+    section {
+        margin-bottom: 2rem;
+        padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+        border-radius: 0.75rem;
+    }
+
+    section.alert {
+        padding: 0.5rem 1rem 1rem 1rem;
+    }
+
+    section.alert h2 {
+        padding: 0px 1rem;
+        text-align: center;
+        margin: 0px;
+    }
+
+    section.alert p {
+        margin: 0px;
+    }
+
+    section p {
+        margin-left: 1rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .dark-theme section:last-of-type {
+        margin-bottom: 1rem;
+    }
+
+    .dark-theme section {
+        background: #34353a;
+        color: #dbe5ec;
+    }
+</style>
