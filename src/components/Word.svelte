@@ -68,6 +68,12 @@
             li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
                 (node) => (node.innerHTML = removeMarks(node.innerHTML))
             );
+            li.querySelectorAll('dt').forEach((node) => {
+                node.innerHTML = removeMarks(node.innerHTML);
+            });
+            li.querySelectorAll('.tag').forEach((node) => {
+                node.parentElement?.classList.remove('highlight-tag');
+            });
         }
     }
 
