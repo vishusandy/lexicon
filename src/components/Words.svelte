@@ -278,40 +278,43 @@
 </script>
 
 <div class="sticky-search-bar list-group-item">
-    <Search
-        {key}
-        on:updateFilter={(e) => {
-            updateFilter(e.detail);
-        }}
-    />
-    <div class="options-bar">
-        <div class="show-hide">
-            <div class="select-options">
-                <input
-                    type="checkbox"
-                    class="select-checkbox"
-                    bind:checked={check_all}
-                    on:change={selectAll}
-                />
-                <div class="select-group">
-                    <button on:click={actionShowAll} class="show-btn" title="Show selected" />
-                    <button on:click={actionShowNone} class="hide-btn" title="Hide selected" />
-                    <button on:click={actionDelete} class="del-btn" title="Delete selected" />
+    <div class="sticky-container">
+        <Search
+            {key}
+            on:updateFilter={(e) => {
+                updateFilter(e.detail);
+            }}
+        />
+        <div class="options-bar">
+            <div class="show-hide">
+                <div class="select-options">
+                    <input
+                        type="checkbox"
+                        class="select-checkbox"
+                        bind:checked={check_all}
+                        on:change={selectAll}
+                    />
+                    <div class="select-group">
+                        <button on:click={actionShowAll} class="show-btn" title="Show selected" />
+                        <button on:click={actionShowNone} class="hide-btn" title="Hide selected" />
+                        <button on:click={actionDelete} class="del-btn" title="Delete selected" />
+                    </div>
                 </div>
             </div>
+            <Sort
+                {key}
+                sort_by={list.sort_by}
+                sort_order={list.sort_order}
+                on:updateSort={(e) => updateSort(e.detail)}
+            />
         </div>
-        <Sort
-            {key}
-            sort_by={list.sort_by}
-            sort_order={list.sort_order}
-            on:updateSort={(e) => updateSort(e.detail)}
-        />
+        {#if search != ''}
+            <div class="filter-count">
+                Showing <b>{filtered.length}</b> out of <b>{list.words.length}</b> words
+            </div>
+        {/if}
     </div>
-    {#if search != ''}
-        <div class="filter-count">
-            Showing <b>{filtered.length}</b> out of <b>{list.words.length}</b> words
-        </div>
-    {/if}
+    <div class="sticky-fade" />
 </div>
 
 <ul class="word-group {full_defs}">
@@ -408,13 +411,23 @@
         padding: 0.5rem 1.25rem 0.5rem 1.25rem;
     }
 
+    .sticky-container {
+        padding-top: 2rem;
+        background: rgb(255, 255, 255);
+    }
+
     .sticky-search-bar {
-        background: white;
         border: 0px;
-        padding: 2rem 0rem 0.4rem 0rem;
+        padding: 0rem 0rem 0.4rem 0rem;
         position: sticky;
         margin-top: -1rem;
         z-index: 99;
+    }
+
+    .sticky-fade {
+        height: 0.7rem;
+        background: rgb(255, 255, 255);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
     }
 
     button {
