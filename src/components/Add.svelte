@@ -207,7 +207,7 @@
 
 <form id="{key}-add-form" class="add-form-container mt-4" on:submit|preventDefault={addWord}>
     <!-- <div class="add-container"> -->
-    <div class="mb-3">
+    <div class="mb-3 word-group">
         <label for="{key}-add-input" class="form-label" title="required"
             >Word<span class="required">*</span></label
         >
@@ -223,8 +223,13 @@
             autofocus={true}
         />
     </div>
-    <div class="mb-3">
-        <div class="label form-label" on:keydown={focusDef} on:click={focusDef}>Notes</div>
+    <div class="mb-3 note-group">
+        <label
+            class="label form-label"
+            on:keydown={focusDef}
+            on:click={focusDef}
+            for="{key}-add-input">Notes</label
+        >
 
         <textarea
             id="{key}-add-input"
@@ -271,14 +276,14 @@
         <button type="submit" class="add btn btn-primary">Add Word </button><br />
     </div>
     <div class="required-description">
-        <span class="required">*</span> denotes a required field
+        <span class="required">*</span> required field
     </div>
 </form>
 
 <style>
     .add-form-container {
         background: #34353a;
-        padding: 1rem;
+        padding: 1.5rem 2rem;
         border-radius: 1rem;
         color: #ebf3fa;
     }
@@ -313,8 +318,8 @@
 
     .tag-container {
         width: fit-content;
-        margin-top: 0.2rem;
-        margin-left: 0.4rem;
+        margin-top: 0.5rem;
+        margin-left: 1rem;
         margin-bottom: 1.5rem;
     }
 
@@ -351,5 +356,22 @@
     .required {
         color: #f74b4b;
         font-style: italic;
+    }
+
+    .word-group,
+    .note-group {
+        margin-bottom: 2rem;
+        margin-left: 1rem;
+    }
+
+    .word-group label,
+    .note-group label {
+        margin-left: -1rem;
+    }
+
+    label,
+    .label {
+        font-size: 1.2rem;
+        font-weight: bold;
     }
 </style>
