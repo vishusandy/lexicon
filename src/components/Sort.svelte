@@ -47,6 +47,13 @@
         border-radius: 0.9rem;
         padding: 0.1rem 0.5rem 0.1rem 0rem;
         background: #e9e9e9;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .sort-form-options:focus-within {
+        outline: 0;
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(61, 137, 252, 0.699);
     }
 
     select {
@@ -64,6 +71,11 @@
         /* height: 2.4rem; */
         height: 2rem;
         text-align: right;
+    }
+
+    select:focus {
+        border: 0px;
+        box-shadow: none;
     }
 
     .sort-checkbox-label {
@@ -92,13 +104,13 @@
     .sort-checkbox:focus + .sort-checkbox-label {
         outline: 0;
         border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        box-shadow: 0 0 0 0.25rem rgba(61, 137, 252, 0.699);
     }
 
     .sort-checkbox:active + .sort-checkbox-label {
         outline: 0;
         border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        box-shadow: 0 0 0 0.25rem rgba(61, 137, 252, 0.699);
     }
 
     /* descending */
