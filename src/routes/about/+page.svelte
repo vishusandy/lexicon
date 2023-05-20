@@ -5,7 +5,7 @@
 <Nav current="about" />
 
 <div class="about">
-    <h1>About</h1>
+    <h1>Lexicon</h1>
 
     <section class="alert alert-danger">
         <h2>Note</h2>
@@ -15,6 +15,68 @@
         </p>
     </section>
     <div class="dark-theme">
+        <h2>About</h2>
+        <div class="about-group">
+            <p>An app to keep track of interesting words and help grow your vocabulary.</p>
+            <p>
+                Features: automatic dictionary definitions, tags, notes, favorites, and word list
+                backups.
+            </p>
+        </div>
+
+        <h2>How to use it</h2>
+        <div class="about-group">
+            <figure>
+                <figcaption>Usage:</figcaption>
+                <ul>
+                    <li>
+                        Use the <a href="add">Add Words</a> page to add entries to your vocab list
+                    </li>
+                    <li>
+                        View your <a href="list">Word List</a> to manage and search your word list
+                    </li>
+                    <ul>
+                        <li>
+                            <div>Search for tags by prepending a hashtag to a search term.</div>
+                            <div>
+                                Example: <code>#interesting</code> will match all entries with a tag
+                                named 'interesting'.
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                Clicking the <i class="fa-regular fa-star" title="star" /> icon will
+                                mark a word as a favorite.
+                            </div>
+                            <div>
+                                Your favorites will appear at the top of the list (or bottom if the
+                                list is sorted in descending order)
+                            </div>
+                        </li>
+                        <li>
+                            Dictionary definitions for individual words can be retrieved by clicking
+                            the <i class="fa-solid fa-arrows-rotate" title="refresh" /> icon.
+                        </li>
+                        <li>
+                            Multiple words can be shown (<i
+                                class="fa-regular fa-eye"
+                                title="show icon"
+                            />), hidden (<i class="fa-regular fa-eye-slash" title="hide icon" />),
+                            or deleted (<i class="fa-solid fa-xmark" title="delete icon" />) by
+                            checking the box next to the word and selecting an action (located below
+                            the search bar)
+                        </li>
+                        <li>
+                            Notes can be added to a word by clicking the <i
+                                class="fa-solid fa-circle-plus"
+                                title="add icon"
+                            /> icon
+                        </li>
+                    </ul>
+                </ul>
+            </figure>
+        </div>
+
         <h2>How it works</h2>
         <div class="about-group">
             <p>
@@ -27,10 +89,11 @@
                     href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
                     target="_blank"
                     rel="noreferrer">Web Storage API</a
-                >.
+                >. The app consists of static css/js/html files so it can be easily hosted on static
+                hosting providers.
             </p>
             <p>
-                Dictionary defintions and audio pronunciations are made possible by <a
+                Dictionary defintions and audio pronunciations are made possible by querying <a
                     href="https://dictionaryapi.dev/"
                     target="_blank"
                     rel="noreferrer">dictionaryapi.dev</a
@@ -44,7 +107,7 @@
             </p>
         </div>
 
-        <h2>About Me</h2>
+        <h2>Who made it</h2>
         <div class="about-group">
             <p>
                 My GitHub: <a href="https://github.com/vishusandy" target="_blank" rel="noreferrer"
@@ -64,8 +127,15 @@
     .about-group,
     section {
         margin-bottom: 2rem;
-        padding: 1rem;
+        padding: 1rem 2rem;
         border-radius: 0.75rem;
+    }
+
+    code {
+        font-weight: bold;
+        /* margin-left: 0.2rem; */
+        /* margin-right: 0.2rem; */
+        color: #f6fcff;
     }
 
     section.alert {
@@ -85,16 +155,22 @@
         margin: 0px;
     }
 
-    section p,
-    .about-group p {
-        margin-left: 1rem;
-    }
-
     h2 {
         font-size: 1.7rem;
         margin-bottom: 0.75rem;
-        /* margin-left: -1.5rem; */
-        /* margin-left: 2rem; */
+    }
+
+    figure {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    figcaption {
+        font-weight: bold;
+    }
+
+    figure li {
+        margin-top: 0.3rem;
     }
 
     .dark-theme .about-group:last-of-type {
