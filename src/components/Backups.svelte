@@ -199,6 +199,12 @@
     function openRestoreModal(e: Event) {
         const t = <HTMLDialogElement | null>document.getElementById('backup-modal');
         if (!t) return;
+
+        const el = document.getElementById(`${key}-backup-list-form`);
+        if (el && el.querySelectorAll('input[name="btn-edit"]:checked').length === 0) {
+            return;
+        }
+
         t.showModal();
         e.preventDefault();
     }
@@ -242,26 +248,26 @@
     }
 </script>
 
-<legend class="options-group-title">Save Backup</legend>
+<h2 class="options-group-title">Save Backup</h2>
 <div class="options-group">
     <form on:submit={submitNewBackup}>
         <div class="new-backup">
-            <div>
-                Backup name:
-                <input
-                    id="{key}-new-backup-name"
-                    type="text"
-                    class="new-backup-name form-control"
-                    placeholder="new name"
-                    on:blur={(e) => validBackupName(e, key + '-new-backup-name')}
-                />
-            </div>
+            <!-- <div> -->
+            <!-- <label for="{key}-new-backup-name">Backup name:</label> -->
+            <input
+                id="{key}-new-backup-name"
+                type="text"
+                class="new-backup-name form-control"
+                placeholder="new name"
+                on:blur={(e) => validBackupName(e, key + '-new-backup-name')}
+            />
+            <!-- </div> -->
             <button class="btn btn-primary">Create Backup</button>
         </div>
     </form>
 </div>
 
-<legend class="options-group-title">Saved Backups</legend>
+<h2 class="options-group-title">Saved Backups</h2>
 <div class="options-group">
     <form id="{key}-backup-list-form">
         {#each backups as backup (backup.key)}
@@ -342,7 +348,7 @@
     </form>
 </div>
 
-<legend class="options-group-title">Upload Backup</legend>
+<h2 class="options-group-title">Upload Backup</h2>
 <div class="options-group">
     <form on:submit={(e) => submitUpload(e)}>
         <div class="new-backup">
@@ -410,15 +416,15 @@
 
     .new-backup {
         display: flex;
-        align-items: center;
+        /* align-items: center; */
         justify-content: space-between;
     }
 
     .new-backup-name {
         flex-grow: 0;
         width: fit-content;
-        margin-top: 0.5rem;
-        margin-left: 0.5rem;
+        /* margin-top: 0.5rem; */
+        /* margin-left: 0.5rem; */
     }
 
     .backup-entry {
@@ -516,6 +522,7 @@
         border: 0px;
         background: transparent;
         color: #e9ecf1;
+        padding: 0px;
     }
 
     .upload-backup::file-selector-button {

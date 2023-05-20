@@ -115,18 +115,16 @@
 </script>
 
 <legend class="options-group-title">Options</legend>
-<div class="options-group">
-    <div class="option-item">
+<div class="options-group options-group-cols">
+    <div class="options-subgroup">
         <button on:click={() => refreshUndefinedWords(key)} type="button" class="btn btn-primary"
             >Find new definitions</button
         >
-    </div>
-    <div class="option-item">
         <button on:click={() => refreshAllWords(key)} type="button" class="btn btn-primary"
             >Refresh all defintions</button
         >
     </div>
-    <div class="option-item">
+    <div class="options-subgroup">
         <button on:click={clearWords} type="button" class="btn btn-danger">Clear words</button>
     </div>
 </div>
@@ -140,10 +138,26 @@
 {/if}
 
 <style>
-    .option-item:not(:first-child) {
-        margin-top: 1rem;
+    .options-group-cols {
+        display: flex;
+        justify-content: space-around;
     }
-    .option-item:not(:last-child) {
-        margin-bottom: 1rem;
+
+    button {
+        margin-bottom: 1.3rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    button:last-of-type {
+        margin-bottom: 0px;
+    }
+
+    .options-subgroup {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: fit-content;
+        /* margin: 0px auto; */
     }
 </style>

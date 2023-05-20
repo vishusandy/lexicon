@@ -176,12 +176,14 @@ mark {
 .options-group {
     border: 1px solid #d3d3d3;
     border-radius: 0.75rem;
-    padding: 1rem 1rem;
+    padding: 1.5rem;
     margin: 0px auto;
     box-shadow: 5px 5px 3px #eee;
     // background: #2e2e31;
     background: #34353a;
     color: #dbe5ec;
+    margin-bottom: 2rem;
+    margin-left: 1.5rem;
     // background-color: #f4f6fa;
 }
 
@@ -196,7 +198,7 @@ mark {
     cursor: not-allowed;
 }
 
-legend.options-group-title {
+.options-group-title {
     cursor: default;
     user-select: none;
     /* margin-top: -1.35rem; */
@@ -212,6 +214,11 @@ legend.options-group-title {
     margin-bottom: 0.5rem;
     margin-left: 0.4rem;
     color: #353c40;
+}
+
+h2.options-group-title {
+    // margin-bottom: 0.3rem;
+    font-size: 1.7rem;
 }
 
 .options-group input.form-control[type="text"],
