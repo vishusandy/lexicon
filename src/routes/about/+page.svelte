@@ -15,8 +15,8 @@
         </p>
     </section>
     <div class="dark-theme">
-        <section>
-            <h2>How it works</h2>
+        <h2>How it works</h2>
+        <div class="about-group">
             <p>
                 This was made with <a
                     href="https://kit.svelte.dev/"
@@ -42,10 +42,10 @@
                     >https://github.com/vishusandy/lexicon</a
                 >.
             </p>
-        </section>
+        </div>
 
-        <section>
-            <h2>About Me</h2>
+        <h2>About Me</h2>
+        <div class="about-group">
             <p>
                 My GitHub: <a href="https://github.com/vishusandy" target="_blank" rel="noreferrer"
                     >https://github.com/vishusandy</a
@@ -56,22 +56,26 @@
                     >https://vishusandy.github.io/</a
                 >
             </p>
-        </section>
+        </div>
     </div>
 </div>
 
 <style>
+    .about-group,
     section {
         margin-bottom: 2rem;
-        padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+        padding: 1rem;
         border-radius: 0.75rem;
     }
 
     section.alert {
         padding: 0.5rem 1rem 1rem 1rem;
+        margin-left: 1rem;
+        /* margin-right: 1rem; */
     }
 
     section.alert h2 {
+        font-size: 1.3rem;
         padding: 0px 1rem;
         text-align: center;
         margin: 0px;
@@ -81,19 +85,24 @@
         margin: 0px;
     }
 
-    section p {
+    section p,
+    .about-group p {
         margin-left: 1rem;
     }
 
     h2 {
-        font-size: 1.5rem;
+        font-size: 1.7rem;
+        margin-bottom: 0.75rem;
+        /* margin-left: -1.5rem; */
+        /* margin-left: 2rem; */
     }
 
-    .dark-theme section:last-of-type {
+    .dark-theme .about-group:last-of-type {
         margin-bottom: 1rem;
     }
 
-    .dark-theme section {
+    .dark-theme .about-group {
+        margin-left: 1rem;
         background: #34353a;
         color: #dbe5ec;
     }
