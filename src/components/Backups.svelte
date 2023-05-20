@@ -29,6 +29,9 @@
         }
     }
 
+    // Call list_get() to ensure a word list is created if one does not already exist
+    list_get(key);
+
     updateBackups();
 
     function refresh() {
