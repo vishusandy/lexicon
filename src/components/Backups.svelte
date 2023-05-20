@@ -248,12 +248,10 @@
     }
 </script>
 
-<h2 class="options-group-title">Save Backup</h2>
+<h2 class="options-group-title">Create Backup</h2>
 <div class="options-group">
     <form on:submit={submitNewBackup}>
         <div class="new-backup">
-            <!-- <div> -->
-            <!-- <label for="{key}-new-backup-name">Backup name:</label> -->
             <input
                 id="{key}-new-backup-name"
                 type="text"
@@ -261,13 +259,12 @@
                 placeholder="new name"
                 on:blur={(e) => validBackupName(e, key + '-new-backup-name')}
             />
-            <!-- </div> -->
-            <button class="btn btn-primary">Create Backup</button>
+            <button class="create-backup btn btn-primary">Create Backup</button>
         </div>
     </form>
 </div>
 
-<h2 class="options-group-title">Saved Backups</h2>
+<h2 class="options-group-title">Backups</h2>
 <div class="options-group">
     <form id="{key}-backup-list-form">
         {#each backups as backup (backup.key)}
@@ -340,7 +337,7 @@
             <button
                 on:click={openRestoreModal}
                 type="button"
-                class="btn btn btn-danger"
+                class="btn btn-danger"
                 name="backups_action"
                 value="restore">Restore</button
             >
@@ -416,15 +413,19 @@
 
     .new-backup {
         display: flex;
-        align-items: center;
+        flex-wrap: wrap;
+        row-gap: 0.7rem;
+        /* align-items: center; */
         justify-content: space-between;
     }
 
     .new-backup-name {
         flex-grow: 0;
         width: fit-content;
-        /* margin-top: 0.5rem; */
-        /* margin-left: 0.5rem; */
+    }
+
+    .create-backup {
+        flex-shrink: 0;
     }
 
     .backup-entry {
@@ -516,6 +517,8 @@
 
     .upload-backup-btn {
         flex-shrink: 0;
+        margin-left: auto;
+        margin-right: 0px;
     }
 
     .upload-backup {
@@ -523,6 +526,7 @@
         background: transparent;
         color: #e9ecf1;
         padding: 0px;
+        min-width: 8rem;
     }
 
     .upload-backup::file-selector-button {

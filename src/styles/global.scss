@@ -50,18 +50,19 @@ nav.main {
 
 nav.main ul {
     display: flex;
-    margin-bottom: 0px;
+    flex-wrap: wrap;
     // width: fit-content;
     justify-content: space-between;
     margin: 0px auto;
-    max-width: 650px;
+    max-width: 600px;
+    padding: 0px 1rem;
     // font-size: 1.1rem;
     font-weight: bold;
 }
 
 nav.main li {
     display: inline-block;
-    margin: 0px 0.4rem;
+    // margin: 0px 0.4rem;
     text-align: center;
 }
 
