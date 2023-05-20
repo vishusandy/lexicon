@@ -254,10 +254,8 @@ h2.options-group-title {
 }
 
 .options-group input.form-control[type="text"]:focus,
-.options-group textarea:focus-within,
-.add-form-container textarea:focus,
-.add-form-container input.form-control[type="text"]:focus,
-.add-form-container div.form-control[contenteditable]:focus {
+.options-group textarea:focus-within {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(54, 134, 253, 0.555) !important;
+    border: 1px solid #777985;
+    box-shadow: 0 0 0 0.25rem rgba(38, 98, 189, 0.623) !important;
 }
