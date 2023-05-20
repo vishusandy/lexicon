@@ -426,6 +426,8 @@
 
     .create-backup {
         flex-shrink: 0;
+        margin-left: auto;
+        margin-right: 0px;
     }
 
     .backup-entry {
