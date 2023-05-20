@@ -141,6 +141,7 @@
     .options-group-cols {
         display: flex;
         justify-content: space-around;
+        gap: 1rem;
     }
 
     button {

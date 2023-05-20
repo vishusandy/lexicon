@@ -281,12 +281,12 @@
 </form>
 
 <style>
-    .add-form-container {
-        padding: 1.5rem 2rem;
-        border-radius: 1rem;
-        /* background: #34353a; */
-        /* color: #ebf3fa; */
-    }
+    /* .add-form-container { */
+    /* padding: 1.5rem 2rem; */
+    /* border-radius: 1rem; */
+    /* background: #34353a; */
+    /* color: #ebf3fa; */
+    /* } */
 
     .tag-list {
         display: flex;
