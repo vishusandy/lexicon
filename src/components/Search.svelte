@@ -50,10 +50,12 @@
     }
 
     .search-icon {
+        cursor: text;
         position: absolute;
         margin-top: 0.55rem;
-        margin-left: 0.7rem;
-        color: rgb(146, 147, 156);
+        margin-left: 1rem;
+        color: #92939c;
+        z-index: 0;
     }
 
     .search-input {
@@ -63,6 +65,9 @@
         padding: 0.4rem 1.9rem 0.4rem 2.1rem;
         text-align: center;
         border: 1px solid #828282;
+        background: #fff0;
+        position: relative;
+        z-index: 99;
     }
 
     .search-input:not(:focus) {
