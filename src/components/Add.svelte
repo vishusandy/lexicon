@@ -282,10 +282,10 @@
 
 <style>
     .add-form-container {
-        background: #34353a;
         padding: 1.5rem 2rem;
         border-radius: 1rem;
-        color: #ebf3fa;
+        /* background: #34353a; */
+        /* color: #ebf3fa; */
     }
 
     .tag-list {
@@ -350,7 +350,7 @@
     }
 
     .required-description {
-        color: #c7ced4;
+        color: #393b3b;
     }
 
     .required {
