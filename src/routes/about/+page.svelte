@@ -26,55 +26,55 @@
 
         <h2>How to use it</h2>
         <div class="about-group">
-            <figure>
-                <figcaption>Usage:</figcaption>
+            <ul>
+                <li>
+                    Use the <a href="add">Add Words</a> page to add entries to your vocab list
+                </li>
+                <li>
+                    View your <a href="list">Word List</a> to manage and search your word list
+                </li>
                 <ul>
                     <li>
-                        Use the <a href="add">Add Words</a> page to add entries to your vocab list
+                        <div>Search for tags by prepending a hashtag to a search term.</div>
+                        <div>
+                            Example: <code>#interesting</code> will match all entries with a tag named
+                            'interesting'.
+                        </div>
                     </li>
                     <li>
-                        View your <a href="list">Word List</a> to manage and search your word list
+                        <div>
+                            Clicking the <i class="fa-regular fa-star" title="star" /> icon will mark
+                            a word as a favorite.
+                        </div>
+                        <div>
+                            Your favorites will appear at the top of the list (or bottom if the list
+                            is sorted in descending order)
+                        </div>
                     </li>
-                    <ul>
-                        <li>
-                            <div>Search for tags by prepending a hashtag to a search term.</div>
-                            <div>
-                                Example: <code>#interesting</code> will match all entries with a tag
-                                named 'interesting'.
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                Clicking the <i class="fa-regular fa-star" title="star" /> icon will
-                                mark a word as a favorite.
-                            </div>
-                            <div>
-                                Your favorites will appear at the top of the list (or bottom if the
-                                list is sorted in descending order)
-                            </div>
-                        </li>
-                        <li>
-                            Dictionary definitions for individual words can be retrieved by clicking
-                            the <i class="fa-solid fa-arrows-rotate" title="refresh" /> icon.
-                        </li>
-                        <li>
-                            Multiple words can be shown (<i
-                                class="fa-regular fa-eye"
-                                title="show icon"
-                            />), hidden (<i class="fa-regular fa-eye-slash" title="hide icon" />),
-                            or deleted (<i class="fa-solid fa-xmark" title="delete icon" />) by
-                            checking the box next to the word and selecting an action (located below
-                            the search bar)
-                        </li>
-                        <li>
-                            Notes can be added to a word by clicking the <i
-                                class="fa-solid fa-circle-plus"
-                                title="add icon"
-                            /> icon
-                        </li>
-                    </ul>
+                    <li>
+                        Dictionary definitions for individual words can be retrieved by clicking the <i
+                            class="fa-solid fa-arrows-rotate"
+                            title="refresh"
+                        /> icon.
+                    </li>
+                    <li>
+                        Multiple words can be shown (<i
+                            class="fa-regular fa-eye"
+                            title="show icon"
+                        />), hidden (<i class="fa-regular fa-eye-slash" title="hide icon" />), or
+                        deleted (<i class="fa-solid fa-xmark" title="delete icon" />) by checking
+                        the box next to the word and selecting an action (located below the search
+                        bar)
+                    </li>
+                    <li>
+                        Notes can be added to a word by clicking the <i
+                            class="fa-solid fa-circle-plus"
+                            title="add icon"
+                        /> icon
+                    </li>
                 </ul>
-            </figure>
+                <li>Use the <a href="options">Options</a> page to create and manage backups.</li>
+            </ul>
         </div>
 
         <h2>How it works</h2>
@@ -169,8 +169,8 @@
         font-weight: bold;
     }
 
-    figure li {
-        margin-top: 0.3rem;
+    .about li {
+        margin-top: 0.5rem;
     }
 
     .dark-theme .about-group:last-of-type {
