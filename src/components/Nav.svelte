@@ -4,7 +4,7 @@
 
     export let current: string;
     export let links: NavLink[] = [
-        { name: 'List Words', url: base + '/list', page: 'list' },
+        { name: 'Word List', url: base + '/list', page: 'list' },
         { name: 'Add Words', url: base + '/add', page: 'add' },
         { name: 'Options', url: base + '/options', page: 'options' },
         { name: 'About', url: base + '/about', page: 'about' }
