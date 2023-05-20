@@ -70,7 +70,7 @@
 
     section.alert {
         padding: 0.5rem 1rem 1rem 1rem;
-        margin-left: 1rem;
+        margin-left: 1.5rem;
         /* margin-right: 1rem; */
     }
 
@@ -102,8 +102,8 @@
     }
 
     .dark-theme .about-group {
-        margin-left: 1rem;
+        margin-left: 1.5rem;
         background: #34353a;
-        color: #dbe5ec;
+        color: #d4dbe0;
     }
 </style>
