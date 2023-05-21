@@ -1,11 +1,9 @@
 @mixin hashtag {
     content: '#';
     font-style: italic;
-    // margin-right: 0.25rem;
     margin-right: 0.08rem;
     margin-left: -0.5rem;
     color: #646669;
-    // vertical-align: middle;
     font-style: italic;
 }
 

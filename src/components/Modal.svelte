@@ -62,9 +62,7 @@
         position: fixed;
         top: 20svh;
         padding: 0px;
-        /* padding: 2rem; */
         margin: 0px auto;
-        /* width: fit-content; */
         max-width: 100vw;
         width: 450px;
         border-radius: 1.25rem;
@@ -81,8 +79,6 @@
 
     .dialog-controls {
         margin-top: 2rem;
-        /* margin-right: -1rem; */
-        /* margin-bottom: -1rem; */
         text-align: right;
     }
 </style>

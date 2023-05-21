@@ -405,7 +405,6 @@
         flex-wrap: wrap;
         row-gap: 0.7rem;
         column-gap: 0.5rem;
-        /* align-items: center; */
         justify-content: center;
     }
 
@@ -418,8 +417,6 @@
 
     .create-backup {
         flex-shrink: 0;
-        /* margin-left: auto; */
-        /* margin-right: 0px; */
     }
 
     .backup-entry {
@@ -433,7 +430,6 @@
     }
 
     .backup-name {
-        /* width: 100%; */
         flex-grow: 1;
     }
 
@@ -449,9 +445,6 @@
     }
 
     .backup-submit {
-        /* display: flex;
-        align-items: flex-start;
-        justify-content: space-between; */
         margin-top: 1.5rem;
         text-align: center;
     }
@@ -477,20 +470,16 @@
     .download-btn {
         padding: 0px;
         margin-left: 0.4rem;
-        /* color: #0c7ae7; */
         color: #0099ff;
     }
 
     .rename-btn {
         padding: 0px;
         margin-left: 0.4rem;
-        /* color: #dfab00; */
         color: #ffc400;
     }
 
     .rename-btn[disabled] {
-        /* color: #93989c; */
-        /* color: #878b8f; */
         color: #9a9a9d;
         cursor: not-allowed;
     }
@@ -502,7 +491,6 @@
     .btn-edit-current {
         margin-left: 0.4rem;
         cursor: not-allowed;
-        /* visibility: hidden; */
     }
 
     .backup-current {
@@ -514,14 +502,11 @@
         flex-wrap: wrap;
         row-gap: 0.7rem;
         column-gap: 0.5rem;
-        /* align-items: center; */
         justify-content: center;
     }
 
     .upload-backup-btn {
         flex-shrink: 0;
-        /* margin-left: auto; */
-        /* margin-right: 0px; */
     }
 
     .upload-backup {

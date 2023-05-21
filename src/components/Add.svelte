@@ -290,13 +290,6 @@
 </form>
 
 <style>
-    /* .add-form-container { */
-    /* padding: 1.5rem 2rem; */
-    /* border-radius: 1rem; */
-    /* background: #34353a; */
-    /* color: #ebf3fa; */
-    /* } */
-
     .tag-list {
         display: flex;
         color: #47535e;
@@ -312,7 +305,6 @@
         padding: 0.7rem 1rem;
         margin: 1rem 0px;
         transition: all 3s ease-in-out;
-        /* text-align: center; */
     }
 
     .duplicate-alert p {

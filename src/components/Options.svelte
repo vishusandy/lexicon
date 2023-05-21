@@ -219,11 +219,6 @@
     .options-group p:first-of-type {
         margin-top: 0px;
     }
-    button {
-        /* margin-bottom: 1.3rem; */
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
 
     button:last-of-type {
         margin-bottom: 0px;
@@ -235,7 +230,6 @@
         gap: 1.5rem;
         flex-direction: column;
         width: fit-content;
-        /* margin: 0px auto; */
     }
 
     div.toggle-autodefs {

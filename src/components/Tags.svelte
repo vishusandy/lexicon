@@ -73,8 +73,6 @@
     .tag-input {
         @include mixins.tag;
         text-align: center;
-        // padding-right: 0.7rem;
-        // padding-left: 0.7rem;
     }
 
     .tag-input:hover:not(:focus) {

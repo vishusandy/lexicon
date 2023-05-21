@@ -376,14 +376,7 @@
         margin-right: 0.5rem;
         margin-left: 0.2rem;
     }
-
-    /* .select-group button:not(:last-of-type)::after {
-        content: ' ';
-        border-right: 1px solid #bbb;
-        margin-left: 0.3rem;
-        margin-right: -0.25rem;
-    } */
-
+    
     .select-words {
         display: inline-block;
         width: fit-content;
@@ -431,8 +424,6 @@
     }
 
     button {
-        /* border-radius: 0.375rem; */
-        /* border: 1px solid #b9bfc5; */
         border: 0px;
         background: transparent;
         padding: 0px 0.25rem;
