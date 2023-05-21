@@ -35,6 +35,8 @@ export type WordList = {
     sort_by: SortBy,
     sort_order: SortOrder,
     key: string,
+    version: number,
+    auto_defs: boolean,
 };
 
 export type WordEvent = {

@@ -15,6 +15,9 @@ import { default_list } from './default_words';
 //     dict_def: undefined,
 // })));
 
+export const default_version: number = 1.1;
+export const default_auto_defs: boolean = true;
+
 export function new_word_cache(word: Word): WordCache {
     return {
         word: word.word.toLowerCase(),
@@ -35,26 +38,14 @@ export function list_blank(key: string): WordList {
         "next_id": 1,
         "sort_by": defaultSortBy,
         "sort_order": defaultSortOrder,
-        "key": key.toLowerCase()
+        "key": key.toLowerCase(),
+        "version": default_version,
+        "auto_defs": default_auto_defs,
     };
     return list;
 }
 
 function list_default(key: string): WordList {
-    // let words = defaultWords;
-    // let list = {
-    //     "words": words,
-    //     "next_id": defaultWords.length,
-    //     "sort_by": defaultSortBy,
-    //     "sort_order": defaultSortOrder,
-    //     "key": key.toLowerCase()
-    // };
-    // list_save(list);
-    // setTimeout(() => {
-    //     addDictionaryDefintions(key);
-    // }, 200);
-    // list_save(list);
-    // return list;
     let list = <WordList>default_list;
     list.sort_by = defaultSortBy;
     list.sort_order = defaultSortOrder;
@@ -66,8 +57,21 @@ function list_default(key: string): WordList {
 
 export function list_get(key: string): WordList {
     const stored: string | null = (browser) ? localStorage.getItem(key.toLowerCase()) : null;
-    let list: WordList = (stored) ? JSON.parse(stored) : list_default(key);
-    return list;
+
+    if (stored) {
+        let list = JSON.parse(stored);
+
+        // check for upgrade to version 1.1
+        if (!("version" in list)) {
+            list.version = default_version;
+            list.auto_defs = default_auto_defs;
+            list_save(list);
+        }
+
+        return list;
+    } else {
+        return list_default(key);
+    }
 }
 
 export function list_exists(key: string): boolean {
@@ -132,12 +136,10 @@ function sort_fn(sort_by: SortBy, sort_order: SortOrder, sort_favorites: boolean
     switch (sort_by) {
         case SortBy.Id:
             if (sort_order == SortOrder.Asc) {
-                // console.log('Id asc');
                 sort = (a: Word, b: Word) => {
                     return a.id - b.id;
                 };
             } else {
-                // console.log('Id desc');
                 sort = (a: Word, b: Word) => {
                     return b.id - a.id;
                 };
@@ -145,28 +147,27 @@ function sort_fn(sort_by: SortBy, sort_order: SortOrder, sort_favorites: boolean
             break;
         case SortBy.Word:
             if (sort_order == SortOrder.Desc) {
-                // console.log('Word asc');
                 sort = (a: Word, b: Word) => {
                     return b.word.localeCompare(a.word);
                 }
             } else {
-                // console.log('Word desc');
                 sort = (a: Word, b: Word) => {
                     return a.word.localeCompare(b.word);
                 };
             }
             break;
     }
-    // if (sort_favorites) {
+
     const favs = (a: Word, b: Word): number => {
+        // convert the sort_order boolean to -1 (false) or 1 (true)
         const m = Math.pow(-1, Number(sort_order === SortOrder.Asc));
+
+        // rank favorited words higher than non-favorited words while sorting
         const f = (Number(a.favorite) - Number(b.favorite)) * m;
         return (f !== 0) ? f : sort(a, b);
     };
+
     return favs;
-    // } else {
-    //     return sort;
-    // }
 }
 
 // returns true if the word should be shown
@@ -213,3 +214,4 @@ export function download_json(key: string): boolean {
 export function getWordElem(key: string, id: number): HTMLElement | null {
     return document.getElementById(key + '-word-' + id);
 }
+
