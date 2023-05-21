@@ -237,7 +237,7 @@
     }
 </script>
 
-<h2 class="options-group-title">Create Backup</h2>
+<h2 class="options-group-title" id="create-backup">Create Backup</h2>
 <div class="options-group">
     <form on:submit={submitNewBackup}>
         <div class="new-backup">
@@ -253,7 +253,7 @@
     </form>
 </div>
 
-<h2 class="options-group-title">Backups</h2>
+<h2 class="options-group-title" id="backups">Backups</h2>
 <div class="options-group">
     <form id="{key}-backup-list-form">
         {#each backups as backup (backup.key)}
@@ -334,7 +334,7 @@
     </form>
 </div>
 
-<h2 class="options-group-title">Upload Backup</h2>
+<h2 class="options-group-title" id="upload-backup">Upload Backup</h2>
 <div class="options-group">
     <form on:submit={(e) => submitUpload(e)}>
         <div class="new-backup">

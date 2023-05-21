@@ -157,7 +157,7 @@
     }
 </script>
 
-<legend class="options-group-title">Options</legend>
+<h2 class="options-group-title" id="options">Options</h2>
 <div class="options-group">
     <div class="option-section options-group-cols">
         <div class="options-subgroup">
@@ -179,7 +179,7 @@
     </div>
 </div>
 
-<legend class="options-group-title">Dictionary Lookup</legend>
+<h2 class="options-group-title" id="dictionary-lookup">Dictionary Lookup</h2>
 <div class="options-group">
     <div>
         <p>
@@ -206,9 +206,6 @@
 {/if}
 
 <style>
-    .option-section {
-        margin-bottom: 1.3rem;
-    }
     .options-group-cols {
         display: flex;
         justify-content: space-around;
