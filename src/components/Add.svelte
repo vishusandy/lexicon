@@ -85,7 +85,7 @@
     }
 
     function updateDictCache() {
-        if (word != '' && word != dict_def_word) {
+        if (list.auto_defs === true && word != '' && word != dict_def_word) {
             APIProviders.default.lookup(word).then((data) => {
                 if (data && word !== '') {
                     dict_def_word = word;
@@ -168,6 +168,11 @@
         let w = getWord();
 
         addedAlert(w);
+
+        if (!list.auto_defs) {
+            addWordFinish(w);
+            return;
+        }
 
         if (!dict_def || word != dict_def_word) {
             APIProviders.default

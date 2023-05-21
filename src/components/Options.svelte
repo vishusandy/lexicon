@@ -1,11 +1,16 @@
 <script lang="ts">
     import { browser } from '$app/environment';
+    import { createEventDispatcher } from 'svelte';
+
     import { APIProviders } from '../dictionary';
     import Alert from './Alert.svelte';
     import type { Word as WordType, WordList } from '../types';
     import { list_blank, list_get, list_save, list_update, new_word_cache } from '../words';
 
+    const dispatch = createEventDispatcher();
+
     export let key: string;
+    export let autodefs: boolean;
     let alert: string | undefined = undefined;
     let alert_type: string | undefined = undefined;
 
@@ -18,6 +23,8 @@
 
         const blank = list_blank(key);
         list_save(blank);
+
+        // dispatch('refreshlist', true);
     }
 
     function refreshAllWords(key: string) {
@@ -112,20 +119,56 @@
             list_save(list);
         });
     }
+
+    function auto_defs_on() {
+        let list = list_get(key);
+        list.auto_defs = true;
+        list_save(list);
+
+        dispatch('refreshlist', true);
+    }
+
+    function auto_defs_off() {
+        let list = list_get(key);
+        list.auto_defs = false;
+        list_save(list);
+
+        dispatch('refreshlist', true);
+    }
 </script>
 
 <legend class="options-group-title">Options</legend>
-<div class="options-group options-group-cols">
-    <div class="options-subgroup">
-        <button on:click={() => refreshUndefinedWords(key)} type="button" class="btn btn-primary"
-            >Find new definitions</button
-        >
-        <button on:click={() => refreshAllWords(key)} type="button" class="btn btn-primary"
-            >Refresh all defintions</button
-        >
+<div class="options-group">
+    <div class="option-section options-group-cols">
+        <div class="options-subgroup">
+            <button
+                on:click={() => refreshUndefinedWords(key)}
+                type="button"
+                class="btn btn-primary">Find new definitions</button
+            >
+            <button on:click={() => refreshAllWords(key)} type="button" class="btn btn-primary"
+                >Refresh all defintions</button
+            >
+        </div>
+        <div class="option-section options-subgroup">
+            <button on:click={clearWords} type="button" class="btn btn-danger">Clear words</button>
+        </div>
     </div>
-    <div class="options-subgroup">
-        <button on:click={clearWords} type="button" class="btn btn-danger">Clear words</button>
+</div>
+
+<legend class="options-group-title">Dictionary Lookup</legend>
+<div class="options-group">
+    <div>
+        <p>
+            Automatic dictionary lookup is: <b
+                >{#if autodefs === true}on{:else}off{/if}</b
+            >
+        </p>
+        {#if autodefs}
+            <button class="btn btn-primary" on:click={auto_defs_off}>Turn off</button>
+        {:else}
+            <button class="btn btn-primary" on:click={auto_defs_on}>Turn on</button>
+        {/if}
     </div>
 </div>
 
@@ -138,12 +181,18 @@
 {/if}
 
 <style>
+    .option-section {
+        margin-bottom: 1.3rem;
+    }
     .options-group-cols {
         display: flex;
         justify-content: space-around;
         gap: 1rem;
     }
 
+    .options-group p:first-of-type {
+        margin-top: 0px;
+    }
     button {
         margin-bottom: 1.3rem;
         padding-left: 2rem;

@@ -65,7 +65,8 @@ export function list_get(key: string): WordList {
         if (!("version" in list)) {
             list.version = default_version;
             list.auto_defs = default_auto_defs;
-            list_save(list);
+            console.log(`upgrading ${key} to version 1.1`);
+            list_save(list, key);
         }
 
         return list;
@@ -78,9 +79,12 @@ export function list_exists(key: string): boolean {
     return localStorage.getItem(key.toLowerCase()) !== null;
 }
 
-export function list_save(list: WordList) {
+export function list_save(list: WordList, key: string | undefined = undefined) {
     if (browser) {
-        localStorage.setItem(list.key.toLowerCase(), JSON.stringify(list));
+        if (!key) {
+            key = list.key;
+        }
+        localStorage.setItem(key.toLowerCase(), JSON.stringify(list));
     }
 }
 

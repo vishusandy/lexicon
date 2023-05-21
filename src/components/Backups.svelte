@@ -1,13 +1,16 @@
 <script lang="ts">
     import { browser } from '$app/environment';
+    import { createEventDispatcher } from 'svelte';
+
     import { isWordList, type BackupEntry } from '../types';
     import { download_json, list_get } from '../words';
     import Alert from './Alert.svelte';
     import Modal from './Modal.svelte';
 
+    const dispatch = createEventDispatcher();
     export let key: string;
 
-    let backups: BackupEntry[] = [];
+    export let backups: BackupEntry[];
 
     let alert: string | undefined = undefined;
     let alert_type: string | undefined = undefined;
@@ -19,25 +22,8 @@
     // rename modal
     let rename_str: string = '';
 
-    function updateBackups() {
-        for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            if (k) {
-                let list = list_get(k);
-                backups.push({ name: k, key: i, size: list.words.length });
-            }
-        }
-    }
-
-    // Call list_get() to ensure a word list is created if one does not already exist
-    list_get(key);
-
-    updateBackups();
-
     function refresh() {
-        backups = [];
-        updateBackups();
-        backups = backups;
+        dispatch('refreshlist', true);
     }
 
     function validBackupName(e: Event, input_id: string): boolean {
