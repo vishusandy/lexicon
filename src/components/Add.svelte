@@ -98,6 +98,10 @@
         }
     }
 
+    function updateTags() {
+        tags = [...new Set(tags)];
+    }
+
     function wordLostFocus() {
         trimDuplicateWord();
         updateDictCache();
@@ -253,7 +257,7 @@
     <div class="label" on:keydown={focusAddTag} on:click={focusAddTag}>Tags</div>
     <div class="tag-container">
         <div class="tag-list">
-            <Tags {key} bind:tags />
+            <Tags {key} bind:tags on:updateTags={updateTags} />
         </div>
     </div>
 

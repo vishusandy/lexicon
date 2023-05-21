@@ -204,7 +204,7 @@
 
     function updateTags(e: WordEvent) {
         function updateWordTags(list_word: WordType, updated: WordType) {
-            list_word.tags = updated.tags;
+            list_word.tags = [...new Set(updated.tags)];
             list_word.cache = new_word_cache(list_word);
             return true;
         }
