@@ -12,7 +12,7 @@
 </script>
 
 <nav class="main">
-    <ul>
+    <menu>
         {#each links as link}
             <li>
                 {#if link.page != current}
@@ -22,5 +22,5 @@
                 {/if}
             </li>
         {/each}
-    </ul>
+    </menu>
 </nav>
