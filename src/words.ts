@@ -178,16 +178,24 @@ function sort_fn(sort_by: SortBy, sort_order: SortOrder, sort_favorites: boolean
 
 // returns true if the word should be shown
 export function filter_word(phrases: string[], word: Word): boolean {
-    for (let i = 0; i < phrases.length; i++) {
-        if (!match_word_phrase(word, phrases[i].toLowerCase())) {
+    let len = phrases.length;
+    const terms = phrases.filter((p) => p !== ':favorites' && p !== ':favorite' && p !== ':fav' && p !== ':favs');
+    const fav_filter = len > terms.length;
+
+    if (fav_filter && !word.favorite) {
+        return false;
+    }
+
+    for (let i = 0; i < terms.length; i++) {
+        if (!match_word_phrase(word, terms[i].toLowerCase(), fav_filter)) {
             return false;
         }
     }
+
     return true;
 }
 
-function match_word_phrase(word: Word, phrase: string): boolean {
-
+function match_word_phrase(word: Word, phrase: string, favs: boolean): boolean {
     return phrase == '' || word.cache === undefined
         || word.cache.word.includes(phrase)
         || (word.cache.def !== undefined && word.cache.def.includes(phrase))

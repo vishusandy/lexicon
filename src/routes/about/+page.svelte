@@ -28,10 +28,11 @@
         <div class="about-group">
             <ul>
                 <li>
-                    Use the <a href="add">Add Words</a> page to add entries to your vocab list
+                    Use the <a href="add">Add Words</a> page to add entries to your vocab list.
                 </li>
+                <li>Use the <a href="options">Options</a> page to create and manage backups.</li>
                 <li>
-                    View your <a href="list">Word List</a> to manage and search your word list
+                    View your <a href="list">Word List</a> to manage and search your word list:
                 </li>
                 <ul>
                     <li>
@@ -42,13 +43,16 @@
                         </div>
                     </li>
                     <li>
+                        Show only favorited words by typing <code>:favorites</code> in the filter.
+                    </li>
+                    <li>
                         <div>
                             Clicking the <i class="fa-regular fa-star" title="star" /> icon will mark
                             a word as a favorite.
                         </div>
                         <div>
                             Your favorites will appear at the top of the list (or bottom if the list
-                            is sorted in descending order)
+                            is sorted in descending order).
                         </div>
                     </li>
                     <li>
@@ -64,16 +68,15 @@
                         />), hidden (<i class="fa-regular fa-eye-slash" title="hide icon" />), or
                         deleted (<i class="fa-solid fa-xmark" title="delete icon" />) by checking
                         the box next to the word and selecting an action (located below the search
-                        bar)
+                        bar).
                     </li>
                     <li>
                         Notes can be added to a word by clicking the <i
                             class="fa-solid fa-circle-plus"
-                            title="add icon"
-                        /> icon
+                            title="add note icon"
+                        /> icon.
                     </li>
                 </ul>
-                <li>Use the <a href="options">Options</a> page to create and manage backups.</li>
             </ul>
         </div>
 
