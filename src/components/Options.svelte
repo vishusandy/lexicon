@@ -5,7 +5,14 @@
     import { APIProviders } from '../dictionary';
     import Alert from './Alert.svelte';
     import type { Word as WordType, WordList } from '../types';
-    import { list_blank, list_get, list_save, list_update, new_word_cache } from '../words';
+    import {
+        list_blank,
+        list_default,
+        list_get,
+        list_save,
+        list_update,
+        new_word_cache
+    } from '../words';
 
     const dispatch = createEventDispatcher();
 
@@ -13,6 +20,19 @@
     export let autodefs: boolean;
     let alert: string | undefined = undefined;
     let alert_type: string | undefined = undefined;
+
+    function restoreDefaults() {
+        if (!browser) return;
+
+        if (
+            !window.confirm('This will replace the current word list with the defaults.  Continue?')
+        ) {
+            return;
+        }
+
+        const def = list_default(key);
+        list_save(def);
+    }
 
     function clearWords() {
         if (!browser) return;
@@ -151,6 +171,9 @@
             >
         </div>
         <div class="option-section options-subgroup">
+            <button on:click={restoreDefaults} type="button" class="btn btn-danger"
+                >Restore defaults</button
+            >
             <button on:click={clearWords} type="button" class="btn btn-danger">Clear words</button>
         </div>
     </div>
@@ -189,14 +212,15 @@
     .options-group-cols {
         display: flex;
         justify-content: space-around;
-        gap: 1rem;
+        gap: 1.5rem;
+        flex-wrap: wrap;
     }
 
     .options-group p:first-of-type {
         margin-top: 0px;
     }
     button {
-        margin-bottom: 1.3rem;
+        /* margin-bottom: 1.3rem; */
         padding-left: 2rem;
         padding-right: 2rem;
     }
@@ -208,6 +232,7 @@
     .options-subgroup {
         display: flex;
         flex-wrap: wrap;
+        gap: 1.5rem;
         flex-direction: column;
         width: fit-content;
         /* margin: 0px auto; */

@@ -45,7 +45,7 @@ export function list_blank(key: string): WordList {
     return list;
 }
 
-function list_default(key: string): WordList {
+export function list_default(key: string): WordList {
     let list = <WordList>default_list;
     list.sort_by = defaultSortBy;
     list.sort_order = defaultSortOrder;
