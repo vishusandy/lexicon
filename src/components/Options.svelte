@@ -164,11 +164,13 @@
                 >{#if autodefs === true}on{:else}off{/if}</b
             >
         </p>
-        {#if autodefs}
-            <button class="btn btn-primary" on:click={auto_defs_off}>Turn off</button>
-        {:else}
-            <button class="btn btn-primary" on:click={auto_defs_on}>Turn on</button>
-        {/if}
+        <div class="toggle-autodefs">
+            {#if autodefs}
+                <button class="btn btn-primary" on:click={auto_defs_off}>Turn off</button>
+            {:else}
+                <button class="btn btn-primary" on:click={auto_defs_on}>Turn on</button>
+            {/if}
+        </div>
     </div>
 </div>
 
@@ -209,5 +211,9 @@
         flex-direction: column;
         width: fit-content;
         /* margin: 0px auto; */
+    }
+
+    div.toggle-autodefs {
+        text-align: center;
     }
 </style>

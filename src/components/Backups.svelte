@@ -404,19 +404,22 @@
         display: flex;
         flex-wrap: wrap;
         row-gap: 0.7rem;
+        column-gap: 0.5rem;
         /* align-items: center; */
-        justify-content: space-between;
+        justify-content: center;
     }
 
     .new-backup-name {
-        flex-grow: 0;
-        width: fit-content;
+        width: 100%;
+        flex-basis: 40%;
+        flex-grow: 1;
+        min-width: 65%;
     }
 
     .create-backup {
         flex-shrink: 0;
-        margin-left: auto;
-        margin-right: 0px;
+        /* margin-left: auto; */
+        /* margin-right: 0px; */
     }
 
     .backup-entry {
@@ -506,10 +509,19 @@
         font-weight: bold;
     }
 
+    .upload-backup-container {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 0.7rem;
+        column-gap: 0.5rem;
+        /* align-items: center; */
+        justify-content: center;
+    }
+
     .upload-backup-btn {
         flex-shrink: 0;
-        margin-left: auto;
-        margin-right: 0px;
+        /* margin-left: auto; */
+        /* margin-right: 0px; */
     }
 
     .upload-backup {
@@ -518,6 +530,10 @@
         color: #e9ecf1;
         padding: 0px;
         min-width: 8rem;
+        width: 100%;
+        flex-basis: 40%;
+        flex-grow: 1;
+        min-width: 65%;
     }
 
     .upload-backup::file-selector-button {
