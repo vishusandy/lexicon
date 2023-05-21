@@ -146,6 +146,10 @@
         border-radius: 0.75rem;
     }
 
+    .about-group {
+        box-shadow: 2px 2px 5px #959595;
+    }
+
     code {
         font-weight: bold;
         color: #f6fcff;
@@ -175,6 +179,7 @@
     .about-group ul {
         list-style-position: inside;
     }
+
     .about-group ul ul {
         list-style-position: outside;
         margin-left: 0.4rem;
