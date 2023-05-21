@@ -51,7 +51,6 @@ function list_default(key: string): WordList {
     list.sort_order = defaultSortOrder;
     list.key = key.toLowerCase();
     list.next_id = list.words.length;
-    list_save(list);
     return list;
 }
 
@@ -71,7 +70,10 @@ export function list_get(key: string): WordList {
 
         return list;
     } else {
-        return list_default(key);
+        let list = list_default(key);
+        list_save(list);
+
+        return list;
     }
 }
 
