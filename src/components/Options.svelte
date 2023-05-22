@@ -181,7 +181,7 @@
     }
 </script>
 
-<h2 class="options-group-title" id="options">Options</h2>
+<h2 class="options-group-title" id="options">Words</h2>
 <div class="options-group">
     <div class="option-section options-group-cols">
         <div class="options-subgroup">
