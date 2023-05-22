@@ -359,6 +359,7 @@
 
     .select-checkbox {
         margin-right: 0.4rem;
+        cursor: pointer;
     }
 
     .show-btn::before {

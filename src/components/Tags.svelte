@@ -75,8 +75,8 @@
         text-align: center;
     }
 
-    .tag-input:hover:not(:focus) {
-        cursor: default;
+    .tag-input:not(:focus) {
+        cursor: pointer;
     }
 
     .tag-input:not(:focus)::before {

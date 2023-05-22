@@ -43,7 +43,7 @@
 <style>
     .sort-form-options {
         border-radius: 0.9rem;
-        padding: 0.3rem 0.6rem 0.3rem 0.4rem;
+        padding: 0.2rem 0.6rem 0.2rem 0.4rem;
         background: #e9e9e9;
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
@@ -73,6 +73,7 @@
     }
 
     .sort-checkbox-label {
+        cursor: pointer;
         display: inline;
         font-family: 'Font Awesome 6 Free';
         font-size: 0.75rem;

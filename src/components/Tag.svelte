@@ -65,6 +65,7 @@
     }
 
     .tag {
+        cursor: text;
         display: inline-block;
         width: fit-content;
         padding: 0.1rem 0.6rem;

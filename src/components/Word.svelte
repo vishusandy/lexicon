@@ -290,6 +290,7 @@
     .select-word {
         margin-left: 0.5rem;
         margin-right: 0.25rem;
+        cursor: pointer;
     }
 
     .remove-word-btn {
@@ -307,6 +308,7 @@
     .fav-checkbox {
         position: relative;
         opacity: 0;
+        cursor: pointer;
     }
 
     .fav-label {
@@ -362,6 +364,7 @@
     .detail-content {
         margin-top: 0rem;
         margin-right: 2rem;
+        margin-left: -4rem;
     }
 
     details .detail-arrow::after {
