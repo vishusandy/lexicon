@@ -30,6 +30,7 @@
         }
         addHighlights();
     });
+
     function addHighlights() {
         removeHighlights();
         if (highlight.length === 0) return;
@@ -45,9 +46,6 @@
                 (node) => (node.innerHTML = addMarks(node.innerHTML, highlight))
             );
 
-            li.querySelectorAll('dt').forEach((node) => {
-                node.innerHTML = addMarks(node.innerHTML, highlight);
-            });
             li.querySelectorAll('.tag').forEach((node) => {
                 if (highlight.some((f) => f == '#' + node.innerHTML.toLowerCase())) {
                     node.parentElement?.classList.add('highlight-tag');
@@ -68,9 +66,7 @@
             li.querySelectorAll('.pos, .def, .syn, .ant').forEach(
                 (node) => (node.innerHTML = removeMarks(node.innerHTML))
             );
-            li.querySelectorAll('dt').forEach((node) => {
-                node.innerHTML = removeMarks(node.innerHTML);
-            });
+
             li.querySelectorAll('.tag').forEach((node) => {
                 node.parentElement?.classList.remove('highlight-tag');
             });
@@ -257,7 +253,7 @@
             {/if}
 
             {#if dict_def}
-                <DictDef dict={dict_def} />
+                <DictDef dict={dict_def} search={highlight} />
             {/if}
 
             <div class="note-container">

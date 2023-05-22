@@ -1,12 +1,27 @@
 <script lang="ts">
+    import { onMount, afterUpdate } from 'svelte';
     import type { DictionaryWord } from '../dictionary';
+    import { addMarks, removeMarks } from '../utils';
     export let dict: DictionaryWord;
     export let scheme: string = '';
+    export let search: string[] = [];
+
+    let word: string;
+
+    $: word = addMarks(dict.word, search);
+
+    // onMount(() => {
+    //     word = addMarks(dict.word, search);
+    // });
+
+    // afterUpdate(() => {
+    //     word = addMarks(dict.word, search);
+    // });
 </script>
 
 <div class="dict-def-container {scheme}">
     <dl>
-        <dt>{dict.word}</dt>
+        <dt>{@html word}</dt>
         {#if dict.parts.length > 0}
             <dd>
                 <ul>
