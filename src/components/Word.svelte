@@ -316,7 +316,7 @@
         font-family: 'Font Awesome 6 Free';
         font-size: 0.9rem;
         padding: 0.2rem 0.3rem 0.2rem;
-        margin-right: 0.2rem;
+        /* margin-right: 0.2rem; */
         margin-left: -1rem;
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
@@ -383,8 +383,9 @@
     }
 
     details summary {
+        cursor: pointer;
         list-style-type: none;
-        margin-left: 0.3rem;
+        /* margin-left: 0.3rem; */
         display: flex;
     }
 
@@ -397,8 +398,24 @@
     }
 
     .word {
+        border: 1px solid transparent;
+        font-weight: bold;
         color: #171a1d;
         cursor: text;
+        padding: 0.1rem 0.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .word:focus {
+        border: 1px solid #777;
+        /* padding: 0px; */
+        outline: 0px;
+        box-shadow: 0px 0px 0.25rem #afafaf;
+    }
+
+    .word:hover:not(:focus) {
+        border: 1px solid #979797;
+        cursor: default;
     }
 
     li:first-of-type {

@@ -64,6 +64,11 @@
         margin: 0px;
     }
 
+    dt {
+        font-weight: normal;
+        overflow-wrap: break-word;
+    }
+
     .syn,
     .ant {
         margin-left: 1rem;
