@@ -9,6 +9,7 @@
         list_blank,
         list_default,
         list_get,
+        list_remove_dicts,
         list_save,
         list_update,
         new_word_cache
@@ -45,6 +46,19 @@
         list_save(blank);
 
         // dispatch('refreshlist', true);
+    }
+
+    function clearDefinitions() {
+        if (!browser) return;
+
+        if (!window.confirm('This will clear all words in your current word list.  Continue?')) {
+            return;
+        }
+
+        let l = list_get(key);
+        const num = list_remove_dicts(l);
+        console.log(`removed ${num} definitions`);
+        list_save(l);
     }
 
     function refreshAllWords(key: string) {
@@ -168,6 +182,9 @@
             >
             <button on:click={() => refreshAllWords(key)} type="button" class="btn btn-primary"
                 >Refresh all defintions</button
+            >
+            <button on:click={clearDefinitions} type="button" class="btn btn-primary"
+                >Clear definitions</button
             >
         </div>
         <div class="option-section options-subgroup">

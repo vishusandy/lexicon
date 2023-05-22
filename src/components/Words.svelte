@@ -13,7 +13,7 @@
         list_sort,
         list_update,
         list_update_word,
-        list_update_definition,
+        list_update_note,
         filter_word,
         new_word_cache,
         getWordElem
@@ -195,7 +195,7 @@
     function updateDefinition(e: WordEvent) {
         if (e.key != key || !e.word.def) return;
         let def = removeMarks(e.word.def.trim());
-        if (list_update_definition(list, e.word.id, def)) {
+        if (list_update_note(list, e.word.id, def)) {
             list_save(list);
         } else {
             console.log('definition update failed');
@@ -376,7 +376,7 @@
         margin-right: 0.5rem;
         margin-left: 0.2rem;
     }
-    
+
     .select-words {
         display: inline-block;
         width: fit-content;

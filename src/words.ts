@@ -111,7 +111,7 @@ export function list_update_word(list: WordList, id: number, word: string): bool
     return true;
 }
 
-export function list_update_definition(list: WordList, id: number, def: string | undefined): boolean {
+export function list_update_note(list: WordList, id: number, def: string | undefined): boolean {
     const i = list.words.findIndex(w => w.id == id);
     if (i < 0) return false;
 
@@ -134,6 +134,15 @@ export function list_sort(list: WordList): WordList {
         list.words.sort(sort_fn(list.sort_by, list.sort_order));
     }
     return list;
+}
+
+export function list_remove_dicts(list: WordList): number {
+    let i = 0;
+    list.words.forEach(word => {
+        i += 1;
+        word.dict_def = undefined;
+    });
+    return i;
 }
 
 function sort_fn(sort_by: SortBy, sort_order: SortOrder, sort_favorites: boolean = true): (a: Word, b: Word) => number {
