@@ -83,5 +83,6 @@
         position: absolute;
         margin-left: -1.8rem;
         margin-top: 0.3rem;
+        z-index: 100;
     }
 </style>
