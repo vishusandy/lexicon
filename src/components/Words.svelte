@@ -294,11 +294,9 @@
                         bind:checked={check_all}
                         on:change={selectAll}
                     />
-                    <div class="select-group">
-                        <button on:click={actionShowAll} class="show-btn" title="Show selected" />
-                        <button on:click={actionShowNone} class="hide-btn" title="Hide selected" />
-                        <button on:click={actionDelete} class="del-btn" title="Delete selected" />
-                    </div>
+                    <button on:click={actionShowAll} class="show-btn" title="Show selected" />
+                    <button on:click={actionShowNone} class="hide-btn" title="Hide selected" />
+                    <button on:click={actionDelete} class="del-btn" title="Delete selected" />
                 </div>
             </div>
             <Sort
@@ -359,10 +357,18 @@
         font-size: 1.2rem;
     }
 
+    .select-checkbox {
+        margin-right: 0.4rem;
+    }
+
     .show-btn::before {
         content: '\f06e';
         font-family: 'Font Awesome 6 Free';
         color: #c4c4c4;
+    }
+
+    .hide-btn {
+        margin-right: 0.3rem;
     }
 
     .hide-btn::before {
@@ -371,10 +377,11 @@
         font-family: 'Font Awesome 6 Free';
     }
 
-    .select-group {
-        display: inline-block;
+    .select-options {
+        display: flex;
         margin-right: 0.5rem;
         margin-left: 0.2rem;
+        /* gap: 0.1em; */
     }
 
     .select-words {

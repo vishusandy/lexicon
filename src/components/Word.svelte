@@ -259,7 +259,6 @@
             <div class="note-container">
                 <div id="note-empty-{key}-{item.id}" class="note-empty hidden">
                     <button on:click={() => showNote(true)} title="Add Note">
-                        <!-- <i class="fa-solid fa-note-sticky" /> -->
                         <i class="fa-solid fa-circle-plus" />
                     </button>
                 </div>
