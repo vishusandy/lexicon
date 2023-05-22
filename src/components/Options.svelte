@@ -14,6 +14,7 @@
         list_update,
         new_word_cache
     } from '../words';
+    import { blurTarget } from '../utils';
 
     const dispatch = createEventDispatcher();
 
@@ -22,7 +23,7 @@
     let alert: string | undefined = undefined;
     let alert_type: string | undefined = undefined;
 
-    function restoreDefaults() {
+    function restoreDefaults(e: Event) {
         if (!browser) return;
 
         if (
@@ -33,9 +34,13 @@
 
         const def = list_default(key);
         list_save(def);
+
+        blurTarget(e);
+
+        dispatch('refreshlist', true);
     }
 
-    function clearWords() {
+    function clearWords(e: Event) {
         if (!browser) return;
 
         if (!window.confirm('This will clear all words in your current word list.  Continue?')) {
@@ -45,10 +50,12 @@
         const blank = list_blank(key);
         list_save(blank);
 
-        // dispatch('refreshlist', true);
+        blurTarget(e);
+
+        dispatch('refreshlist', true);
     }
 
-    function clearDefinitions() {
+    function clearDefinitions(e: Event) {
         if (!browser) return;
 
         if (!window.confirm('This will clear all words in your current word list.  Continue?')) {
@@ -56,12 +63,13 @@
         }
 
         let l = list_get(key);
-        const num = list_remove_dicts(l);
-        console.log(`removed ${num} definitions`);
+        list_remove_dicts(l);
         list_save(l);
+
+        blurTarget(e);
     }
 
-    function refreshAllWords(key: string) {
+    function refreshAllWords(e: Event) {
         function refreshWordUpdate(list_word: WordType, updated: WordType) {
             list_word.dict_def = updated.dict_def;
             return true;
@@ -107,10 +115,11 @@
             }
 
             list_save(list);
+            blurTarget(e);
         });
     }
 
-    function refreshUndefinedWords(key: string) {
+    function refreshUndefinedWords(e: Event) {
         function refreshWordUpdate(list_word: WordType, updated: WordType) {
             list_word.dict_def = updated.dict_def;
             return true;
@@ -151,6 +160,7 @@
             }
 
             list_save(list);
+            blurTarget(e);
         });
     }
 
@@ -175,12 +185,10 @@
 <div class="options-group">
     <div class="option-section options-group-cols">
         <div class="options-subgroup">
-            <button
-                on:click={() => refreshUndefinedWords(key)}
-                type="button"
-                class="btn btn-primary">Find new definitions</button
+            <button on:click={refreshUndefinedWords} type="button" class="btn btn-primary"
+                >Find new definitions</button
             >
-            <button on:click={() => refreshAllWords(key)} type="button" class="btn btn-primary"
+            <button on:click={refreshAllWords} type="button" class="btn btn-primary"
                 >Refresh all defintions</button
             >
             <button on:click={clearDefinitions} type="button" class="btn btn-primary"

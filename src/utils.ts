@@ -69,3 +69,9 @@ export function adjustTextarea(e: Event) {
     t.style.height = 'auto';
     t.style.height = t.scrollHeight + 'px';
 }
+
+export function blurTarget(e: Event) {
+    if (e.target && document.activeElement === e.target) {
+        (<HTMLElement>e.target).blur();
+    }
+}

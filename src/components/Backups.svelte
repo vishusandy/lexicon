@@ -136,6 +136,7 @@
         alert_type = 'info';
 
         refresh();
+
         t.value = '';
     }
 
@@ -163,7 +164,6 @@
 
             let text = <string>reader.result;
             let obj = JSON.parse(text);
-            console.log(isWordList(obj));
 
             if (!isWordList(obj)) {
                 alert = 'Invalid backup file.';
@@ -179,6 +179,7 @@
             if (el) {
                 el.value = '';
             }
+
             refresh();
         };
 
@@ -209,6 +210,7 @@
         if (!h) {
             return;
         }
+
         h.value = name;
         t.showModal();
         e.preventDefault();
