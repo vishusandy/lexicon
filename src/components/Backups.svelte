@@ -239,118 +239,124 @@
     }
 </script>
 
-<h2 class="options-group-title" id="create-backup">Create Backup</h2>
+<h2 class="options-group-title" id="create-backup">Backups</h2>
 <div class="options-group">
-    <form on:submit={submitNewBackup}>
-        <div class="new-backup">
-            <input
-                id="{key}-new-backup-name"
-                type="text"
-                class="new-backup-name form-control"
-                placeholder="new name"
-                on:blur={(e) => validBackupName(e, key + '-new-backup-name')}
-            />
-            <button class="create-backup btn btn-primary">Create Backup</button>
-        </div>
-    </form>
-</div>
+    <div class="backup-group">
+        <h3 class="options-group-title" id="create-backup">Create Backup</h3>
+        <form on:submit={submitNewBackup}>
+            <div class="new-backup">
+                <input
+                    id="{key}-new-backup-name"
+                    type="text"
+                    class="new-backup-name form-control"
+                    placeholder="new name"
+                    on:blur={(e) => validBackupName(e, key + '-new-backup-name')}
+                />
+                <button class="create-backup btn btn-primary">Create Backup</button>
+            </div>
+        </form>
+    </div>
+    <!-- </div>
 
-<h2 class="options-group-title" id="backups">Backups</h2>
-<div class="options-group">
-    <form id="{key}-backup-list-form">
-        {#each backups as backup (backup.key)}
-            <div class="backup-entry">
-                <div class="backup-content">
-                    {#if backup.name != key}
+<div class="options-group"> -->
+    <div class="backup-group">
+        <h3 class="options-group-title" id="backups">Restore Backup</h3>
+        <form id="{key}-backup-list-form">
+            {#each backups as backup (backup.key)}
+                <div class="backup-entry">
+                    <div class="backup-content">
+                        {#if backup.name != key}
+                            <button
+                                type="button"
+                                class="remove-btn"
+                                title="Delete backup"
+                                on:click={(e) => deleteBackup(e, backup.name)}
+                                ><i class="fa-solid fa-xmark" /></button
+                            >
+                        {:else}
+                            <button type="button" class="remove-btn" disabled={true}
+                                ><i class="fa-solid fa-xmark" /></button
+                            >
+                        {/if}
                         <button
+                            on:click={(e) => download_json(backup.name)}
                             type="button"
-                            class="remove-btn"
-                            title="Delete backup"
-                            on:click={(e) => deleteBackup(e, backup.name)}
-                            ><i class="fa-solid fa-xmark" /></button
+                            class="btn download-btn"
+                            title="Download backup"><i class="fa-solid fa-download" /></button
                         >
-                    {:else}
-                        <button type="button" class="remove-btn" disabled={true}
-                            ><i class="fa-solid fa-xmark" /></button
-                        >
-                    {/if}
-                    <button
-                        on:click={(e) => download_json(backup.name)}
-                        type="button"
-                        class="btn download-btn"
-                        title="Download backup"><i class="fa-solid fa-download" /></button
-                    >
-                    {#if backup.name != key}
-                        <button
-                            on:click={(e) => openRenameModal(e, backup.name)}
-                            type="submit"
-                            id="{key}-backup-rename-{backup.name}"
-                            title="Rename"
-                            value={backup.name}
-                            class="btn rename-btn"><i class="fa-solid fa-pen" /></button
-                        >
-                        <input
-                            type="radio"
-                            name="btn-edit"
-                            class="btn-edit"
-                            title="Select this backup for restore"
-                            id="{key}-restore-{backup.key}"
-                            required={true}
-                            value={backup.name}
-                        />
-                    {:else}
-                        <button type="button" disabled={true} class="btn rename-btn"
-                            ><i class="fa-solid fa-pen" /></button
-                        >
-                        <input type="radio" class="btn-edit-current" disabled />
-                    {/if}
+                        {#if backup.name != key}
+                            <button
+                                on:click={(e) => openRenameModal(e, backup.name)}
+                                type="submit"
+                                id="{key}-backup-rename-{backup.name}"
+                                title="Rename"
+                                value={backup.name}
+                                class="btn rename-btn"><i class="fa-solid fa-pen" /></button
+                            >
+                            <input
+                                type="radio"
+                                name="btn-edit"
+                                class="btn-edit"
+                                title="Select this backup for restore"
+                                id="{key}-restore-{backup.key}"
+                                required={true}
+                                value={backup.name}
+                            />
+                        {:else}
+                            <button type="button" disabled={true} class="btn rename-btn"
+                                ><i class="fa-solid fa-pen" /></button
+                            >
+                            <input type="radio" class="btn-edit-current" disabled />
+                        {/if}
 
-                    <div class="backup-name">
-                        <label
-                            class="backup-name-label"
-                            for="{key}-restore-{backup.key}"
-                            title="Select backup for restore"
-                        >
-                            {#if backup.name == key}
-                                <div class="backup-current">Current</div>
-                            {:else}
-                                {backup.name}
-                            {/if}
-                        </label>
-                        <div class="backup-length">
-                            ({backup.size} words)
+                        <div class="backup-name">
+                            <label
+                                class="backup-name-label"
+                                for="{key}-restore-{backup.key}"
+                                title="Select backup for restore"
+                            >
+                                {#if backup.name == key}
+                                    <div class="backup-current">Current</div>
+                                {:else}
+                                    {backup.name}
+                                {/if}
+                            </label>
+                            <div class="backup-length">
+                                ({backup.size} words)
+                            </div>
                         </div>
                     </div>
                 </div>
+            {/each}
+            <div class="backup-submit">
+                <button
+                    on:click={openRestoreModal}
+                    type="button"
+                    class="btn btn-danger"
+                    name="backups_action"
+                    value="restore">Restore</button
+                >
             </div>
-        {/each}
-        <div class="backup-submit">
-            <button
-                on:click={openRestoreModal}
-                type="button"
-                class="btn btn-danger"
-                name="backups_action"
-                value="restore">Restore</button
-            >
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+    <!-- </div>
 
 <h2 class="options-group-title" id="upload-backup">Upload Backup</h2>
-<div class="options-group">
-    <form on:submit={(e) => submitUpload(e)}>
-        <div class="new-backup">
-            <div class="upload-backup-container">
+<div class="options-group"> -->
+    <div class="backup-group">
+        <h3 class="options-group-title" id="upload-backup">Upload Backup</h3>
+        <form on:submit={(e) => submitUpload(e)}>
+            <div class="new-backup">
                 <input
                     id="{key}-upload-backup"
                     class="upload-backup form-control"
                     type="file"
                     accept=".json,application/json"
                 />
+                <button class="btn btn-danger upload-backup-btn">Restore Backup</button>
             </div>
-            <button class="btn btn-danger upload-backup-btn">Restore Backup</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <Modal id="backup-modal" onSubmit={submitRestore} submit_text="Restore">
@@ -397,6 +403,29 @@
 {/if}
 
 <style>
+    .backup-group {
+        border-radius: 0.4rem;
+        border: 1px solid #4f5058;
+        background: #3d3e44;
+        padding: 1rem;
+        margin: -0.5rem;
+    }
+
+    .backup-group:not(:last-of-type) {
+        margin-bottom: 2rem;
+    }
+
+    .backup-group form {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+    .backup-group h3 {
+        color: #ebeef1;
+        margin-top: 0px;
+        margin-bottom: 0.8rem;
+    }
+
     .dialog-title {
         font-size: 1.1rem;
         margin-bottom: 1rem;
@@ -426,7 +455,7 @@
     }
 
     .backup-content {
-        padding: 0.2rem 1.5rem;
+        padding: 0.2rem 0rem;
         display: flex;
         flex-wrap: nowrap;
     }
@@ -447,7 +476,7 @@
     }
 
     .backup-submit {
-        margin-top: 1.5rem;
+        margin-top: 0.5rem;
         text-align: center;
     }
 
@@ -497,14 +526,6 @@
 
     .backup-current {
         font-weight: bold;
-    }
-
-    .upload-backup-container {
-        display: flex;
-        flex-wrap: wrap;
-        row-gap: 0.7rem;
-        column-gap: 0.5rem;
-        justify-content: center;
     }
 
     .upload-backup-btn {
