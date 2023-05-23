@@ -137,17 +137,6 @@ mark {
     box-shadow: 0 0 0 0.15rem rgba(53, 125, 220, 0.25);
 }
 
-.options-group {
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    margin: 0px auto;
-    box-shadow: 2px 2px 5px #959595;
-    background: #34353a;
-    color: #dbe5ec;
-    margin-bottom: 2rem;
-    margin-left: 1.5rem;
-}
-
 .remove-btn {
     color: #b34f4f;
     background: transparent;
@@ -157,6 +146,17 @@ mark {
 .remove-btn[disabled] {
     color: #7d8d9b;
     cursor: not-allowed;
+}
+
+.options-group {
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 0px auto;
+    box-shadow: 2px 2px 5px #959595;
+    background: #34353a;
+    color: #dbe5ec;
+    margin-bottom: 2rem;
+    // margin-left: 1.5rem;
 }
 
 .options-group-title {
