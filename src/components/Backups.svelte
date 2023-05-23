@@ -533,8 +533,6 @@
     }
 
     .upload-backup {
-        border: 0px;
-        background: transparent;
         color: #e9ecf1;
         padding: 0px;
         min-width: 8rem;
