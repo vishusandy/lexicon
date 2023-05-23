@@ -97,8 +97,7 @@
                         href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
                         target="_blank"
                         rel="noreferrer">Web Storage API</a
-                    >. The app consists of static css/js/html files so it can be easily hosted on
-                    static hosting providers.
+                    >. The app is designed to run on static web hosts.
                 </p>
                 <p>
                     Dictionary defintions and audio pronunciations are made possible by querying <a
@@ -157,7 +156,6 @@
 
     section.alert {
         padding: 0.5rem 1rem 1rem 1rem;
-        margin-left: 1.5rem;
     }
 
     section.alert h2 {
@@ -198,7 +196,6 @@
     }
 
     .dark-theme .about-group {
-        margin-left: 1.5rem;
         background: #34353a;
         color: #d4dbe0;
     }
