@@ -407,12 +407,12 @@
         border-radius: 0.4rem;
         border: 1px solid #4f5058;
         background: #3d3e44;
-        padding: 1rem;
-        margin: -0.5rem;
+        padding: 1rem 0.4rem;
+        margin: -0.7rem;
     }
 
     .backup-group:not(:last-of-type) {
-        margin-bottom: 2rem;
+        margin-bottom: 1.8rem;
     }
 
     .backup-group form {
